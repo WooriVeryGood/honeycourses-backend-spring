@@ -14,7 +14,7 @@ import java.util.List;
 public class CourseController {
     private final CourseService courseService;
 
-    @GetMapping("/api/courses")
+    @GetMapping("/courses")
     public ResponseEntity<List<CourseResponse>> findAllCourses() {
         List<CourseResponse>courses = courseService.findAll()
                 .stream()
