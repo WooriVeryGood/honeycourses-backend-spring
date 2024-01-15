@@ -1,5 +1,6 @@
 package org.wooriverygood.api.post.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.wooriverygood.api.exception.PostNotFoundException;
 import org.wooriverygood.api.post.domain.Post;
@@ -9,6 +10,7 @@ import org.wooriverygood.api.post.repository.PostRepository;
 import java.util.List;
 
 @Service
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;

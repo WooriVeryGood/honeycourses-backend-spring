@@ -1,8 +1,11 @@
 package org.wooriverygood.api.post.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.wooriverygood.api.comment.domain.Comment;
 
 import java.time.LocalDateTime;
@@ -11,6 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "posts")
 @Getter
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -40,5 +45,17 @@ public class Post {
     @Column(name = "post_time")
     @CreatedDate
     private LocalDateTime createdAt;
+
+
+    @Builder
+    public Post(Long id, PostCategory category, String title, String content, String author, List<Comment> comments, List<PostLike> postLikes) {
+        this.id = id;
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.comments = comments;
+        this.postLikes = postLikes;
+    }
 
 }
