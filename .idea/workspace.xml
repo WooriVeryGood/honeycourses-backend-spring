@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-68] 모든 게시글 불러오기 기능 구현">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/PostNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/general/BusinessException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/general/NotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/CommunityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/CommunityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/CommunityRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/CommunityRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/CommunityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/CommunityService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -183,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705321767102</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="[HC-68] 모든 게시글 불러오기 기능 구현">
+      <option name="closed" value="true" />
+      <created>1705324332715</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705324332715</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +213,7 @@
     <MESSAGE value="commit test" />
     <MESSAGE value="feat. /api/courses get 기능" />
     <MESSAGE value="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정" />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정" />
+    <MESSAGE value="[HC-68] 모든 게시글 불러오기 기능 구현" />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-68] 모든 게시글 불러오기 기능 구현" />
   </component>
 </project>
