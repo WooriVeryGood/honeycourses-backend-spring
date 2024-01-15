@@ -1,4 +1,4 @@
-package org.wooriverygood.api.community.domain;
+package org.wooriverygood.api.post.domain;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;

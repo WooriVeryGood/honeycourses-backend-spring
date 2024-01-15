@@ -1,4 +1,4 @@
-package org.wooriverygood.api.community.service;
+package org.wooriverygood.api.post.service;
 
 import org.springframework.stereotype.Service;
 
