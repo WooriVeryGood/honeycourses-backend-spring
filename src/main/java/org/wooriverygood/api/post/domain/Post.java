@@ -34,6 +34,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikes;
+
     @Column(name = "post_time")
     @CreatedDate
     private LocalDateTime createdAt;
