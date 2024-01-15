@@ -1,6 +1,7 @@
 package org.wooriverygood.api.comment.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import org.wooriverygood.api.post.domain.Post;
 
@@ -24,4 +25,13 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
+
+    @Builder
+    public Comment(Long id, String content, String author, Post post) {
+        this.id = id;
+        this.content = content;
+        this.author = author;
+        this.post = post;
+    }
+
 }
