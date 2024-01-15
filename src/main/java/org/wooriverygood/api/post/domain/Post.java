@@ -3,8 +3,10 @@ package org.wooriverygood.api.post.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+import org.wooriverygood.api.comment.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -25,6 +27,9 @@ public class Post {
 
     @Column(name = "post_content", length = 2000)
     private String content;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
     @Column(name = "post_time")
     @CreatedDate

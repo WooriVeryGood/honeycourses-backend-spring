@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-68] 모든 게시글 불러오기 기능 구현">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/PostNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/general/BusinessException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/general/NotFoundException.java" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-68] 댓글 패키지 생성">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/CommunityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/CommunityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/CommunityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/CommunityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +38,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -108,6 +109,11 @@
     ]
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.comment.dto" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="jbr-17" />
@@ -191,7 +197,23 @@
       <option name="project" value="LOCAL" />
       <updated>1705324332715</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="[HC-68] 특정 게시글 정보 조회 기능 구현&#10;&#10;- Post 패키지명에 따라서 이름 변경">
+      <option name="closed" value="true" />
+      <created>1705327555777</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1705327555777</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[HC-68] 댓글 패키지 생성">
+      <option name="closed" value="true" />
+      <created>1705327801650</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705327801650</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,6 +236,19 @@
     <MESSAGE value="feat. /api/courses get 기능" />
     <MESSAGE value="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정" />
     <MESSAGE value="[HC-68] 모든 게시글 불러오기 기능 구현" />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-68] 모든 게시글 불러오기 기능 구현" />
+    <MESSAGE value="[HC-68] 특정 게시글 정보 조회 기능 구현&#10;&#10;- Post 패키지명에 따라서 이름 변경" />
+    <MESSAGE value="[HC-68] 댓글 패키지 생성" />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-68] 댓글 패키지 생성" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
