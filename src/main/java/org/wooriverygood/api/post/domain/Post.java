@@ -1,12 +1,14 @@
 package org.wooriverygood.api.post.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "posts")
+@Getter
 public class Post {
 
     @Id
