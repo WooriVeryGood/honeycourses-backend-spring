@@ -18,6 +18,9 @@ public class Comment {
     @Column(name = "comment_content", length = 200, nullable = false)
     private String content;
 
+    @Column(name = "comment_author", length = 1000)
+    private String author;
+
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;

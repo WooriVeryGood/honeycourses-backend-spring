@@ -28,6 +28,9 @@ public class Post {
     @Column(name = "post_content", length = 2000)
     private String content;
 
+    @Column(name = "post_author", length = 1000)
+    private String author;
+
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
