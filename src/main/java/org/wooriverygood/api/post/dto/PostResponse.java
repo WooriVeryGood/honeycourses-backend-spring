@@ -13,14 +13,16 @@ public class PostResponse {
     private final String post_title;
     private final String post_content;
     private final String post_category;
+    private final int post_comments;
     private final LocalDateTime post_time;
 
     @Builder
-    public PostResponse(Long post_id, String post_title, String post_content, String post_category, LocalDateTime post_time) {
+    public PostResponse(Long post_id, String post_title, String post_content, String post_category, int post_comments, LocalDateTime post_time) {
         this.post_id = post_id;
         this.post_title = post_title;
         this.post_content = post_content;
         this.post_category = post_category;
+        this.post_comments = post_comments;
         this.post_time = post_time;
     }
 
@@ -30,6 +32,7 @@ public class PostResponse {
                 .post_title(post.getTitle())
                 .post_content(post.getContent())
                 .post_category(post.getCategory().getValue())
+                .post_comments(post.getComments().size())
                 .post_time(post.getCreatedAt())
                 .build();
     }
