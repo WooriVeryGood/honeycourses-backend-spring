@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.domain.Review;
-import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 
 import java.util.ArrayList;
@@ -43,14 +42,14 @@ public class ReviewServiceTest {
     void setUpReviews() {
         for(int i = 0; i<REVIEW_COUNT; i++) {
             Review review = Review.builder()
-                    .review_id(i)
+                    .id(i)
                     .course(singleCourse)
-                    .review_content("review" + i)
-                    .review_title("review" + i)
-                    .instructor_name("jiaoshou")
-                    .taken_semyr("22-23")
+                    .reviewContent("review" + i)
+                    .reviewTitle("review" + i)
+                    .instructorName("jiaoshou")
+                    .takenSemyr("22-23")
                     .grade("60")
-                    .author_email("author" + i)
+                    .authorEmail("author" + i)
                     .build();
             reviews.add(review);
         }
@@ -65,7 +64,7 @@ public class ReviewServiceTest {
         List<Review> responses = reviewService.findAllByCourseId(2);
 
         Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
-        Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");
+        Assertions.assertThat(responses.get(0).getReviewTitle()).isEqualTo("review0");
 
     }
 

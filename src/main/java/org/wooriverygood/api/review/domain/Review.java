@@ -13,40 +13,40 @@ import org.wooriverygood.api.course.domain.Courses;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int review_id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Courses course;
 
     @Column(name = "review_content", length = 1000)
-    private String review_content;
+    private String reviewContent;
 
     @Column(name = "review_title", length = 45)
-    private String review_title;
+    private String reviewTitle;
 
     @Column(name = "instructor_name", length = 45, nullable = false)
-    private String instructor_name;
+    private String instructorName;
 
     @Column(name = "taken_semyr", length = 45, nullable = false)
-    private String taken_semyr;
+    private String takenSemyr;
 
     @Column(name = "grade", length = 45, nullable = false)
     private String grade;
 
     @Column(name = "author_email", length = 300)
-    private String author_email;
+    private String authorEmail;
 
     @Builder
-    public Review(int review_id, Courses course, String review_content, String review_title, String instructor_name, String taken_semyr, String grade, String author_email) {
-        this.review_id = review_id;
+    public Review(int id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail) {
+        this.id = id;
         this.course = course;
-        this.review_content = review_content;
-        this.review_title = review_title;
-        this.instructor_name = instructor_name;
-        this.taken_semyr = taken_semyr;
+        this.reviewContent = reviewContent;
+        this.reviewTitle = reviewTitle;
+        this.instructorName = instructorName;
+        this.takenSemyr = takenSemyr;
         this.grade = grade;
-        this.author_email = author_email;
+        this.authorEmail = authorEmail;
     }
 
 

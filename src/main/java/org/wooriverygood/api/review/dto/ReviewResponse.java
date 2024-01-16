@@ -17,12 +17,12 @@ public class ReviewResponse {
 
     @Builder
     public ReviewResponse(Review review) {
-        this.review_id = review.getReview_id();
+        this.review_id = review.getId();
         this.course_id = review.getCourse().getId();
-        this.review_content = review.getReview_content();
-        this.review_title = review.getReview_title();
-        this.instructor_name = review.getInstructor_name();
-        this.taken_semyr = review.getTaken_semyr();
+        this.review_content = review.getReviewContent();
+        this.review_title = review.getReviewTitle();
+        this.instructor_name = review.getInstructorName();
+        this.taken_semyr = review.getTakenSemyr();
         this.grade = review.getGrade();
         // this.author_email = review.getAuthor_email();
     }
