@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
+import org.wooriverygood.api.post.dto.NewPostRequest;
+import org.wooriverygood.api.post.dto.NewPostResponse;
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.repository.PostRepository;
 
@@ -78,6 +80,31 @@ class PostServiceTest {
         PostResponse response = postService.findPostById(6L);
 
         Assertions.assertThat(response).isNotNull();
+    }
+
+    @Test
+    @DisplayName("새로운 게시글을 작성한다.")
+    void addPost() {
+        NewPostRequest newPostRequest = NewPostRequest.builder()
+                .post_title("title")
+                .post_category("자유")
+                .post_content("content")
+                .email("test@email.com")
+                .build();
+
+        Mockito.when(postRepository.save(any(Post.class)))
+                .thenReturn(Post.builder()
+                        .title(newPostRequest.getPost_title())
+                        .category(PostCategory.parse(newPostRequest.getPost_category()))
+                        .content(newPostRequest.getPost_content())
+                        .author(newPostRequest.getEmail())
+                        .build());
+
+        NewPostResponse response = postService.addPost(newPostRequest);
+
+        Assertions.assertThat(response.getTitle()).isEqualTo(newPostRequest.getPost_title());
+        Assertions.assertThat(response.getCategory()).isEqualTo(newPostRequest.getPost_category());
+        Assertions.assertThat(response.getAuthor()).isEqualTo(newPostRequest.getEmail());
     }
 
 }

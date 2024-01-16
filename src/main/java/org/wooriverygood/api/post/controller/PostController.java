@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.wooriverygood.api.post.dto.NewPostRequest;
+import org.wooriverygood.api.post.dto.NewPostResponse;
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.service.PostService;
 
@@ -33,8 +34,8 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addPost(@RequestBody NewPostRequest newPostRequest) {
-        postService.addPost(newPostRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<NewPostResponse> addPost(@RequestBody NewPostRequest newPostRequest) {
+        NewPostResponse response = postService.addPost(newPostRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
