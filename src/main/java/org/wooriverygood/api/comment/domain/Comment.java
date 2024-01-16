@@ -3,11 +3,13 @@ package org.wooriverygood.api.comment.domain;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.wooriverygood.api.post.domain.Post;
 
 @Entity
 @Table(name = "testComments")
 @Getter
+@NoArgsConstructor
 public class Comment {
 
     @Id
