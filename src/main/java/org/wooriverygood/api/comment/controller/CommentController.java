@@ -26,7 +26,7 @@ public class CommentController {
         return  ResponseEntity.ok(responses);
     }
 
-    @PostMapping("/community/{id}/comment")
+    @PostMapping("/community/{id}/comments")
     public ResponseEntity<NewCommentResponse> addComment(@PathVariable("id") Long postId, @RequestBody NewCommentRequest newCommentRequest) {
         NewCommentResponse response = commentService.addComment(postId, newCommentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
