@@ -10,12 +10,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.dto.CommentResponse;
+import org.wooriverygood.api.comment.dto.NewCommentRequest;
+import org.wooriverygood.api.comment.dto.NewCommentResponse;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
+import org.wooriverygood.api.post.repository.PostRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -27,6 +31,9 @@ class CommentServiceTest {
 
     @MockBean
     private CommentRepository commentRepository;
+
+    @MockBean
+    private PostRepository postRepository;
 
     private final int COMMENT_COUNT = 10;
 
@@ -64,6 +71,29 @@ class CommentServiceTest {
         List<CommentResponse> responses = commentService.findAllCommentsByPostId(2L);
 
         Assertions.assertThat(responses.size()).isEqualTo(COMMENT_COUNT);
+    }
+
+    @Test
+    @DisplayName("특정 게시글의 댓글을 작성한다.")
+    void addComment() {
+        NewCommentRequest newCommentRequest = NewCommentRequest.builder()
+                .email("test@email.com")
+                .content("comment content")
+                .build();
+
+        Mockito.when(commentRepository.save(any(Comment.class)))
+                .thenReturn(Comment.builder()
+                        .author(newCommentRequest.getEmail())
+                        .content(newCommentRequest.getContent())
+                        .build());
+
+        Mockito.when(postRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(singlePost));
+
+         NewCommentResponse response = commentService.addComment(1L, newCommentRequest);
+
+         Assertions.assertThat(response.getAuthor()).isEqualTo(newCommentRequest.getEmail());
+         Assertions.assertThat(response.getContent()).isEqualTo(newCommentRequest.getContent());
     }
 
 }
