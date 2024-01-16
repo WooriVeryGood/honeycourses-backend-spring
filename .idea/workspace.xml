@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="feat. /api/courses get 기능">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-68] 게시글 및 댓글에 작성자 필드 추가">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/like/controller/LikeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/like/service/PostLikeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostLike.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,17 +37,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="HC-63--GET-courses-" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -60,6 +60,9 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -71,30 +74,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build honeycourses-backend-spring.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.HoneycoursesBackend.executor&quot;: &quot;Debug&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;HC-68--GET-community&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.comment.dto" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="jbr-17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <module name="honeycourses-backend-spring.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
       <extension name="coverage">
@@ -113,6 +135,13 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-3183f394aec4-5f3ff201" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -123,6 +152,9 @@
       <updated>1701333347284</updated>
       <workItem from="1701333348373" duration="4810000" />
       <workItem from="1703006475123" duration="22000" />
+      <workItem from="1705241248366" duration="871000" />
+      <workItem from="1705301106038" duration="464000" />
+      <workItem from="1705302176845" duration="9723000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -148,27 +180,90 @@
       <option name="project" value="LOCAL" />
       <updated>1701338098358</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정">
+      <option name="closed" value="true" />
+      <created>1705321767102</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1705321767102</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[HC-68] 모든 게시글 불러오기 기능 구현">
+      <option name="closed" value="true" />
+      <created>1705324332715</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705324332715</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[HC-68] 특정 게시글 정보 조회 기능 구현&#10;&#10;- Post 패키지명에 따라서 이름 변경">
+      <option name="closed" value="true" />
+      <created>1705327555777</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1705327555777</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[HC-68] 댓글 패키지 생성">
+      <option name="closed" value="true" />
+      <created>1705327801650</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705327801650</updated>
+    </task>
+    <task id="LOCAL-00008" summary="[HC-68] 댓글 조회 기능 구현">
+      <option name="closed" value="true" />
+      <created>1705330885585</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705330885585</updated>
+    </task>
+    <task id="LOCAL-00009" summary="[HC-68] 게시글 조회 응답 객체에 댓글 개수 추가">
+      <option name="closed" value="true" />
+      <created>1705331097822</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1705331097822</updated>
+    </task>
+    <task id="LOCAL-00010" summary="[HC-68] 게시글 및 댓글에 작성자 필드 추가">
+      <option name="closed" value="true" />
+      <created>1705331345722</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1705331345722</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="project init" />
     <MESSAGE value="commit test" />
     <MESSAGE value="feat. /api/courses get 기능" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat. /api/courses get 기능" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/build.gradle</url>
-          <line>11</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정" />
+    <MESSAGE value="[HC-68] 모든 게시글 불러오기 기능 구현" />
+    <MESSAGE value="[HC-68] 특정 게시글 정보 조회 기능 구현&#10;&#10;- Post 패키지명에 따라서 이름 변경" />
+    <MESSAGE value="[HC-68] 댓글 패키지 생성" />
+    <MESSAGE value="[HC-68] 댓글 조회 기능 구현" />
+    <MESSAGE value="[HC-68] 게시글 조회 응답 객체에 댓글 개수 추가" />
+    <MESSAGE value="[HC-68] 게시글 및 댓글에 작성자 필드 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-68] 게시글 및 댓글에 작성자 필드 추가" />
   </component>
 </project>
