@@ -15,7 +15,7 @@ public class CourseResponse {
 
     @Builder
     public CourseResponse(Courses course) {
-        this.course_id = course.getCourse_id();
+        this.course_id = course.getId();
         this.course_category = course.getCourse_category();
         this.course_credit = course.getCourse_credit();
         this.course_name = course.getCourse_name();
