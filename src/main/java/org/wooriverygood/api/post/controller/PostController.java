@@ -1,10 +1,9 @@
 package org.wooriverygood.api.post.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.wooriverygood.api.post.dto.NewPostRequest;
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.service.PostService;
 
@@ -31,5 +30,11 @@ public class PostController {
     public ResponseEntity<PostResponse> findPostById(@PathVariable("id") Long postId) {
         PostResponse postResponse = postService.findPostById(postId);
         return ResponseEntity.ok().body(postResponse);
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> addPost(@RequestBody NewPostRequest newPostRequest) {
+        postService.addPost(newPostRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
