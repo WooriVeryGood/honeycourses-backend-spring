@@ -7,6 +7,8 @@ import org.wooriverygood.api.post.dto.NewPostRequest;
 import org.wooriverygood.api.post.dto.NewPostResponse;
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.service.PostService;
+import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.support.Login;
 
 import java.util.List;
 
@@ -34,8 +36,9 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<NewPostResponse> addPost(@RequestBody NewPostRequest newPostRequest) {
-        NewPostResponse response = postService.addPost(newPostRequest);
+    public ResponseEntity<NewPostResponse> addPost(@Login AuthInfo authInfo,
+                                                   @RequestBody NewPostRequest newPostRequest) {
+        NewPostResponse response = postService.addPost(authInfo, newPostRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
