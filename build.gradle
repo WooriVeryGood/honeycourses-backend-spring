@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"  // .adoc 파일 생성을 위한 플러그인
 }
 
 group = 'org.wooriverygood'
@@ -10,6 +11,14 @@ sourceCompatibility = '17'
 
 repositories {
     mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))  // snippetsDir : 테스트 실행시 생성되는 응답을 저장할 디렉토리 지정
+}
+
+configurations {
+    asciidoctorExtensions  // asciidoctorExtensions : Asciidoctor의 확장 기능을 사용하기 위한 설정
 }
 
 dependencies {
@@ -31,8 +40,44 @@ dependencies {
     testImplementation 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // rest docs 의존성 추가
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    // asciidoctor 의존성 추가 configration에서 지정한 의존 설정을 사용
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
 test {
     useJUnitPlatform()
+}
+
+// test 할 때 snippetsDir에 생성된 응답을 asciidoctor로 변환하여 .adoc 파일 생성
+tasks.named('test') {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+// asciidoctor를 사용하기 위해서 asciidoctor task에 asciidoctorExtensions 설정
+tasks.named('asciidoctor') {
+    configurations "asciidoctorExtensions"
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+// asciidoctor task 실행시 생성된 html 파일을 src/main/resources/static/docs 디렉토리에 카피
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("${asciidoctor.outputDir}")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument  // 빌드되기전 copyDocument task 실행
+}
+
+bootJar {
+    dependsOn copyDocument    // bootJar 실행되기전 copyDocument task 실행
+    from ("${asciidoctor.outputDir}") {  // bootJar에 asciidoctor task에서 생성된 html 파일 추가
+        into 'static/docs'     // bootJar에 추가될 경로
+    }
 }
