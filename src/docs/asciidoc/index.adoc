@@ -1,0 +1,22 @@
+= 답변 받았습니다! API 명세
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:sectnums:
+:docinfo: shared-head
+
+== 게시글 관리
+
+=== 특정 게시글 보기
+==== 성공
+operation::post/find/one/success[snippets='http-request,http-response']
+
+=== 게시글 작성하기
+==== 성공
+operation::post/create/success[snippets='http-request,http-response']
+==== 실패
+===== 제목에 내용이 없는 경우
+operation::post/create/fail/noTitle[snippets='http-request,http-response']

@@ -1,5 +1,6 @@
 package org.wooriverygood.api.post.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<NewPostResponse> addPost(@Login AuthInfo authInfo,
-                                                   @RequestBody NewPostRequest newPostRequest) {
+                                                   @Valid @RequestBody NewPostRequest newPostRequest) {
         NewPostResponse response = postService.addPost(authInfo, newPostRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
