@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.comment.dto.CommentResponse;
 import org.wooriverygood.api.course.dto.CourseResponse;
+import org.wooriverygood.api.course.dto.NewCourseRequest;
+import org.wooriverygood.api.course.dto.NewCourseResponse;
 import org.wooriverygood.api.util.ControllerTest;
 
 import java.util.ArrayList;
@@ -44,5 +46,26 @@ public class CourseControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("courses/find/success"))
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("새로운 수업을 성공적으로 등록한다.")
+    public void addCourse() {
+        NewCourseRequest request = NewCourseRequest.builder()
+                .course_name("테스트 강의")
+                .course_category("전공")
+                .course_credit(5)
+                .kaikeYuanxi("씬커")
+                .isYouguan(0)
+                .build();
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().post("/courses")
+                .then().log().all()
+                .apply(document("courses/create/success"))
+                .statusCode(HttpStatus.CREATED.value());
     }
 }

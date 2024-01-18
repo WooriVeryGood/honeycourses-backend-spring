@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.dto.CourseResponse;
+import org.wooriverygood.api.course.dto.NewCourseRequest;
+import org.wooriverygood.api.course.dto.NewCourseResponse;
 import org.wooriverygood.api.course.repository.CourseRepository;
 
 import java.util.List;
@@ -18,4 +20,33 @@ public class CourseService {
     public List<CourseResponse> findAll() {
         return courseRepository.findAll().stream().map(CourseResponse::from).toList();
     }
+
+    @Transactional
+    public NewCourseResponse addCourse(NewCourseRequest newCourseRequest) {
+        Courses course = createCourse(newCourseRequest);
+        Courses saved = courseRepository.save(course);
+        return createResponse(saved);
+    }
+
+    private Courses createCourse(NewCourseRequest newCourseRequest) {
+        return Courses.builder()
+                .course_name(newCourseRequest.getCourse_name())
+                .course_category(newCourseRequest.getCourse_category())
+                .course_credit(newCourseRequest.getCourse_credit())
+                .isYouguan(newCourseRequest.getIsYouguan())
+                .kaikeYuanxi(newCourseRequest.getKaikeYuanxi())
+                .build();
+    }
+
+    private NewCourseResponse createResponse(Courses course) {
+        return NewCourseResponse.builder()
+                .course_id(course.getId())
+                .course_name(course.getCourse_name())
+                .course_category(course.getCourse_category())
+                .course_credit(course.getCourse_credit())
+                .isYouguan(course.getIsYouguan())
+                .kaikeYuanxi(course.getKaikeYuanxi())
+                .build();
+    }
+
 }

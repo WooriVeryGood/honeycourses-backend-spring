@@ -4,7 +4,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,12 +23,12 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class ReviewServiceTest {
-    @Autowired
+    @InjectMocks
     private ReviewService reviewService;
 
-    @MockBean
+    @Mock
     private ReviewRepository reviewRepository;
 
     private final int REVIEW_COUNT = 10;

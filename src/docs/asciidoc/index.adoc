@@ -14,6 +14,10 @@
 ==== 성공
 operation::courses/find/success[snippets='http-request,http-response']
 
+=== 강의 추가하기 (POST /courses)
+==== 성공
+operation::courses/create/success[snippets='http-request,http-response']
+
 == 리뷰 관리
 === 특정 강의의 리뷰 보기 (GET /courses/{id}/reviews)
 ==== 성공
