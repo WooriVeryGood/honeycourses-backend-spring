@@ -7,9 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.post.dto.NewPostRequest;
 import org.wooriverygood.api.post.dto.PostResponse;
+import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -30,7 +33,7 @@ class PostControllerTest extends ControllerTest {
                 .post_time(LocalDateTime.now())
                 .build();
 
-        Mockito.when(postService.findPostById(any(Long.class)))
+        Mockito.when(postService.findPostById(any(Long.class), any(AuthInfo.class)))
                         .thenReturn(response);
 
         restDocs
@@ -77,5 +80,34 @@ class PostControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("post/create/fail/noTitle"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("사용자 본인이 작성한 게시글을 불러온다.")
+    void findMyPosts() {
+        List<PostResponse> responses = new ArrayList<>();
+        for (int i = 1; i < 11; i++) {
+            responses.add(PostResponse.builder()
+                    .post_id(1L)
+                    .post_title("title")
+                    .post_category("자유")
+                    .post_content("content")
+                    .post_comments(0)
+                    .post_likes(0)
+                    .post_time(LocalDateTime.now())
+                    .isMine(true)
+                    .build());
+        }
+
+        Mockito.when(postService.findMyPosts(any(AuthInfo.class)))
+                .thenReturn(responses);
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/community/me")
+                .then().log().all()
+                .apply(document("post/find/me/success"))
+                .statusCode(HttpStatus.OK.value());
     }
 }

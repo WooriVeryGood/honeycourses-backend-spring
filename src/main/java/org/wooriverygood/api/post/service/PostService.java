@@ -24,16 +24,23 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<PostResponse> findAllPosts() {
+    public List<PostResponse> findAllPosts(AuthInfo authInfo) {
         List<Post> posts = postRepository.findAll();
-        return posts.stream().map(PostResponse::from).toList();
+
+        if (authInfo.getUsername() == null)
+            return posts.stream()
+                    .map(post -> PostResponse.from(post, false))
+                    .toList();
+        return posts.stream()
+                .map(post -> PostResponse.from(post, post.isSameAuthor(authInfo.getUsername())))
+                .toList();
     }
 
-    public PostResponse findPostById(Long postId) {
+    public PostResponse findPostById(Long postId, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        return PostResponse.from(post);
+        return PostResponse.from(post, post.isSameAuthor(authInfo.getUsername()));
     }
 
     @Transactional
@@ -59,5 +66,10 @@ public class PostService {
                 .category(post.getCategory().getValue())
                 .author(post.getAuthor())
                 .build();
+    }
+
+    public List<PostResponse> findMyPosts(AuthInfo authInfo) {
+        List<Post> posts = postRepository.findByAuthor(authInfo.getUsername());
+        return posts.stream().map(post -> PostResponse.from(post, true)).toList();
     }
 }

@@ -58,4 +58,8 @@ public class Post {
         this.postLikes = postLikes;
     }
 
+    public boolean isSameAuthor(String author) {
+        return this.author.equals(author);
+    }
+
 }
