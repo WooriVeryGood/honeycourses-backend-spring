@@ -21,7 +21,6 @@ public class CourseService {
         return courseRepository.findAll().stream().map(CourseResponse::from).toList();
     }
 
-    @Transactional
     public NewCourseResponse addCourse(NewCourseRequest newCourseRequest) {
         Courses course = createCourse(newCourseRequest);
         Courses saved = courseRepository.save(course);
