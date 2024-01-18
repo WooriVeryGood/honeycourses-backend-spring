@@ -11,6 +11,8 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.wooriverygood.api.comment.controller.CommentController;
+import org.wooriverygood.api.comment.service.CommentService;
 import org.wooriverygood.api.post.controller.PostController;
 import org.wooriverygood.api.post.service.PostService;
 import org.wooriverygood.api.support.AuthenticationPrincipalArgumentResolver;
@@ -23,6 +25,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest({
+        CommentController.class,
         PostController.class
 })
 @WithMockUser
@@ -30,6 +33,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class ControllerTest {
 
     protected MockMvcRequestSpecification restDocs;
+
+    @MockBean
+    protected CommentService commentService;
 
     @MockBean
     protected PostService postService;

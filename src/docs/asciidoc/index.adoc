@@ -20,3 +20,13 @@ operation::post/create/success[snippets='http-request,http-response']
 ==== 실패
 ===== 제목에 내용이 없는 경우
 operation::post/create/fail/noTitle[snippets='http-request,http-response']
+
+== 댓글 관리
+
+=== 특정 게시글의 댓글 보기
+==== 성공
+operation::comments/find/success[snippets='http-request,http-response']
+
+=== 특정 게시글의 댓글 작성하기
+==== 성공
+operation::comments/create/success[snippets='http-request,http-response']

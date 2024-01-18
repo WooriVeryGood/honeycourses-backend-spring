@@ -10,6 +10,7 @@ import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.exception.PostNotFoundException;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.repository.PostRepository;
+import org.wooriverygood.api.support.AuthInfo;
 
 import java.util.List;
 
@@ -32,13 +33,13 @@ public class CommentService {
     }
 
     @Transactional
-    public NewCommentResponse addComment(Long postId, NewCommentRequest newCommentRequest) {
+    public NewCommentResponse addComment(AuthInfo authInfo, Long postId, NewCommentRequest newCommentRequest) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
         Comment comment = Comment.builder()
                 .content(newCommentRequest.getContent())
-                .author(newCommentRequest.getEmail())
+                .author(authInfo.getUsername())
                 .post(post)
                 .build();
         Comment saved = commentRepository.save(comment);
