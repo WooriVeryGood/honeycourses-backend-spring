@@ -1,6 +1,5 @@
 package org.wooriverygood.api.review.controller;
 
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,7 @@ public class ReviewController {
 
     @GetMapping("/courses/{id}/reviews")
     public ResponseEntity<List<ReviewResponse>> findAllReviewsByCourseId(@PathVariable("id") int courseId) {
-        List<ReviewResponse> reviews = reviewService.findAllByCourseId(courseId);
+        List<ReviewResponse> reviews = reviewService.findAllReviewsByCourseId(courseId);
         return ResponseEntity.ok(reviews);
     }
 }

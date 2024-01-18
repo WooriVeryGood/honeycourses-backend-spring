@@ -1,13 +1,11 @@
 package org.wooriverygood.api.review.controller;
 
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.util.ControllerTest;
 
@@ -38,7 +36,7 @@ public class ReviewControllerTest extends ControllerTest {
     @Test
     @DisplayName("특정 강의의 리뷰 조회 요청을 받으면 리뷰들을 반환한다.")
     void findAllReviewsByCourseId() {
-        Mockito.when(reviewService.findAllByCourseId(anyInt()))
+        Mockito.when(reviewService.findAllReviewsByCourseId(anyInt()))
                 .thenReturn(responses);
 
         restDocs

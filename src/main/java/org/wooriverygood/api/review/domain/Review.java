@@ -13,6 +13,7 @@ import org.wooriverygood.api.course.domain.Courses;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_id")
     private int id;
 
     @ManyToOne
