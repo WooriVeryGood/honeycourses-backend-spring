@@ -16,11 +16,8 @@ public class CourseController {
 
     @GetMapping("/courses")
     public ResponseEntity<List<CourseResponse>> findAllCourses() {
-        List<CourseResponse>courses = courseService.findAll()
-                .stream()
-                .map(CourseResponse::new)
-                .toList();
-        return ResponseEntity.ok().body(courses);
+        List<CourseResponse>responses = courseService.findAll();
+        return ResponseEntity.ok(responses);
     }
 
 

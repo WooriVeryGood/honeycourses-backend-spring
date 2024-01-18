@@ -4,6 +4,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -13,8 +14,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wooriverygood.api.comment.controller.CommentController;
 import org.wooriverygood.api.comment.service.CommentService;
+import org.wooriverygood.api.course.controller.CourseController;
+import org.wooriverygood.api.course.service.CourseService;
 import org.wooriverygood.api.post.controller.PostController;
 import org.wooriverygood.api.post.service.PostService;
+import org.wooriverygood.api.review.controller.ReviewController;
+import org.wooriverygood.api.review.service.ReviewService;
 import org.wooriverygood.api.support.AuthenticationPrincipalArgumentResolver;
 
 
@@ -26,13 +31,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @WebMvcTest({
         CommentController.class,
-        PostController.class
+        PostController.class,
+        CourseController.class,
+        ReviewController.class
 })
 @WithMockUser
 @ExtendWith(RestDocumentationExtension.class)
 public class ControllerTest {
 
     protected MockMvcRequestSpecification restDocs;
+
+    @MockBean
+    protected CourseService courseService;
+
+    @MockBean
+    protected ReviewService reviewService;
 
     @MockBean
     protected CommentService commentService;
