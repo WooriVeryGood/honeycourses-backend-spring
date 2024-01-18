@@ -9,9 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.dto.ReviewResponse;
@@ -66,7 +63,7 @@ public class ReviewServiceTest {
         Mockito.when(reviewRepository.findAllByCourseId(anyInt()))
                 .thenReturn(reviews);
 
-        List<ReviewResponse> responses = reviewService.findAllByCourseId(2);
+        List<ReviewResponse> responses = reviewService.findAllReviewsByCourseId(2);
 
         Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
         Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");

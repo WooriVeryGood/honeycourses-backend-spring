@@ -15,8 +15,9 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
 
-    public List<ReviewResponse> findAllByCourseId(int courseId) {
-        return reviewRepository.findAllByCourseId(courseId).stream().map(ReviewResponse::from).toList();
+    public List<ReviewResponse> findAllReviewsByCourseId(int courseId) {
+        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
+        return reviews.stream().map(ReviewResponse::from).toList();
     }
 
 
