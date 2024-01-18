@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.domain.Review;
+import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 
 import java.util.ArrayList;
@@ -61,10 +62,10 @@ public class ReviewServiceTest {
         Mockito.when(reviewRepository.findAllByCourseId(anyInt()))
                 .thenReturn(reviews);
 
-        List<Review> responses = reviewService.findAllByCourseId(2);
+        List<ReviewResponse> responses = reviewService.findAllByCourseId(2);
 
         Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
-        Assertions.assertThat(responses.get(0).getReviewTitle()).isEqualTo("review0");
+        Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");
 
     }
 

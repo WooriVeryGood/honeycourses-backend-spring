@@ -8,6 +8,18 @@
 :sectnums:
 :docinfo: shared-head
 
+== 강의 관리
+
+=== 모든 강의 조회 (GET /courses)
+==== 성공
+operation::courses/find/success[snippets='http-request,http-response']
+
+== 리뷰 관리
+=== 특정 강의의 리뷰 보기 (GET /courses/{id}/reviews)
+==== 성공
+operation::reviews/find/success[snippets='http-request,http-response']
+
+
 == 게시글 관리
 
 === 특정 게시글 보기

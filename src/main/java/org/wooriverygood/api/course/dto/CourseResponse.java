@@ -14,12 +14,23 @@ public class CourseResponse {
     private final String kaikeYuanxi;
 
     @Builder
-    public CourseResponse(Courses course) {
-        this.course_id = course.getId();
-        this.course_category = course.getCourse_category();
-        this.course_credit = course.getCourse_credit();
-        this.course_name = course.getCourse_name();
-        this.isYouguan = course.getIsYouguan();
-        this.kaikeYuanxi = course.getKaikeYuanxi();
+    public CourseResponse(int course_id, String course_category, int course_credit, String course_name, int isYouguan, String kaikeYuanxi) {
+        this.course_id = course_id;
+        this.course_category = course_category;
+        this.course_credit = course_credit;
+        this.course_name = course_name;
+        this.isYouguan = isYouguan;
+        this.kaikeYuanxi = kaikeYuanxi;
+    }
+
+    public static CourseResponse from(Courses course) {
+        return CourseResponse.builder()
+                .course_id(course.getId())
+                .course_category(course.getCourse_category())
+                .course_credit(course.getCourse_credit())
+                .course_name(course.getCourse_name())
+                .isYouguan(course.getIsYouguan())
+                .kaikeYuanxi(course.getKaikeYuanxi())
+                .build();
     }
 }
