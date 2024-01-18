@@ -1,11 +1,14 @@
 package org.wooriverygood.api.post.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "postLikes")
 @Getter
+@NoArgsConstructor
 public class PostLike {
 
     @Id
@@ -16,7 +19,17 @@ public class PostLike {
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
-    @Column(name = "member_id")
-    private String member;
+    @Column(name = "username")
+    private String username;
 
+
+    @Builder
+    public PostLike(Long id, Post post, String username) {
+        this.id = id;
+        this.post = post;
+        this.username = username;
+    }
+    public void delete() {
+        this.post = null;
+    }
 }

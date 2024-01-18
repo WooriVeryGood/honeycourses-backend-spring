@@ -22,23 +22,36 @@ operation::reviews/find/success[snippets='http-request,http-response']
 
 == 게시글 관리
 
-=== 특정 게시글 보기
+== 모든 게시글 보기 (GET /community)
+=== 성공
+operation::post/find/all/success[snippets='http-request,http-response']
+
+=== 특정 게시글 보기 (GET /community/{id})
 ==== 성공
 operation::post/find/one/success[snippets='http-request,http-response']
 
-=== 게시글 작성하기
+=== 게시글 작성하기 (POST /community)
 ==== 성공
 operation::post/create/success[snippets='http-request,http-response']
 ==== 실패
 ===== 제목에 내용이 없는 경우
 operation::post/create/fail/noTitle[snippets='http-request,http-response']
 
+=== 내 게시글 보기 (GET /community/me)
+==== 성공
+operation::post/find/me/success[snippets='http-request,http-response']
+
+=== 게시글 좋아요 (PUT /community/{id}/like)
+==== 성공
+operation::post/like/success[snippets='http-request,http-response']
+
+
 == 댓글 관리
 
-=== 특정 게시글의 댓글 보기
+=== 특정 게시글의 댓글 보기 (GET /community/{id}/comments)
 ==== 성공
 operation::comments/find/success[snippets='http-request,http-response']
 
-=== 특정 게시글의 댓글 작성하기
+=== 특정 게시글의 댓글 작성하기 (POST /community/{id}/comments)
 ==== 성공
 operation::comments/create/success[snippets='http-request,http-response']

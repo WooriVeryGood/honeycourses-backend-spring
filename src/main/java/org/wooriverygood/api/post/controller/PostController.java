@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.wooriverygood.api.post.dto.NewPostRequest;
 import org.wooriverygood.api.post.dto.NewPostResponse;
+import org.wooriverygood.api.post.dto.PostLikeResponse;
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.service.PostService;
 import org.wooriverygood.api.support.AuthInfo;
@@ -48,5 +49,12 @@ public class PostController {
     public ResponseEntity<List<PostResponse>> findMyPosts(@Login AuthInfo authInfo) {
         List<PostResponse> postResponses = postService.findMyPosts(authInfo);
         return ResponseEntity.ok().body(postResponses);
+    }
+
+    @PutMapping("/{id}/like")
+    public ResponseEntity<PostLikeResponse> likePost(@PathVariable("id") Long postId,
+                                                     @Login AuthInfo authInfo) {
+        PostLikeResponse response = postService.likePost(postId, authInfo);
+        return ResponseEntity.ok().body(response);
     }
 }
