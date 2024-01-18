@@ -1,0 +1,61 @@
+= 답변 받았습니다! API 명세
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:sectnums:
+:docinfo: shared-head
+
+== 강의 관리
+
+=== 모든 강의 조회 (GET /courses)
+==== 성공
+operation::courses/find/success[snippets='http-request,http-response']
+
+=== 강의 추가하기 (POST /courses)
+==== 성공
+operation::courses/create/success[snippets='http-request,http-response']
+
+== 리뷰 관리
+=== 특정 강의의 리뷰 보기 (GET /courses/{id}/reviews)
+==== 성공
+operation::reviews/find/success[snippets='http-request,http-response']
+
+
+== 게시글 관리
+
+== 모든 게시글 보기 (GET /community)
+=== 성공
+operation::post/find/all/success[snippets='http-request,http-response']
+
+=== 특정 게시글 보기 (GET /community/{id})
+==== 성공
+operation::post/find/one/success[snippets='http-request,http-response']
+
+=== 게시글 작성하기 (POST /community)
+==== 성공
+operation::post/create/success[snippets='http-request,http-response']
+==== 실패
+===== 제목에 내용이 없는 경우
+operation::post/create/fail/noTitle[snippets='http-request,http-response']
+
+=== 내 게시글 보기 (GET /community/me)
+==== 성공
+operation::post/find/me/success[snippets='http-request,http-response']
+
+=== 게시글 좋아요 (PUT /community/{id}/like)
+==== 성공
+operation::post/like/success[snippets='http-request,http-response']
+
+
+== 댓글 관리
+
+=== 특정 게시글의 댓글 보기 (GET /community/{id}/comments)
+==== 성공
+operation::comments/find/success[snippets='http-request,http-response']
+
+=== 특정 게시글의 댓글 작성하기 (POST /community/{id}/comments)
+==== 성공
+operation::comments/create/success[snippets='http-request,http-response']

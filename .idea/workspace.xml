@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-68] 게시글 및 댓글에 작성자 필드 추가">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/like/controller/LikeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/like/service/PostLikeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostLike.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음.">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +20,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -38,6 +36,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="JUnit5 Test Class" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -63,6 +62,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -74,49 +76,171 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build honeycourses-backend-spring.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.HoneycoursesBackend.executor&quot;: &quot;Debug&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;HC-68--GET-community&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build honeycourses-backend-spring.executor": "Run",
+    "Gradle.CommentControllerTest.addComment.executor": "Run",
+    "Gradle.CommentControllerTest.executor": "Run",
+    "Gradle.CommentControllerTest.findAllCommentsByPostId.executor": "Run",
+    "Gradle.CommentServiceTest.executor": "Run",
+    "Gradle.CourseServiceTest.executor": "Debug",
+    "Gradle.PostControllerTest.addPost.executor": "Run",
+    "Gradle.PostControllerTest.addPost_exception_noTitle.executor": "Run",
+    "Gradle.PostControllerTest.executor": "Run",
+    "Gradle.PostControllerTest.findPost.executor": "Run",
+    "Gradle.PostControllerTest.likePost_up.executor": "Run",
+    "Gradle.PostServiceTest.executor": "Run",
+    "Gradle.PostServiceTest.likePost.executor": "Run",
+    "Gradle.PostServiceTest.likePost_down.executor": "Run",
+    "Gradle.PostServiceTest.likePost_up.executor": "Debug",
+    "Notification.DisplayName-DoNotAsk-Lombok plugin": "Lombok integration problem",
+    "Notification.DoNotAsk-Lombok plugin": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Shell Script.gradlew.executor": "Run",
+    "Spring Boot.HoneycoursesBackend.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "create.test.in.the.same.root": "true",
+    "git-widget-placeholder": "HC-74--comunity-like",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.post.dto" />
+      <recent name="org.wooriverygood.api.post.repository" />
       <recent name="org.wooriverygood.api.comment.dto" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.comment.controller" />
+      <recent name="org.wooriverygood.api.post.controller" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.PostServiceTest.likePost_up">
+    <configuration name="PostControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="PostControllerTest.likePost_up" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest.likePost_up&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="PostServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="PostServiceTest.likePost_up" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.likePost_up&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="jbr-17" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <module name="honeycourses-backend-spring.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
       <extension name="coverage">
@@ -131,7 +255,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.PostServiceTest.likePost_up" />
         <item itemvalue="Spring Boot.HoneycoursesBackend" />
+        <item itemvalue="Gradle.PostServiceTest" />
+        <item itemvalue="Gradle.PostControllerTest" />
+        <item itemvalue="Gradle.PostControllerTest.likePost_up" />
       </list>
     </recent_temporary>
   </component>
@@ -236,7 +364,87 @@
       <option name="project" value="LOCAL" />
       <updated>1705331345722</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="[HC-92] PostResponse에서 작성자 필드(post_author) 삭제">
+      <option name="closed" value="true" />
+      <created>1705391336393</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1705391336393</updated>
+    </task>
+    <task id="LOCAL-00012" summary="[HC-69] 게시글 생성 기능 구현">
+      <option name="closed" value="true" />
+      <created>1705414484928</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705414484928</updated>
+    </task>
+    <task id="LOCAL-00013" summary="[HC-72] 댓글 생성 기능 구현&#10;&#10;- PostService 및 CommentService 에 있는 글 및 댓글 생성 메서드 관련 테스트 코드 추가">
+      <option name="closed" value="true" />
+      <created>1705419025556</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1705419025556</updated>
+    </task>
+    <task id="LOCAL-00014" summary="[HC-72] 댓글 생성 엔드포인트 경로 수정">
+      <option name="closed" value="true" />
+      <created>1705420386875</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1705420386875</updated>
+    </task>
+    <task id="LOCAL-00015" summary="[HC-93] Spring Security 활용 유저 로그인 정보 추출&#10;&#10; Spring Security 를 활용해서 요청 헤더에 토큰으로 요청마다 인증 처리를 진행합니다.&#10; &#10; 유효한 access token 이라면, AuthenticationPrincipalArgumentResolver 에서 인증된 유저의 Authentication 을 가져와 필요한 유저 로그인 정보(AuthInfo)로 변환합니다.&#10; &#10; 컨트롤러는 메서드의 패러미터로 `@Login AuthInfo authInfo` 로 정보를 받을 수 있습니다.&#10; &#10; 예시:&#10; &#10; ```java&#10; @GetMapping&#10; public void testMethod(@Login AuthInfo authInfo) {&#10;     String sub = authInfo.sub;&#10;     String username = authInfo.username&#10; }&#10; ```&#10; &#10; sub와 username은 모두 같은 값을 가지고 있지만, 일단 둘 다 값을 가지도록 하였습니다.">
+      <option name="closed" value="true" />
+      <created>1705502528487</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1705502528487</updated>
+    </task>
+    <task id="LOCAL-00016" summary="[HC-69] 게시글 생성 엔드 포인트 RequestBody 수정&#10;&#10;기존 RequestBody에서는 post_author로 유저의 정보를 가져왔지만, 이제 AuthInfo로 가져온 유저의 메일로 게시글의 작성자를 설정합니다.&#10;&#10;PostService 테스트 코드도 수정했습니다.">
+      <option name="closed" value="true" />
+      <created>1705504718449</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1705504718449</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Spring Rest Docs 의존성 추가">
+      <option name="closed" value="true" />
+      <created>1705514533566</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1705514533566</updated>
+    </task>
+    <task id="LOCAL-00018" summary="[HC-72] 특정 게시글의 댓글 작성 엔드 포인트 수정&#10;&#10;NewCommentRequest에 있는 유저 정보 필드를 삭제했습니다.">
+      <option name="closed" value="true" />
+      <created>1705579777591</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1705579777591</updated>
+    </task>
+    <task id="LOCAL-00019" summary="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정.">
+      <option name="closed" value="true" />
+      <created>1705584844855</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1705584844855</updated>
+    </task>
+    <task id="LOCAL-00020" summary="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음.">
+      <option name="closed" value="true" />
+      <created>1705593943582</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1705593943582</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,6 +472,16 @@
     <MESSAGE value="[HC-68] 댓글 조회 기능 구현" />
     <MESSAGE value="[HC-68] 게시글 조회 응답 객체에 댓글 개수 추가" />
     <MESSAGE value="[HC-68] 게시글 및 댓글에 작성자 필드 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-68] 게시글 및 댓글에 작성자 필드 추가" />
+    <MESSAGE value="[HC-92] PostResponse에서 작성자 필드(post_author) 삭제" />
+    <MESSAGE value="[HC-69] 게시글 생성 기능 구현" />
+    <MESSAGE value="[HC-72] 댓글 생성 기능 구현&#10;&#10;- PostService 및 CommentService 에 있는 글 및 댓글 생성 메서드 관련 테스트 코드 추가" />
+    <MESSAGE value="[HC-72] 댓글 생성 엔드포인트 경로 수정" />
+    <MESSAGE value="[HC-93] Spring Security 활용 유저 로그인 정보 추출&#10;&#10; Spring Security 를 활용해서 요청 헤더에 토큰으로 요청마다 인증 처리를 진행합니다.&#10; &#10; 유효한 access token 이라면, AuthenticationPrincipalArgumentResolver 에서 인증된 유저의 Authentication 을 가져와 필요한 유저 로그인 정보(AuthInfo)로 변환합니다.&#10; &#10; 컨트롤러는 메서드의 패러미터로 `@Login AuthInfo authInfo` 로 정보를 받을 수 있습니다.&#10; &#10; 예시:&#10; &#10; ```java&#10; @GetMapping&#10; public void testMethod(@Login AuthInfo authInfo) {&#10;     String sub = authInfo.sub;&#10;     String username = authInfo.username&#10; }&#10; ```&#10; &#10; sub와 username은 모두 같은 값을 가지고 있지만, 일단 둘 다 값을 가지도록 하였습니다." />
+    <MESSAGE value="[HC-69] 게시글 생성 엔드 포인트 RequestBody 수정&#10;&#10;기존 RequestBody에서는 post_author로 유저의 정보를 가져왔지만, 이제 AuthInfo로 가져온 유저의 메일로 게시글의 작성자를 설정합니다.&#10;&#10;PostService 테스트 코드도 수정했습니다." />
+    <MESSAGE value="Spring Rest Docs 의존성 추가" />
+    <MESSAGE value="[HC-72] 특정 게시글의 댓글 작성 엔드 포인트 수정&#10;&#10;NewCommentRequest에 있는 유저 정보 필드를 삭제했습니다." />
+    <MESSAGE value="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정." />
+    <MESSAGE value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
   </component>
 </project>

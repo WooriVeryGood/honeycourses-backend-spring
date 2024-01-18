@@ -20,10 +20,7 @@ public class ReviewController {
 
     @GetMapping("/courses/{id}/reviews")
     public ResponseEntity<List<ReviewResponse>> findAllReviewsByCourseId(@PathVariable("id") int courseId) {
-        List<ReviewResponse> reviews = reviewService.findAllByCourseId(courseId)
-                .stream()
-                .map(ReviewResponse::new)
-                .toList();
-        return ResponseEntity.ok().body(reviews);
+        List<ReviewResponse> reviews = reviewService.findAllByCourseId(courseId);
+        return ResponseEntity.ok(reviews);
     }
 }

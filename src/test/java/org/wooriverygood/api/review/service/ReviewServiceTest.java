@@ -4,12 +4,17 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.domain.Review;
+import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 
 import java.util.ArrayList;
@@ -18,12 +23,12 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class ReviewServiceTest {
-    @Autowired
+    @InjectMocks
     private ReviewService reviewService;
 
-    @MockBean
+    @Mock
     private ReviewRepository reviewRepository;
 
     private final int REVIEW_COUNT = 10;
@@ -61,10 +66,10 @@ public class ReviewServiceTest {
         Mockito.when(reviewRepository.findAllByCourseId(anyInt()))
                 .thenReturn(reviews);
 
-        List<Review> responses = reviewService.findAllByCourseId(2);
+        List<ReviewResponse> responses = reviewService.findAllByCourseId(2);
 
         Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
-        Assertions.assertThat(responses.get(0).getReviewTitle()).isEqualTo("review0");
+        Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");
 
     }
 

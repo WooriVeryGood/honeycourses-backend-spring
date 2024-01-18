@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.wooriverygood.api.comment.domain.Comment;
@@ -39,8 +40,12 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> postLikes;
+
+    @Column(name = "like_count")
+    @ColumnDefault("0")
+    private int likeCount;
 
     @Column(name = "post_time")
     @CreatedDate
@@ -56,6 +61,19 @@ public class Post {
         this.author = author;
         this.comments = comments;
         this.postLikes = postLikes;
+    }
+
+    public boolean isSameAuthor(String author) {
+        return this.author.equals(author);
+    }
+
+    public void addPostLike(PostLike postLike) {
+        postLikes.add(postLike);
+    }
+
+    public void deletePostLike(PostLike postLike) {
+        postLikes.remove(postLike);
+        postLike.delete();
     }
 
 }
