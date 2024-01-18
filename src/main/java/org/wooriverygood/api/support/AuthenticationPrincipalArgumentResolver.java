@@ -17,16 +17,11 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        // SecurityContextHolder를 통해 현재 인증된 사용자의 Authentication을 가져옴
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Authentication 객체에서 Jwt를 추출
-        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
-            return createAuthInfo(jwt);
-        } else {
-            throw new RuntimeException("Jwt not found in the authentication context");
-        }
+        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) return createAuthInfo(jwt);
+        return AuthInfo.builder().build();
     }
 
     private AuthInfo createAuthInfo(Jwt jwt) {

@@ -60,7 +60,7 @@ class PostServiceTest {
                     .category(PostCategory.FREE)
                     .title("title" + i)
                     .content("content" + i)
-                    .author("author" + i)
+                    .author(authInfo.getUsername())
                     .comments(new ArrayList<>())
                     .postLikes(new ArrayList<>())
                     .build();
@@ -74,7 +74,7 @@ class PostServiceTest {
         Mockito.when(postRepository.findAll())
                 .thenReturn(posts);
 
-        List<PostResponse> responses = postService.findAllPosts();
+        List<PostResponse> responses = postService.findAllPosts(authInfo);
 
         Assertions.assertThat(responses.size()).isEqualTo(POST_COUNT);
     }
@@ -85,7 +85,7 @@ class PostServiceTest {
         Mockito.when(postRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(singlePost));
 
-        PostResponse response = postService.findPostById(6L);
+        PostResponse response = postService.findPostById(6L, authInfo);
 
         Assertions.assertThat(response).isNotNull();
     }
@@ -96,7 +96,7 @@ class PostServiceTest {
         Mockito.when(postRepository.findById(any()))
                 .thenThrow(PostNotFoundException.class);
 
-        Assertions.assertThatThrownBy(() -> { postService.findPostById(6L); })
+        Assertions.assertThatThrownBy(() -> postService.findPostById(6L, authInfo))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -122,6 +122,17 @@ class PostServiceTest {
         Assertions.assertThat(response.getTitle()).isEqualTo(newPostRequest.getPost_title());
         Assertions.assertThat(response.getCategory()).isEqualTo(newPostRequest.getPost_category());
         Assertions.assertThat(response.getAuthor()).isEqualTo(authInfo.getUsername());
+    }
+
+    @Test
+    @DisplayName("사용자 본인이 작성한 게시글을 불러온다.")
+    void findMyPosts() {
+        Mockito.when(postRepository.findByAuthor(any(String.class)))
+                .thenReturn(posts);
+
+        List<PostResponse> responses = postService.findMyPosts(authInfo);
+
+        Assertions.assertThat(responses.get(0).isMine()).isEqualTo(true);
     }
 
 }
