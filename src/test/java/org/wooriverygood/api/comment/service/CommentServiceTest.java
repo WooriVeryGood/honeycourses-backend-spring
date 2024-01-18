@@ -16,6 +16,7 @@ import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.repository.PostRepository;
+import org.wooriverygood.api.support.AuthInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,12 @@ class CommentServiceTest {
             .postLikes(new ArrayList<>())
             .build();
 
+    AuthInfo authInfo = AuthInfo.builder()
+            .sub("22222-34534-123")
+            .username("22222-34534-123")
+            .build();
+
+
     @BeforeEach
     void setUpPosts() {
         for (int i = 0; i < COMMENT_COUNT; i++) {
@@ -77,22 +84,21 @@ class CommentServiceTest {
     @DisplayName("특정 게시글의 댓글을 작성한다.")
     void addComment() {
         NewCommentRequest newCommentRequest = NewCommentRequest.builder()
-                .email("test@email.com")
                 .content("comment content")
                 .build();
 
         Mockito.when(commentRepository.save(any(Comment.class)))
                 .thenReturn(Comment.builder()
-                        .author(newCommentRequest.getEmail())
+                        .author(authInfo.getUsername())
                         .content(newCommentRequest.getContent())
                         .build());
 
         Mockito.when(postRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(singlePost));
 
-         NewCommentResponse response = commentService.addComment(1L, newCommentRequest);
+         NewCommentResponse response = commentService.addComment(authInfo, 1L, newCommentRequest);
 
-         Assertions.assertThat(response.getAuthor()).isEqualTo(newCommentRequest.getEmail());
+         Assertions.assertThat(response.getAuthor()).isEqualTo(authInfo.getUsername());
          Assertions.assertThat(response.getContent()).isEqualTo(newCommentRequest.getContent());
     }
 

@@ -1,5 +1,6 @@
 package org.wooriverygood.api.comment.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +8,8 @@ import org.wooriverygood.api.comment.dto.CommentResponse;
 import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewCommentResponse;
 import org.wooriverygood.api.comment.service.CommentService;
+import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.support.Login;
 
 import java.util.List;
 
@@ -27,8 +30,10 @@ public class CommentController {
     }
 
     @PostMapping("/community/{id}/comments")
-    public ResponseEntity<NewCommentResponse> addComment(@PathVariable("id") Long postId, @RequestBody NewCommentRequest newCommentRequest) {
-        NewCommentResponse response = commentService.addComment(postId, newCommentRequest);
+    public ResponseEntity<NewCommentResponse> addComment(@PathVariable("id") Long postId,
+                                                         @Login AuthInfo authInfo,
+                                                         @Valid @RequestBody NewCommentRequest newCommentRequest) {
+        NewCommentResponse response = commentService.addComment(authInfo, postId, newCommentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
