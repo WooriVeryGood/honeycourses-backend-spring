@@ -14,7 +14,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
@@ -39,7 +39,7 @@ public class Review {
     private String authorEmail;
 
     @Builder
-    public Review(int id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail) {
+    public Review(Long id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail) {
         this.id = id;
         this.course = course;
         this.reviewContent = reviewContent;

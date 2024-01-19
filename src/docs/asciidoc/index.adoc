@@ -23,11 +23,14 @@ operation::courses/create/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/find/success[snippets='http-request,http-response']
 
+=== 특정 강의의 리뷰 작성하기 (POST /courses/{id}/reviews)
+==== 성공
+operation::reviews/create/success[snippets='http-request,http-response']
 
 == 게시글 관리
 
-== 모든 게시글 보기 (GET /community)
-=== 성공
+=== 모든 게시글 보기 (GET /community)
+==== 성공
 operation::post/find/all/success[snippets='http-request,http-response']
 
 === 특정 게시글 보기 (GET /community/{id})

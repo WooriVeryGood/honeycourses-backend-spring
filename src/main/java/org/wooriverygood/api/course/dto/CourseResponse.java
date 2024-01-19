@@ -6,7 +6,7 @@ import org.wooriverygood.api.course.domain.Courses;
 
 @Getter
 public class CourseResponse {
-    private final int course_id;
+    private final Long course_id;
     private final String course_category;
     private final int course_credit;
     private final String course_name;
@@ -14,7 +14,7 @@ public class CourseResponse {
     private final String kaikeYuanxi;
 
     @Builder
-    public CourseResponse(int course_id, String course_category, int course_credit, String course_name, int isYouguan, String kaikeYuanxi) {
+    public CourseResponse(Long course_id, String course_category, int course_credit, String course_name, int isYouguan, String kaikeYuanxi) {
         this.course_id = course_id;
         this.course_category = course_category;
         this.course_credit = course_credit;
