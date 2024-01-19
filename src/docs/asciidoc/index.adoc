@@ -59,3 +59,7 @@ operation::comments/find/success[snippets='http-request,http-response']
 === 특정 게시글의 댓글 작성하기 (POST /community/{id}/comments)
 ==== 성공
 operation::comments/create/success[snippets='http-request,http-response']
+
+=== 댓글 좋아요 (PUT /community/comments/{id}/like)
+==== 성공
+operation::comments/like/success[snippets='http-request,http-response']

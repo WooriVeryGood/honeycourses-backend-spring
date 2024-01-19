@@ -150,7 +150,7 @@ class PostServiceTest {
 
         PostLikeResponse response = postService.likePost(singlePost.getId(), authInfo);
 
-        Assertions.assertThat(response.getLikeCount()).isEqualTo(singlePost.getLikeCount() + 1);
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singlePost.getLikeCount() + 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(true);
     }
 
@@ -169,7 +169,7 @@ class PostServiceTest {
 
         PostLikeResponse response = postService.likePost(singlePost.getId(), authInfo);
 
-        Assertions.assertThat(response.getLikeCount()).isEqualTo(singlePost.getLikeCount() - 1);
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singlePost.getLikeCount() - 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(false);
     }
 

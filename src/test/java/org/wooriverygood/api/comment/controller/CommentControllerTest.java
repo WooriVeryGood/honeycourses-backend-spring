@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.wooriverygood.api.comment.dto.CommentLikeResponse;
 import org.wooriverygood.api.comment.dto.CommentResponse;
 import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewCommentResponse;
@@ -93,6 +94,25 @@ class CommentControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("comments/create/success"))
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 좋아요를 1 올리거나 내린다.")
+    void likeComment() {
+        Mockito.when(commentService.likeComment(any(Long.class), any(AuthInfo.class)))
+                .thenReturn(CommentLikeResponse.builder()
+                        .like_count(5)
+                        .liked(false)
+                        .build());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().put("/community/comments/3/like")
+                .then().log().all()
+                .assertThat()
+                .apply(document("comments/like/success"))
+                .statusCode(HttpStatus.OK.value());
     }
 
 }

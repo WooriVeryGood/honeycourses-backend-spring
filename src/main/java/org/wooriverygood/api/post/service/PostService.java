@@ -115,7 +115,7 @@ public class PostService {
     private PostLikeResponse createPostLikeResponse(Post post, boolean liked) {
         int likeCount = post.getLikeCount() + (liked ? 1 : -1);
         return PostLikeResponse.builder()
-                .likeCount(likeCount)
+                .like_count(likeCount)
                 .liked(liked)
                 .build();
     }

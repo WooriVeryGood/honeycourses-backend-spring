@@ -10,9 +10,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.comment.domain.Comment;
+import org.wooriverygood.api.comment.domain.CommentLike;
+import org.wooriverygood.api.comment.dto.CommentLikeResponse;
 import org.wooriverygood.api.comment.dto.CommentResponse;
 import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewCommentResponse;
+import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
@@ -37,6 +40,9 @@ class CommentServiceTest {
     @Mock
     private PostRepository postRepository;
 
+    @Mock
+    private CommentLikeRepository commentLikeRepository;
+
     private final int COMMENT_COUNT = 10;
 
     List<Comment> comments = new ArrayList<>();
@@ -54,6 +60,14 @@ class CommentServiceTest {
     AuthInfo authInfo = AuthInfo.builder()
             .sub("22222-34534-123")
             .username("22222-34534-123")
+            .build();
+
+    Comment singleComment = Comment.builder()
+            .id(2L)
+            .post(singlePost)
+            .content("comment content")
+            .author(authInfo.getUsername())
+            .commentLikes(new ArrayList<>())
             .build();
 
 
@@ -101,6 +115,37 @@ class CommentServiceTest {
 
          Assertions.assertThat(response.getAuthor()).isEqualTo(authInfo.getUsername());
          Assertions.assertThat(response.getContent()).isEqualTo(newCommentRequest.getContent());
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 좋아요를 1 올린다.")
+    void likeComment_up() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        CommentLikeResponse response = commentService.likeComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singleComment.getLikeCount() + 1);
+        Assertions.assertThat(response.isLiked()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 좋아요를 1 내린다.")
+    void likeComment_down() {
+        CommentLike commentLike = CommentLike.builder()
+                .id(2L)
+                .comment(singleComment)
+                .username(authInfo.getUsername())
+                .build();
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+        Mockito.when(commentLikeRepository.findByCommentAndUsername(any(Comment.class), any(String.class)))
+                .thenReturn(Optional.ofNullable(commentLike));
+
+        CommentLikeResponse response = commentService.likeComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singleComment.getLikeCount() - 1);
+        Assertions.assertThat(response.isLiked()).isEqualTo(false);
     }
 
 }
