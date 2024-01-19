@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.wooriverygood.api.exception.InvalidPostCategoryException;
 import org.wooriverygood.api.exception.PostNotFoundException;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
@@ -76,8 +77,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("모든 게시글을 불러온다.")
-    void findAllPosts() {
+    @DisplayName("로그인 한 상황에서 모든 게시글을 불러온다.")
+    void findAllPosts_login() {
         Mockito.when(postRepository.findAll())
                 .thenReturn(posts);
 
@@ -98,8 +99,8 @@ class PostServiceTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 id를 이용하여 특정 게시글을 불러온다.")
-    void findPostByIdAndThrowException() {
+    @DisplayName("유효하지 않은 id를 이용하여 특정 게시글을 불러오면 에러를 반환한다.")
+    void findPostById_exception_invalidId() {
         Mockito.when(postRepository.findById(any()))
                 .thenThrow(PostNotFoundException.class);
 
@@ -129,6 +130,19 @@ class PostServiceTest {
         Assertions.assertThat(response.getTitle()).isEqualTo(newPostRequest.getPost_title());
         Assertions.assertThat(response.getCategory()).isEqualTo(newPostRequest.getPost_category());
         Assertions.assertThat(response.getAuthor()).isEqualTo(authInfo.getUsername());
+    }
+
+    @Test
+    @DisplayName("새로운 게시글의 카테고리가 유효하지 않으면 등록에 실패한다.")
+    void addPost_exception_invalid_category() {
+        NewPostRequest newPostRequest = NewPostRequest.builder()
+                .post_title("title")
+                .post_category("자유유")
+                .post_content("content")
+                .build();
+
+        Assertions.assertThatThrownBy(() -> postService.addPost(authInfo, newPostRequest))
+                        .isInstanceOf(InvalidPostCategoryException.class);
     }
 
     @Test

@@ -52,6 +52,7 @@ public class PostService {
 
     @Transactional
     public NewPostResponse addPost(AuthInfo authInfo, NewPostRequest newPostRequest) {
+        PostCategory.parse(newPostRequest.getPost_category());
         Post post = createPost(authInfo, newPostRequest);
         Post saved = postRepository.save(post);
         return createResponse(saved);

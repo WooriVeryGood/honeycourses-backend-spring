@@ -32,7 +32,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/community").permitAll() // 권한이 필요없는 엔드 포인트, 임시로 게시글만 허용
+                                .requestMatchers("/**").permitAll() // 권한이 필요없는 엔드 포인트, 임시로 게시글만 허용
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
                         httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
