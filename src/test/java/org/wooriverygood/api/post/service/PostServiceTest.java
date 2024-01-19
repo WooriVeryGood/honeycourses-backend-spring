@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.domain.PostLike;
@@ -37,6 +38,9 @@ class PostServiceTest {
 
     @Mock
     private PostLikeRepository postLikeRepository;
+
+    @Mock
+    private CommentRepository commentRepository;
 
     private final int POST_COUNT = 10;
 
