@@ -24,7 +24,7 @@ public class CourseControllerTest extends ControllerTest {
     void setUp() {
         for (int i = 0; i < 2; i++) {
             responses.add(CourseResponse.builder()
-                    .course_id(i)
+                    .course_id((long)i)
                     .course_category("Zhuanye")
                     .course_credit(5)
                     .course_name("Gaoshu"+i)

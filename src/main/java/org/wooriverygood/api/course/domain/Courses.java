@@ -13,7 +13,7 @@ public class Courses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
-    private int id;
+    private Long id;
 
     @Column(name = "course_category", nullable = false)
     private String course_category;
@@ -31,7 +31,7 @@ public class Courses {
     private String kaikeYuanxi;
 
     @Builder
-    public Courses(int id, String course_name, String course_category, int course_credit, int isYouguan, String kaikeYuanxi) {
+    public Courses(Long id, String course_name, String course_category, int course_credit, int isYouguan, String kaikeYuanxi) {
         this.id = id;
         this.course_name = course_name;
         this.course_category = course_category;

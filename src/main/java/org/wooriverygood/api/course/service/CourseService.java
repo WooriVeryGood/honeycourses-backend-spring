@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class CourseService {
     private final CourseRepository courseRepository;
 
@@ -21,6 +21,7 @@ public class CourseService {
         return courseRepository.findAll().stream().map(CourseResponse::from).toList();
     }
 
+    @Transactional
     public NewCourseResponse addCourse(NewCourseRequest newCourseRequest) {
         Courses course = createCourse(newCourseRequest);
         Courses saved = courseRepository.save(course);
