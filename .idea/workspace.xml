@@ -4,8 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음.">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/CommentLike.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentLikeResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentLikeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/CommentNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostLike.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostLike.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostLikeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostLikeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +52,8 @@
       <list>
         <option value="Enum" />
         <option value="JUnit5 Test Class" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -83,6 +98,7 @@
     "Gradle.CommentControllerTest.executor": "Run",
     "Gradle.CommentControllerTest.findAllCommentsByPostId.executor": "Run",
     "Gradle.CommentServiceTest.executor": "Run",
+    "Gradle.CommentServiceTest.likeComment_up.executor": "Run",
     "Gradle.CourseServiceTest.executor": "Debug",
     "Gradle.PostControllerTest.addPost.executor": "Run",
     "Gradle.PostControllerTest.addPost_exception_noTitle.executor": "Run",
@@ -108,7 +124,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "HC-74--comunity-like",
+    "git-widget-placeholder": "HC-75--comment-like",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -143,8 +159,8 @@
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.PostServiceTest.likePost_up">
-    <configuration name="PostControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.CommentControllerTest">
+    <configuration name="CommentControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -157,7 +173,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.controller.CommentControllerTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -168,7 +184,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostControllerTest.likePost_up" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -181,7 +197,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest.likePost_up&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -192,7 +208,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentServiceTest.likeComment_up" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -205,7 +221,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.likeComment_up&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -255,11 +271,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.PostServiceTest.likePost_up" />
+        <item itemvalue="Gradle.CommentControllerTest" />
+        <item itemvalue="Gradle.CommentServiceTest" />
+        <item itemvalue="Gradle.CommentServiceTest.likeComment_up" />
         <item itemvalue="Spring Boot.HoneycoursesBackend" />
-        <item itemvalue="Gradle.PostServiceTest" />
-        <item itemvalue="Gradle.PostControllerTest" />
-        <item itemvalue="Gradle.PostControllerTest.likePost_up" />
+        <item itemvalue="Gradle.PostServiceTest.likePost_up" />
       </list>
     </recent_temporary>
   </component>
@@ -444,7 +460,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705593943582</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정">
+      <option name="closed" value="true" />
+      <created>1705666207176</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1705666207176</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,6 +506,7 @@
     <MESSAGE value="[HC-72] 특정 게시글의 댓글 작성 엔드 포인트 수정&#10;&#10;NewCommentRequest에 있는 유저 정보 필드를 삭제했습니다." />
     <MESSAGE value="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정." />
     <MESSAGE value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
+    <MESSAGE value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
   </component>
 </project>

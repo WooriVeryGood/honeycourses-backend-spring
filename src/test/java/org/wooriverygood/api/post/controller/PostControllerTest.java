@@ -155,9 +155,12 @@ class PostControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("특정 게시글의 좋아요를 1 올리거나 내린다.")
-    void likePost_up() {
+    void likePost() {
         Mockito.when(postService.likePost(any(Long.class), any(AuthInfo.class)))
-                .thenReturn(PostLikeResponse.builder().build());
+                .thenReturn(PostLikeResponse.builder()
+                        .like_count(5)
+                        .liked(true)
+                        .build());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
