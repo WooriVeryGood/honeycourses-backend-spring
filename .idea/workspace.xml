@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요.">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,7 +113,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "HC-104-post-category-validation",
+    "git-widget-placeholder": "HC-86--community-update",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -502,6 +507,16 @@
     <MESSAGE value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
     <MESSAGE value="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
     <option name="LAST_COMMIT_MESSAGE" value="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.StackOverflowError" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$Tests_in__honeycourses_backend_spring_test_.ic" NAME="Tests in 'honeycourses-backend-spring.test' Coverage Results" MODIFIED="1705668873722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

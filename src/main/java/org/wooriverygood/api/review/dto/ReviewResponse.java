@@ -2,13 +2,12 @@ package org.wooriverygood.api.review.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.review.domain.Review;
 
 @Getter
 public class ReviewResponse {
-    private final int review_id;
-    private final int course_id;
+    private final Long review_id;
+    private final Long course_id;
     private final String review_content;
     private final String review_title;
     private final String instructor_name;
@@ -16,7 +15,7 @@ public class ReviewResponse {
     private final String grade;
 
     @Builder
-    public ReviewResponse(int review_id, int course_id, String review_content, String review_title, String instructor_name, String taken_semyr, String grade) {
+    public ReviewResponse(Long review_id, Long course_id, String review_content, String review_title, String instructor_name, String taken_semyr, String grade) {
         this.review_id = review_id;
         this.course_id = course_id;
         this.review_content = review_content;

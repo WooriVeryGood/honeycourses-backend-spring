@@ -23,11 +23,14 @@ operation::courses/create/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/find/success[snippets='http-request,http-response']
 
+=== 특정 강의의 리뷰 작성하기 (POST /courses/{id}/reviews)
+==== 성공
+operation::reviews/create/success[snippets='http-request,http-response']
 
 == 게시글 관리
 
-== 모든 게시글 보기 (GET /community)
-=== 성공
+=== 모든 게시글 보기 (GET /community)
+==== 성공
 operation::post/find/all/success[snippets='http-request,http-response']
 
 === 특정 게시글 보기 (GET /community/{id})
@@ -49,7 +52,7 @@ operation::post/find/me/success[snippets='http-request,http-response']
 ==== 성공
 operation::post/like/success[snippets='http-request,http-response']
 
-### 게시글 수정 (PUT /community/{id})
+=== 게시글 수정 (PUT /community/{id})
 ==== 성공
 operation::post/update/success[snippets='http-request,http-response']
 ==== 실패
@@ -58,6 +61,11 @@ operation::post/update/fail/noAuth[snippets='http-request,http-response']
 ===== 제목에 내용이 없는 경우
 operation::post/update/fail/noTitle[snippets='http-request,http-response']
 
+=== 게시글 삭제 (DELETE /community/{id})
+==== 성공
+operation::post/delete/success[snippets='http-request,http-response']
+==== 실패
+operation::post/delete/fail/noAuth[snippets='http-request,http-response']
 
 == 댓글 관리
 

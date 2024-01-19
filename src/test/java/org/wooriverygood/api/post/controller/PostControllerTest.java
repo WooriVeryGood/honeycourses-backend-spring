@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
 import org.wooriverygood.api.post.dto.*;
@@ -18,37 +17,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 
 class PostControllerTest extends ControllerTest {
 
-    private final int POST_RESPONSES_COUNT = 10;
-    private List<PostResponse> responses = new ArrayList<>();
+    List<PostResponse> responses = new ArrayList<>();
+
+    AuthInfo authInfo = AuthInfo.builder()
+            .sub("22222-34534-123")
+            .username("22222-34534-123")
+            .build();
 
 
     @BeforeEach
     void setUp() {
-        for (int i = 1; i < POST_RESPONSES_COUNT; i++) {
+        for (int i = 1; i <= 10; i++) {
             responses.add(PostResponse.builder()
                     .post_id((long) i)
                     .post_title("title" + i)
                     .post_category("자유")
                     .post_content("content" + i)
-                    .post_comments(2)
-                    .post_likes(3)
+                    .post_comments(10 + i)
+                    .post_likes(2 + i)
                     .post_time(LocalDateTime.now())
+                    .isMine(false)
                     .build());
         }
     }
 
-
     @Test
-    @DisplayName("게시글 전부 반환한다.")
+    @DisplayName("게시글을 전부 반환한다.")
     void findAllPosts() {
-        Mockito.when(postService.findAllPosts(AuthInfo.builder().build()))
+        Mockito.when(postService.findAllPosts(any(AuthInfo.class)))
                 .thenReturn(responses);
 
         restDocs
@@ -90,9 +91,8 @@ class PostControllerTest extends ControllerTest {
     @Test
     @DisplayName("유효하지 않은 id로 게시글을 조회하면 404를 반환한다.")
     void findPost_exception_invalidId() {
-        doThrow(new PostNotFoundException())
-                .when(postService)
-                .findPostById(any(Long.class), any(AuthInfo.class));
+        Mockito.when(postService.findPostById(any(Long.class), any(AuthInfo.class)))
+                        .thenThrow(new PostNotFoundException());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -112,6 +112,14 @@ class PostControllerTest extends ControllerTest {
                 .post_category("자유")
                 .post_content("content")
                 .build();
+
+        Mockito.when(postService.addPost(any(AuthInfo.class), any(NewPostRequest.class)))
+                .thenReturn(NewPostResponse.builder()
+                        .post_id(6L)
+                        .title(request.getPost_title())
+                        .category(request.getPost_category())
+                        .author(authInfo.getUsername())
+                        .build());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -215,7 +223,7 @@ class PostControllerTest extends ControllerTest {
                 .then().log().all()
                 .assertThat()
                 .apply(document("post/update/success"))
-                .statusCode(HttpStatus.NO_CONTENT.value());
+                .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -256,5 +264,37 @@ class PostControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("post/update/fail/noTitle"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("권한이 있는 게시글을 삭제한다.")
+    void deletePost() {
+        Mockito.when(postService.deletePost(any(Long.class), any(AuthInfo.class)))
+                .thenReturn(PostDeleteResponse.builder()
+                        .post_id(7L)
+                        .build());
+
+        restDocs
+                .header("Authorization", "any")
+                .when().delete("/community/7")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/delete/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 게시글을 삭제하면 403을 반환한다.")
+    void deletePost_exception_forbidden() {
+        Mockito.when(postService.deletePost(any(Long.class), any(AuthInfo.class)))
+                .thenThrow(new AuthorizationException());
+
+        restDocs
+                .header("Authorization", "any")
+                .when().delete("/community/7")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/delete/fail/noAuth"))
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 }

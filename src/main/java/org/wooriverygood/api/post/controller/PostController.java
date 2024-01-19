@@ -25,14 +25,14 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostResponse>> findAllPosts(@Login AuthInfo authInfo) {
         List<PostResponse> postResponses = postService.findAllPosts(authInfo);
-        return ResponseEntity.ok().body(postResponses);
+        return ResponseEntity.ok(postResponses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> findPostById(@PathVariable("id") Long postId,
                                                      @Login AuthInfo authInfo) {
         PostResponse postResponse = postService.findPostById(postId, authInfo);
-        return ResponseEntity.ok().body(postResponse);
+        return ResponseEntity.ok(postResponse);
     }
 
     @PostMapping
@@ -45,21 +45,28 @@ public class PostController {
     @GetMapping("/me")
     public ResponseEntity<List<PostResponse>> findMyPosts(@Login AuthInfo authInfo) {
         List<PostResponse> postResponses = postService.findMyPosts(authInfo);
-        return ResponseEntity.ok().body(postResponses);
+        return ResponseEntity.ok(postResponses);
     }
 
     @PutMapping("/{id}/like")
     public ResponseEntity<PostLikeResponse> likePost(@PathVariable("id") Long postId,
                                                      @Login AuthInfo authInfo) {
         PostLikeResponse response = postService.likePost(postId, authInfo);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable("id") Long postId,
-                                           @Valid @RequestBody PostUpdateRequest postUpdateRequest,
-                                           @Login AuthInfo authInfo) {
-        postService.updatePost(postId, postUpdateRequest, authInfo);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<PostUpdateResponse> updatePost(@PathVariable("id") Long postId,
+                                                         @Valid @RequestBody PostUpdateRequest postUpdateRequest,
+                                                         @Login AuthInfo authInfo) {
+        PostUpdateResponse response = postService.updatePost(postId, postUpdateRequest, authInfo);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PostDeleteResponse> deletePost(@PathVariable("id") Long postId,
+                                                         @Login AuthInfo authInfo) {
+        PostDeleteResponse response = postService.deletePost(postId, authInfo);
+        return ResponseEntity.ok(response);
     }
 }

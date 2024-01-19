@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.domain.PostLike;
@@ -23,10 +24,13 @@ public class PostService {
 
     private final PostLikeRepository postLikeRepository;
 
+    private final CommentRepository commentRepository;
 
-    public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository) {
+
+    public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.postLikeRepository = postLikeRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<PostResponse> findAllPosts(AuthInfo authInfo) {
@@ -123,7 +127,7 @@ public class PostService {
     public PostUpdateResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-//        validateAuthor(authInfo, post);
+        validateAuthor(authInfo, post);
 
         post.updateTitle(postUpdateRequest.getPost_title());
         post.updateContent(postUpdateRequest.getPost_content());
@@ -135,7 +139,24 @@ public class PostService {
                 .build();
     }
 
+    @Transactional
+    public PostDeleteResponse deletePost(Long postId, AuthInfo authInfo) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+        validateAuthor(authInfo, post);
+
+        commentRepository.deleteAllByPost(post);
+        postLikeRepository.deleteAllByPost(post);
+
+        postRepository.delete(post);
+
+        return PostDeleteResponse.builder()
+                .post_id(postId)
+                .build();
+    }
+
     private void validateAuthor(AuthInfo authInfo, Post post) {
         if (!post.isSameAuthor(authInfo.getUsername())) throw new AuthorizationException();
     }
+
 }

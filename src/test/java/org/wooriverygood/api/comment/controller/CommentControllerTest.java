@@ -82,7 +82,7 @@ class CommentControllerTest extends ControllerTest {
                 .author(authInfo.getUsername())
                 .build();
 
-        Mockito.when(commentService.addComment(authInfo, 51L, request))
+        Mockito.when(commentService.addComment(any(AuthInfo.class), any(Long.class), any(NewCommentRequest.class)))
                 .thenReturn(response);
 
         restDocs
