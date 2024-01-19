@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.wooriverygood.api.post.dto.NewPostRequest;
-import org.wooriverygood.api.post.dto.PostLikeResponse;
-import org.wooriverygood.api.post.dto.PostResponse;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
 
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 
@@ -85,6 +88,23 @@ class PostControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("유효하지 않은 id로 게시글을 조회하면 404를 반환한다.")
+    void findPost_exception_invalidId() {
+        doThrow(new PostNotFoundException())
+                .when(postService)
+                .findPostById(any(Long.class), any(AuthInfo.class));
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/community/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/find/one/fail"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
     @DisplayName("새로운 게시글을 성공적으로 등록한다.")
     public void addPost() {
         NewPostRequest request = NewPostRequest.builder()
@@ -105,7 +125,7 @@ class PostControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("새로운 게시글의 제목이 없으면 등록에 실패한다.")
+    @DisplayName("새로운 게시글의 제목이 없으면 400을 반환한다.")
     public void addPost_exception_noTitle() {
         NewPostRequest request = NewPostRequest.builder()
                 .post_category("자유")
@@ -170,5 +190,71 @@ class PostControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("post/like/success"))
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 있는 게시글을 수정한다.")
+    void updatePost() {
+        PostUpdateRequest request = PostUpdateRequest.builder()
+                .post_title("new title")
+                .post_content("new content")
+                .build();
+
+        Mockito.when(postService.updatePost(any(Long.class), any(PostUpdateRequest.class), any(AuthInfo.class)))
+                        .thenReturn(PostUpdateResponse.builder()
+                                .post_id((long) 1)
+                                .post_title(request.getPost_title())
+                                .post_content(request.getPost_content())
+                                .build());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/community/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/update/success"))
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 게시글을 수정하면 403을 반환한다.")
+    void updatePost_exception_forbidden() {
+        PostUpdateRequest request = PostUpdateRequest.builder()
+                .post_title("new title")
+                .post_content("new content")
+                .build();
+
+        Mockito.when(postService.updatePost(any(Long.class), any(PostUpdateRequest.class), any(AuthInfo.class)))
+                        .thenThrow(new AuthorizationException());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/community/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/update/fail/noAuth"))
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @DisplayName("게시물 수정 시, 제목에 내용이 없는 경우 400을 반환한다.")
+    @Test
+    void updatePost_Exception_NoContentTitle() {
+        PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
+                .post_content("content")
+                .build();
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(postUpdateRequest)
+                .header("Authorization", "any")
+                .when().put("/community/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/update/fail/noTitle"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

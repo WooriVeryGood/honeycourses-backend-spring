@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.wooriverygood.api.post.dto.NewPostRequest;
-import org.wooriverygood.api.post.dto.NewPostResponse;
-import org.wooriverygood.api.post.dto.PostLikeResponse;
-import org.wooriverygood.api.post.dto.PostResponse;
+import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.post.service.PostService;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.support.Login;
@@ -56,5 +53,13 @@ public class PostController {
                                                      @Login AuthInfo authInfo) {
         PostLikeResponse response = postService.likePost(postId, authInfo);
         return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePost(@PathVariable("id") Long postId,
+                                           @Valid @RequestBody PostUpdateRequest postUpdateRequest,
+                                           @Login AuthInfo authInfo) {
+        postService.updatePost(postId, postUpdateRequest, authInfo);
+        return ResponseEntity.noContent().build();
     }
 }

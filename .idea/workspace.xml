@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/CommentLike.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentLikeResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentLikeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/exception/CommentNotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostLike.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostLike.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostLikeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostLikeResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,8 +35,8 @@
       <list>
         <option value="Enum" />
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -105,6 +88,7 @@
     "Gradle.PostControllerTest.executor": "Run",
     "Gradle.PostControllerTest.findPost.executor": "Run",
     "Gradle.PostControllerTest.likePost_up.executor": "Run",
+    "Gradle.PostServiceTest.addPost_exception_invalid_category.executor": "Run",
     "Gradle.PostServiceTest.executor": "Run",
     "Gradle.PostServiceTest.likePost.executor": "Run",
     "Gradle.PostServiceTest.likePost_down.executor": "Run",
@@ -124,7 +108,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "HC-75--comment-like",
+    "git-widget-placeholder": "HC-104-post-category-validation",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -147,6 +131,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.exception" />
       <recent name="org.wooriverygood.api.post.dto" />
       <recent name="org.wooriverygood.api.post.repository" />
       <recent name="org.wooriverygood.api.comment.dto" />
@@ -159,7 +144,7 @@
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.CommentControllerTest">
+  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
     <configuration name="CommentControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -232,7 +217,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostServiceTest.likePost_up" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PostServiceTest.addPost_exception_invalid_category" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -245,7 +230,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.likePost_up&quot;" />
+            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.addPost_exception_invalid_category&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -271,11 +256,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.HoneycoursesBackend" />
+        <item itemvalue="Gradle.PostServiceTest.addPost_exception_invalid_category" />
         <item itemvalue="Gradle.CommentControllerTest" />
         <item itemvalue="Gradle.CommentServiceTest" />
         <item itemvalue="Gradle.CommentServiceTest.likeComment_up" />
-        <item itemvalue="Spring Boot.HoneycoursesBackend" />
-        <item itemvalue="Gradle.PostServiceTest.likePost_up" />
       </list>
     </recent_temporary>
   </component>
@@ -468,7 +453,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705666207176</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요.">
+      <option name="closed" value="true" />
+      <created>1705670920174</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1705670920174</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -507,6 +500,10 @@
     <MESSAGE value="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정." />
     <MESSAGE value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
     <MESSAGE value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
+    <MESSAGE value="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/honeycourses_backend_spring$Tests_in__honeycourses_backend_spring_test_.ic" NAME="Tests in 'honeycourses-backend-spring.test' Coverage Results" MODIFIED="1705668873722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
