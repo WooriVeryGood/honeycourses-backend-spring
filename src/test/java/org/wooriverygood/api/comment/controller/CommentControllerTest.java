@@ -63,6 +63,7 @@ class CommentControllerTest extends ControllerTest {
                 .header("Authorization", "Bearer aws-cognito-access-token")
                 .when().get("/community/1/comments")
                 .then().log().all()
+                .assertThat()
                 .apply(document("comments/find/success"))
                 .statusCode(HttpStatus.OK.value());
     }
@@ -89,6 +90,7 @@ class CommentControllerTest extends ControllerTest {
                 .body(request)
                 .when().post("/community/51/comments")
                 .then().log().all()
+                .assertThat()
                 .apply(document("comments/create/success"))
                 .statusCode(HttpStatus.CREATED.value());
     }

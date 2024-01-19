@@ -4,10 +4,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.dto.CommentResponse;
 import org.wooriverygood.api.comment.dto.NewCommentRequest;
@@ -24,16 +25,16 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
-    @Autowired
+    @InjectMocks
     private CommentService commentService;
 
-    @MockBean
+    @Mock
     private CommentRepository commentRepository;
 
-    @MockBean
+    @Mock
     private PostRepository postRepository;
 
     private final int COMMENT_COUNT = 10;
