@@ -27,6 +27,10 @@ operation::reviews/find/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/create/success[snippets='http-request,http-response']
 
+=== 리뷰 좋아요 (PUT /courses/{id}/reviews/{rid})
+==== 성공
+operation::reviews/like/success[snippets='http-request,http-response']
+
 == 게시글 관리
 
 === 모든 게시글 보기 (GET /community)

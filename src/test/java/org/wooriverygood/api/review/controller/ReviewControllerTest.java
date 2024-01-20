@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.dto.NewReviewRequest;
 import org.wooriverygood.api.review.dto.NewReviewResponse;
+import org.wooriverygood.api.review.dto.ReviewLikeResponse;
 import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
@@ -99,6 +100,25 @@ public class ReviewControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("reviews/create/success"))
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    @DisplayName("특정 리뷰의 좋아요를 1 올리거나 내린다.")
+    void likeReview() {
+        Mockito.when(reviewService.likeReview(any(Long.class), any(AuthInfo.class)))
+                .thenReturn(ReviewLikeResponse.builder()
+                        .like_count(5)
+                        .liked(false)
+                        .build());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().put("/courses/1/reviews/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/like/success"))
+                .statusCode(HttpStatus.OK.value());
     }
 
 }
