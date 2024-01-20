@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.post.domain.Post;
 
 import java.time.LocalDateTime;
@@ -64,4 +65,11 @@ public class Comment {
         commentLike.delete();
     }
 
+    public void validateAuthor(String author) {
+        if (!this.author.equals(author)) throw new AuthorizationException();
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

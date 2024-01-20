@@ -211,8 +211,6 @@ class PostControllerTest extends ControllerTest {
         Mockito.when(postService.updatePost(any(Long.class), any(PostUpdateRequest.class), any(AuthInfo.class)))
                         .thenReturn(PostUpdateResponse.builder()
                                 .post_id((long) 1)
-                                .post_title(request.getPost_title())
-                                .post_content(request.getPost_content())
                                 .build());
 
         restDocs
@@ -228,7 +226,7 @@ class PostControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("권한이 없는 게시글을 수정하면 403을 반환한다.")
-    void updatePost_exception_forbidden() {
+    void updatePost_exception_noAuth() {
         PostUpdateRequest request = PostUpdateRequest.builder()
                 .post_title("new title")
                 .post_content("new content")
@@ -250,7 +248,7 @@ class PostControllerTest extends ControllerTest {
 
     @DisplayName("게시물 수정 시, 제목에 내용이 없는 경우 400을 반환한다.")
     @Test
-    void updatePost_Exception_NoContentTitle() {
+    void updatePost_exception_noTitle() {
         PostUpdateRequest postUpdateRequest = PostUpdateRequest.builder()
                 .post_content("content")
                 .build();
