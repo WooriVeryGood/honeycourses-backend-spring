@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.wooriverygood.api.review.dto.NewReviewRequest;
 import org.wooriverygood.api.review.dto.NewReviewResponse;
+import org.wooriverygood.api.review.dto.ReviewLikeResponse;
 import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.review.service.ReviewService;
 import org.wooriverygood.api.support.AuthInfo;
@@ -32,6 +33,12 @@ public class ReviewController {
     public ResponseEntity<NewReviewResponse> addReview(@PathVariable("id") Long courseId, @Login AuthInfo authInfo, @Valid @RequestBody NewReviewRequest newReviewRequest) {
         NewReviewResponse response = reviewService.addReview(authInfo, courseId, newReviewRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{rid}")
+    public ResponseEntity<ReviewLikeResponse> likeReview(@PathVariable("rid") Long reviewId, @Login AuthInfo authInfo) {
+        ReviewLikeResponse response= reviewService.likeReview(reviewId, authInfo);
+        return ResponseEntity.ok(response);
     }
 
 }

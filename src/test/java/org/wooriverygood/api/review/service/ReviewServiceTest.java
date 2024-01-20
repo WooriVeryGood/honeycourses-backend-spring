@@ -12,9 +12,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
+import org.wooriverygood.api.review.domain.ReviewLike;
 import org.wooriverygood.api.review.dto.NewReviewRequest;
 import org.wooriverygood.api.review.dto.NewReviewResponse;
+import org.wooriverygood.api.review.dto.ReviewLikeResponse;
 import org.wooriverygood.api.review.dto.ReviewResponse;
+import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.support.AuthInfo;
 
@@ -34,6 +37,9 @@ public class ReviewServiceTest {
 
     @Mock
     private CourseRepository courseRepository;
+
+    @Mock
+    private ReviewLikeRepository reviewLikeRepository;
 
     private final int REVIEW_COUNT = 10;
 
@@ -65,10 +71,23 @@ public class ReviewServiceTest {
                     .takenSemyr("22-23")
                     .grade("60")
                     .authorEmail("author" + i)
+                    .reviewLikes(new ArrayList<>())
                     .build();
             reviews.add(review);
         }
     }
+
+    Review singleReview = Review.builder()
+            .id(1L)
+            .course(singleCourse)
+            .reviewContent("test review")
+            .reviewTitle("test review title")
+            .instructorName("jiaoshou")
+            .takenSemyr("22-23")
+            .grade("100")
+            .authorEmail(authInfo.getUsername())
+            .reviewLikes(new ArrayList<>())
+            .build();
 
     @Test
     @DisplayName("유효한 id를 통해 특정 수업의 리뷰들을 불러온다.")
@@ -113,5 +132,35 @@ public class ReviewServiceTest {
         Assertions.assertThat(response.getReview_content()).isEqualTo(newReviewRequest.getReview_content());
     }
 
+    @Test
+    @DisplayName("특정 리뷰의 좋아요를 1 올린다.")
+    void likeReview_up() {
+        Mockito.when(reviewRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleReview));
 
+        ReviewLikeResponse response = reviewService.likeReview(singleReview.getId(), authInfo);
+
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singleReview.getLikeCount() + 1);
+        Assertions.assertThat(response.isLiked()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("특정 리뷰의 좋아요를 1 내린다.")
+    void likeReview_down() {
+        ReviewLike reviewLike = ReviewLike.builder()
+                .id(3L)
+                .review(singleReview)
+                .username(authInfo.getUsername())
+                .build();
+
+        Mockito.when(reviewRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleReview));
+        Mockito.when(reviewLikeRepository.findByReviewAndUsername(any(Review.class), any(String.class)))
+                .thenReturn(Optional.ofNullable(reviewLike));
+
+        ReviewLikeResponse response = reviewService.likeReview(singleReview.getId(), authInfo);
+
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singleReview.getLikeCount() - 1);
+        Assertions.assertThat(response.isLiked()).isEqualTo(false);
+    }
 }
