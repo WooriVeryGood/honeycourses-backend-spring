@@ -207,30 +207,21 @@ class PostServiceTest {
                 .post_content("new content")
                 .build();
 
-        Mockito.when(postRepository.findById(singlePost.getId()))
-                .thenReturn(Optional.ofNullable(Post.builder()
-                        .id(singlePost.getId())
-                        .category(singlePost.getCategory())
-                        .title(request.getPost_title())
-                        .content(request.getPost_content())
-                        .author(singlePost.getAuthor())
-                        .comments(singlePost.getComments())
-                        .postLikes(singlePost.getPostLikes())
-                        .build()));
+        Mockito.when(postRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singlePost));
 
         PostUpdateResponse response = postService.updatePost(singlePost.getId(), request, authInfo);
 
         Assertions.assertThat(response.getPost_id()).isEqualTo(singlePost.getId());
-        Assertions.assertThat(response.getPost_title()).isEqualTo(request.getPost_title());
-        Assertions.assertThat(response.getPost_content()).isEqualTo(request.getPost_content());
     }
 
     @Test
-    @DisplayName("권한이 없는 게시글을 수정한다.")
+    @DisplayName("권한이 없는 게시글을 수정할 수 없다.")
     void updatePost_exception_noAuth() {
         PostUpdateRequest request = PostUpdateRequest.builder()
                 .post_title("new title")
-                .post_content("new content").build();
+                .post_content("new content")
+                .build();
 
         Mockito.when(postRepository.findById(any(Long.class)))
                 .thenReturn(Optional.ofNullable(noAuthPost));

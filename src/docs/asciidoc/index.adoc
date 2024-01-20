@@ -65,6 +65,7 @@ operation::post/update/fail/noTitle[snippets='http-request,http-response']
 ==== 성공
 operation::post/delete/success[snippets='http-request,http-response']
 ==== 실패
+===== 권한이 없는 경우
 operation::post/delete/fail/noAuth[snippets='http-request,http-response']
 
 == 댓글 관리
@@ -77,6 +78,22 @@ operation::comments/find/success[snippets='http-request,http-response']
 ==== 성공
 operation::comments/create/success[snippets='http-request,http-response']
 
-=== 댓글 좋아요 (PUT /community/comments/{id}/like)
+=== 댓글 좋아요 (PUT /comments/{id}/like)
 ==== 성공
 operation::comments/like/success[snippets='http-request,http-response']
+
+=== 댓글 수정 (PUT / comments/{id})
+==== 성공
+operation::comments/update/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::comments/update/fail/noAuth[snippets='http-request,http-response']
+===== 내용이 없는 경우
+operation::comments/update/fail/noContent[snippets='http-request,http-response']
+
+=== 댓글 삭제 (DELETE /comments/{id})
+==== 성공
+operation::comments/delete/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::comments/delete/fail/noAuth[snippets='http-request,http-response']
