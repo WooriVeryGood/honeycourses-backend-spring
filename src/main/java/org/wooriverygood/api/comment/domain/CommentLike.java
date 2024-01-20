@@ -1,4 +1,4 @@
-package org.wooriverygood.api.post.domain;
+package org.wooriverygood.api.comment.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -6,31 +6,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "postLikes")
+@Table(name = "commentLikes")
 @Getter
 @NoArgsConstructor
-public class PostLike {
+public class CommentLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "post_id")
-    private Post post;
+    @JoinColumn(name = "comment_id", referencedColumnName = "comment_id")
+    private Comment comment;
 
     @Column
     private String username;
 
 
     @Builder
-    public PostLike(Long id, Post post, String username) {
+    public CommentLike(Long id, Comment comment, String username) {
         this.id = id;
-        this.post = post;
+        this.comment = comment;
         this.username = username;
     }
+
     public void delete() {
-        this.post = null;
+        comment = null;
     }
 
 }

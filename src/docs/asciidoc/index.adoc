@@ -23,11 +23,14 @@ operation::courses/create/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/find/success[snippets='http-request,http-response']
 
+=== 특정 강의의 리뷰 작성하기 (POST /courses/{id}/reviews)
+==== 성공
+operation::reviews/create/success[snippets='http-request,http-response']
 
 == 게시글 관리
 
-== 모든 게시글 보기 (GET /community)
-=== 성공
+=== 모든 게시글 보기 (GET /community)
+==== 성공
 operation::post/find/all/success[snippets='http-request,http-response']
 
 === 특정 게시글 보기 (GET /community/{id})
@@ -49,6 +52,21 @@ operation::post/find/me/success[snippets='http-request,http-response']
 ==== 성공
 operation::post/like/success[snippets='http-request,http-response']
 
+=== 게시글 수정 (PUT /community/{id})
+==== 성공
+operation::post/update/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::post/update/fail/noAuth[snippets='http-request,http-response']
+===== 제목에 내용이 없는 경우
+operation::post/update/fail/noTitle[snippets='http-request,http-response']
+
+=== 게시글 삭제 (DELETE /community/{id})
+==== 성공
+operation::post/delete/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::post/delete/fail/noAuth[snippets='http-request,http-response']
 
 == 댓글 관리
 
@@ -59,3 +77,23 @@ operation::comments/find/success[snippets='http-request,http-response']
 === 특정 게시글의 댓글 작성하기 (POST /community/{id}/comments)
 ==== 성공
 operation::comments/create/success[snippets='http-request,http-response']
+
+=== 댓글 좋아요 (PUT /comments/{id}/like)
+==== 성공
+operation::comments/like/success[snippets='http-request,http-response']
+
+=== 댓글 수정 (PUT / comments/{id})
+==== 성공
+operation::comments/update/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::comments/update/fail/noAuth[snippets='http-request,http-response']
+===== 내용이 없는 경우
+operation::comments/update/fail/noContent[snippets='http-request,http-response']
+
+=== 댓글 삭제 (DELETE /comments/{id})
+==== 성공
+operation::comments/delete/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::comments/delete/fail/noAuth[snippets='http-request,http-response']

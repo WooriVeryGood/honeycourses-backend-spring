@@ -4,14 +4,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.comment.domain.Comment;
-import org.wooriverygood.api.comment.dto.CommentResponse;
-import org.wooriverygood.api.comment.dto.NewCommentRequest;
-import org.wooriverygood.api.comment.dto.NewCommentResponse;
+import org.wooriverygood.api.comment.domain.CommentLike;
+import org.wooriverygood.api.comment.dto.*;
+import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
@@ -24,17 +26,20 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
-    @Autowired
+    @InjectMocks
     private CommentService commentService;
 
-    @MockBean
+    @Mock
     private CommentRepository commentRepository;
 
-    @MockBean
+    @Mock
     private PostRepository postRepository;
+
+    @Mock
+    private CommentLikeRepository commentLikeRepository;
 
     private final int COMMENT_COUNT = 10;
 
@@ -53,6 +58,14 @@ class CommentServiceTest {
     AuthInfo authInfo = AuthInfo.builder()
             .sub("22222-34534-123")
             .username("22222-34534-123")
+            .build();
+
+    Comment singleComment = Comment.builder()
+            .id(2L)
+            .post(singlePost)
+            .content("comment content")
+            .author(authInfo.getUsername())
+            .commentLikes(new ArrayList<>())
             .build();
 
 
@@ -100,6 +113,96 @@ class CommentServiceTest {
 
          Assertions.assertThat(response.getAuthor()).isEqualTo(authInfo.getUsername());
          Assertions.assertThat(response.getContent()).isEqualTo(newCommentRequest.getContent());
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 좋아요를 1 올린다.")
+    void likeComment_up() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        CommentLikeResponse response = commentService.likeComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singleComment.getLikeCount() + 1);
+        Assertions.assertThat(response.isLiked()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 좋아요를 1 내린다.")
+    void likeComment_down() {
+        CommentLike commentLike = CommentLike.builder()
+                .id(2L)
+                .comment(singleComment)
+                .username(authInfo.getUsername())
+                .build();
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+        Mockito.when(commentLikeRepository.findByCommentAndUsername(any(Comment.class), any(String.class)))
+                .thenReturn(Optional.ofNullable(commentLike));
+
+        CommentLikeResponse response = commentService.likeComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(response.getLike_count()).isEqualTo(singleComment.getLikeCount() - 1);
+        Assertions.assertThat(response.isLiked()).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 댓글을 수정한다.")
+    void updateComment() {
+        CommentUpdateRequest request = CommentUpdateRequest.builder()
+                .content("new comment content")
+                .build();
+
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        CommentUpdateResponse response = commentService.updateComment(singleComment.getId(), request, authInfo);
+
+        Assertions.assertThat(response.getComment_id()).isEqualTo(singleComment.getId());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 댓글을 수정한다.")
+    void updateComment_exception_noAuth() {
+        CommentUpdateRequest request = CommentUpdateRequest.builder()
+                .content("new comment content")
+                .build();
+        AuthInfo noAuthInfo = AuthInfo.builder()
+                .sub("no")
+                .username("no")
+                .build();
+
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        Assertions.assertThatThrownBy(() -> commentService.updateComment(singleComment.getId(), request, noAuthInfo))
+                .isInstanceOf(AuthorizationException.class);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 댓글을 삭제한다.")
+    void deleteComment() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        CommentDeleteResponse response = commentService.deleteComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(response.getComment_id()).isEqualTo(singleComment.getId());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 댓글은 삭제할 수 없다")
+    void deleteComment_exception_noAuth() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        AuthInfo noAuthInfo = AuthInfo.builder()
+                .sub("no")
+                .username("no")
+                .build();
+
+        Assertions.assertThatThrownBy(() -> commentService.deleteComment(singleComment.getId(), noAuthInfo))
+                .isInstanceOf(AuthorizationException.class);
     }
 
 }

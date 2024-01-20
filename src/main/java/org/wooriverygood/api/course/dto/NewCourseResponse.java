@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class NewCourseResponse {
-    private final int course_id;
+    private final Long course_id;
     private final String course_name;
     private final int course_credit;
     private final String course_category;
@@ -13,7 +13,7 @@ public class NewCourseResponse {
     private final int isYouguan;
 
     @Builder
-    public NewCourseResponse(int course_id, String course_name, int course_credit, String course_category, String kaikeYuanxi, int isYouguan) {
+    public NewCourseResponse(Long course_id, String course_name, int course_credit, String course_category, String kaikeYuanxi, int isYouguan) {
         this.course_id = course_id;
         this.course_name = course_name;
         this.course_credit = course_credit;
