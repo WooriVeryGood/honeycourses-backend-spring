@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.wooriverygood.api.comment.dto.CommentResponse;
 import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.course.dto.NewCourseRequest;
-import org.wooriverygood.api.course.dto.NewCourseResponse;
 import org.wooriverygood.api.util.ControllerTest;
 
 import java.util.ArrayList;

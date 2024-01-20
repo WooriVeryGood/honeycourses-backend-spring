@@ -1,4 +1,4 @@
-package org.wooriverygood.api.exception.general;
+package org.wooriverygood.api.advice.exception.general;
 
 public class NotFoundException extends BusinessException {
 

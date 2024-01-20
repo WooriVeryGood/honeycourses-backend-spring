@@ -5,12 +5,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.comment.domain.Comment;
+import org.wooriverygood.api.post.domain.Post;
 
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByPostId(Long postId);
+
+    void deleteAllByPost(Post post);
 
     @Transactional
     @Modifying(clearAutomatically = true)

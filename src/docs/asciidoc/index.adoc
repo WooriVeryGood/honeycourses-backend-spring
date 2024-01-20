@@ -52,6 +52,20 @@ operation::post/find/me/success[snippets='http-request,http-response']
 ==== 성공
 operation::post/like/success[snippets='http-request,http-response']
 
+=== 게시글 수정 (PUT /community/{id})
+==== 성공
+operation::post/update/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::post/update/fail/noAuth[snippets='http-request,http-response']
+===== 제목에 내용이 없는 경우
+operation::post/update/fail/noTitle[snippets='http-request,http-response']
+
+=== 게시글 삭제 (DELETE /community/{id})
+==== 성공
+operation::post/delete/success[snippets='http-request,http-response']
+==== 실패
+operation::post/delete/fail/noAuth[snippets='http-request,http-response']
 
 == 댓글 관리
 

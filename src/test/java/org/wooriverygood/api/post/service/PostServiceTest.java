@@ -9,15 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.wooriverygood.api.exception.InvalidPostCategoryException;
-import org.wooriverygood.api.exception.PostNotFoundException;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
+import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.domain.PostLike;
-import org.wooriverygood.api.post.dto.NewPostRequest;
-import org.wooriverygood.api.post.dto.NewPostResponse;
-import org.wooriverygood.api.post.dto.PostLikeResponse;
-import org.wooriverygood.api.post.dto.PostResponse;
+import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.post.repository.PostLikeRepository;
 import org.wooriverygood.api.post.repository.PostRepository;
 import org.wooriverygood.api.support.AuthInfo;
@@ -40,23 +39,36 @@ class PostServiceTest {
     @Mock
     private PostLikeRepository postLikeRepository;
 
+    @Mock
+    private CommentRepository commentRepository;
+
     private final int POST_COUNT = 10;
 
     List<Post> posts = new ArrayList<>();
+
+    AuthInfo authInfo = AuthInfo.builder()
+            .sub("22222-34534-123")
+            .username("22222-34534-123")
+            .build();
 
     Post singlePost = Post.builder()
             .id(6L)
             .category(PostCategory.OFFER)
             .title("title6")
             .content("content6")
-            .author("author6")
+            .author(authInfo.getUsername())
             .comments(new ArrayList<>())
             .postLikes(new ArrayList<>())
             .build();
 
-    AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
+    Post noAuthPost = Post.builder()
+            .id(99L)
+            .category(PostCategory.OFFER)
+            .title("title99")
+            .content("content99")
+            .author("43434-45654-234")
+            .comments(new ArrayList<>())
+            .postLikes(new ArrayList<>())
             .build();
 
 
@@ -185,6 +197,67 @@ class PostServiceTest {
 
         Assertions.assertThat(response.getLike_count()).isEqualTo(singlePost.getLikeCount() - 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 게시글을 수정한다.")
+    void updatePost() {
+        PostUpdateRequest request = PostUpdateRequest.builder()
+                .post_title("new title")
+                .post_content("new content")
+                .build();
+
+        Mockito.when(postRepository.findById(singlePost.getId()))
+                .thenReturn(Optional.ofNullable(Post.builder()
+                        .id(singlePost.getId())
+                        .category(singlePost.getCategory())
+                        .title(request.getPost_title())
+                        .content(request.getPost_content())
+                        .author(singlePost.getAuthor())
+                        .comments(singlePost.getComments())
+                        .postLikes(singlePost.getPostLikes())
+                        .build()));
+
+        PostUpdateResponse response = postService.updatePost(singlePost.getId(), request, authInfo);
+
+        Assertions.assertThat(response.getPost_id()).isEqualTo(singlePost.getId());
+        Assertions.assertThat(response.getPost_title()).isEqualTo(request.getPost_title());
+        Assertions.assertThat(response.getPost_content()).isEqualTo(request.getPost_content());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 게시글을 수정한다.")
+    void updatePost_exception_noAuth() {
+        PostUpdateRequest request = PostUpdateRequest.builder()
+                .post_title("new title")
+                .post_content("new content").build();
+
+        Mockito.when(postRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(noAuthPost));
+
+        Assertions.assertThatThrownBy(() -> postService.updatePost(noAuthPost.getId(), request, authInfo))
+                .isInstanceOf(AuthorizationException.class);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 게시글을 삭제한다.")
+    void deletePost() {
+        Mockito.when(postRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singlePost));
+
+        PostDeleteResponse response = postService.deletePost(singlePost.getId(), authInfo);
+
+        Assertions.assertThat(response.getPost_id()).isEqualTo(singlePost.getId());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 게시글을 삭제한다.")
+    void deletePost_exception_noAuth() {
+        Mockito.when(postRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(noAuthPost));
+
+        Assertions.assertThatThrownBy(() -> postService.deletePost(noAuthPost.getId(), authInfo))
+                .isInstanceOf(AuthorizationException.class);
     }
 
 }

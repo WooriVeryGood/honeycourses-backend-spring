@@ -1,6 +1,6 @@
-package org.wooriverygood.api.exception;
+package org.wooriverygood.api.advice.exception;
 
-import org.wooriverygood.api.exception.general.NotFoundException;
+import org.wooriverygood.api.advice.exception.general.NotFoundException;
 
 public class CommentNotFoundException extends NotFoundException {
 

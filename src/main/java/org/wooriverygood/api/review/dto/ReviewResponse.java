@@ -2,7 +2,6 @@ package org.wooriverygood.api.review.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.review.domain.Review;
 
 @Getter
