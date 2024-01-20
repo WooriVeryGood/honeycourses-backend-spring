@@ -13,6 +13,7 @@ import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +48,8 @@ class CommentControllerTest extends ControllerTest {
                     .comment_content("content" + i)
                     .comment_author("user-"+(i % 5))
                     .post_id(post.getId())
+                    .comment_likes(i + 8)
+                    .comment_time(LocalDateTime.now())
                     .build());
         }
     }

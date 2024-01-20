@@ -37,7 +37,7 @@ public class PostResponse {
                 .post_content(post.getContent())
                 .post_category(post.getCategory().getValue())
                 .post_comments(post.getComments().size())
-                .post_likes(post.getPostLikes().size())
+                .post_likes(post.getLikeCount())
                 .post_time(post.getCreatedAt())
                 .isMine(isMine)
                 .build();
