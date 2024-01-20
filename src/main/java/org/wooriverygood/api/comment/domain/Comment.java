@@ -69,4 +69,7 @@ public class Comment {
         if (!this.author.equals(author)) throw new AuthorizationException();
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

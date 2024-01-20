@@ -82,6 +82,15 @@ operation::comments/create/success[snippets='http-request,http-response']
 ==== 성공
 operation::comments/like/success[snippets='http-request,http-response']
 
+=== 댓글 수정 (PUT / comments/{id})
+==== 성공
+operation::comments/update/success[snippets='http-request,http-response']
+==== 실패
+===== 권한이 없는 경우
+operation::comments/update/fail/noAuth[snippets='http-request,http-response']
+===== 내용이 없는 경우
+operation::comments/update/fail/noContent[snippets='http-request,http-response']
+
 === 댓글 삭제 (DELETE /comments/{id})
 ==== 성공
 operation::comments/delete/success[snippets='http-request,http-response']

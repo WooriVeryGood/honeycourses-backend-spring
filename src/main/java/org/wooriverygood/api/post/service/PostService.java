@@ -2,7 +2,6 @@ package org.wooriverygood.api.post.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
@@ -127,15 +126,13 @@ public class PostService {
     public PostUpdateResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        validateAuthor(authInfo, post);
+        post.validateAuthor(authInfo.getUsername());
 
         post.updateTitle(postUpdateRequest.getPost_title());
         post.updateContent(postUpdateRequest.getPost_content());
 
         return PostUpdateResponse.builder()
                 .post_id(post.getId())
-                .post_title(post.getTitle())
-                .post_content(post.getContent())
                 .build();
     }
 
@@ -143,7 +140,7 @@ public class PostService {
     public PostDeleteResponse deletePost(Long postId, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        validateAuthor(authInfo, post);
+        post.validateAuthor(authInfo.getUsername());
 
         commentRepository.deleteAllByPost(post);
         postLikeRepository.deleteAllByPost(post);
@@ -153,10 +150,6 @@ public class PostService {
         return PostDeleteResponse.builder()
                 .post_id(postId)
                 .build();
-    }
-
-    private void validateAuthor(AuthInfo authInfo, Post post) {
-        if (!post.isSameAuthor(authInfo.getUsername())) throw new AuthorizationException();
     }
 
 }

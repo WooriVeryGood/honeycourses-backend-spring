@@ -96,6 +96,19 @@ public class CommentService {
     }
 
     @Transactional
+    public CommentUpdateResponse updateComment(Long commentId, CommentUpdateRequest request, AuthInfo authInfo) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+        comment.validateAuthor(authInfo.getUsername());
+
+        comment.updateContent(request.getContent());
+
+        return CommentUpdateResponse.builder()
+                .comment_id(comment.getId())
+                .build();
+    }
+
+    @Transactional
     public CommentDeleteResponse deleteComment(Long commentId, AuthInfo authInfo) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
@@ -109,4 +122,5 @@ public class CommentService {
                 .comment_id(commentId)
                 .build();
     }
+
 }

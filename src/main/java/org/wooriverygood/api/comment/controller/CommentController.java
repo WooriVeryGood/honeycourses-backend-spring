@@ -42,6 +42,14 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/comments/{id}")
+    public ResponseEntity<CommentUpdateResponse> updateComment(@PathVariable("id") Long commentId,
+                                                               @Valid @RequestBody CommentUpdateRequest request,
+                                                               @Login AuthInfo authInfo) {
+        CommentUpdateResponse response = commentService.updateComment(commentId, request, authInfo);
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/comments/{id}")
     public ResponseEntity<CommentDeleteResponse> deleteComment(@PathVariable("id") Long commentId,
                                               @Login AuthInfo authInfo) {

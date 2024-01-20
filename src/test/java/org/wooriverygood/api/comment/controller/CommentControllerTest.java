@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 
@@ -112,6 +111,67 @@ class CommentControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("comments/like/success"))
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 있는 댓글을 수정한다.")
+    void updateComment() {
+        CommentUpdateRequest request = CommentUpdateRequest.builder()
+                .content("new comment content")
+                .build();
+
+        Mockito.when(commentService.updateComment(any(Long.class), any(CommentUpdateRequest.class), any(AuthInfo.class)))
+                .thenReturn(CommentUpdateResponse.builder()
+                        .comment_id(2L)
+                        .build());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/comments/3")
+                .then().log().all()
+                .assertThat()
+                .apply(document("comments/update/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("수정하는 댓글의 내용이 없으면 400을 반환한다.")
+    void updateComment_exception_noContent() {
+        CommentUpdateRequest request = CommentUpdateRequest.builder()
+                .build();
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/comments/3")
+                .then().log().all()
+                .assertThat()
+                .apply(document("comments/update/fail/noContent"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 댓글을 수정하면 403을 반환한다.")
+    void updateComment_exception_noAuth() {
+        CommentUpdateRequest request = CommentUpdateRequest.builder()
+                .content("new comment content")
+                .build();
+
+        Mockito.when(commentService.updateComment(any(Long.class), any(CommentUpdateRequest.class), any(AuthInfo.class)))
+                .thenThrow(new AuthorizationException());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/comments/3")
+                .then().log().all()
+                .assertThat()
+                .apply(document("comments/update/fail/noAuth"))
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
