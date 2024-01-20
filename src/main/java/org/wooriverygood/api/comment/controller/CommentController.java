@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.wooriverygood.api.comment.dto.CommentLikeResponse;
-import org.wooriverygood.api.comment.dto.CommentResponse;
-import org.wooriverygood.api.comment.dto.NewCommentRequest;
-import org.wooriverygood.api.comment.dto.NewCommentResponse;
+import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.service.CommentService;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.support.Login;
@@ -38,11 +35,18 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/community/comments/{id}/like")
+    @PutMapping("/comments/{id}/like")
     public ResponseEntity<CommentLikeResponse> likeComment(@PathVariable("id") Long commentId,
                                                            @Login AuthInfo authInfo) {
         CommentLikeResponse response = commentService.likeComment(commentId, authInfo);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<CommentDeleteResponse> deleteComment(@PathVariable("id") Long commentId,
+                                              @Login AuthInfo authInfo) {
+        CommentDeleteResponse response = commentService.deleteComment(commentId, authInfo);
+        return ResponseEntity.ok(response);
     }
 
 }

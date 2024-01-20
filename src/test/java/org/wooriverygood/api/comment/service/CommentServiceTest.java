@@ -9,12 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.domain.CommentLike;
-import org.wooriverygood.api.comment.dto.CommentLikeResponse;
-import org.wooriverygood.api.comment.dto.CommentResponse;
-import org.wooriverygood.api.comment.dto.NewCommentRequest;
-import org.wooriverygood.api.comment.dto.NewCommentResponse;
+import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
@@ -146,6 +144,32 @@ class CommentServiceTest {
 
         Assertions.assertThat(response.getLike_count()).isEqualTo(singleComment.getLikeCount() - 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 댓글을 삭제한다.")
+    void deleteComment() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        CommentDeleteResponse response = commentService.deleteComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(response.getComment_id()).isEqualTo(singleComment.getId());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 댓글은 삭제할 수 없다")
+    void deleteComment_exception_noAuth() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        AuthInfo noAuthInfo = AuthInfo.builder()
+                .sub("no")
+                .username("no")
+                .build();
+
+        Assertions.assertThatThrownBy(() -> commentService.deleteComment(singleComment.getId(), noAuthInfo))
+                .isInstanceOf(AuthorizationException.class);
     }
 
 }

@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.wooriverygood.api.comment.dto.CommentLikeResponse;
-import org.wooriverygood.api.comment.dto.CommentResponse;
-import org.wooriverygood.api.comment.dto.NewCommentRequest;
-import org.wooriverygood.api.comment.dto.NewCommentResponse;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.support.AuthInfo;
@@ -19,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 
@@ -108,11 +107,45 @@ class CommentControllerTest extends ControllerTest {
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().put("/community/comments/3/like")
+                .when().put("/comments/3/like")
                 .then().log().all()
                 .assertThat()
                 .apply(document("comments/like/success"))
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 있는 댓글을 삭제한다.")
+    void deleteComment() {
+        Mockito.when(commentService.deleteComment(any(Long.class), any(AuthInfo.class)))
+                .thenReturn(CommentDeleteResponse.builder()
+                        .comment_id(3L)
+                        .build());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().delete("/comments/3")
+                .then().log().all()
+                .assertThat()
+                .apply(document("comments/delete/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 댓글을 삭제하면 404를 반환한다.")
+    void deleteComment_exception_noAuth() {
+        Mockito.when(commentService.deleteComment(any(Long.class), any(AuthInfo.class)))
+                .thenThrow(new AuthorizationException());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().delete("/comments/3")
+                .then().log().all()
+                .assertThat()
+                .apply(document("comments/delete/fail/noAuth"))
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
 }

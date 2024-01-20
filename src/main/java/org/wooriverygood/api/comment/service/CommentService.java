@@ -4,10 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.domain.CommentLike;
-import org.wooriverygood.api.comment.dto.CommentLikeResponse;
-import org.wooriverygood.api.comment.dto.CommentResponse;
-import org.wooriverygood.api.comment.dto.NewCommentRequest;
-import org.wooriverygood.api.comment.dto.NewCommentResponse;
+import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.advice.exception.CommentNotFoundException;
@@ -95,6 +92,21 @@ public class CommentService {
         return CommentLikeResponse.builder()
                 .like_count(likeCount)
                 .liked(liked)
+                .build();
+    }
+
+    @Transactional
+    public CommentDeleteResponse deleteComment(Long commentId, AuthInfo authInfo) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+
+        comment.validateAuthor(authInfo.getUsername());
+
+        commentLikeRepository.deleteAllByComment(comment);
+        commentRepository.delete(comment);
+
+        return CommentDeleteResponse.builder()
+                .comment_id(commentId)
                 .build();
     }
 }
