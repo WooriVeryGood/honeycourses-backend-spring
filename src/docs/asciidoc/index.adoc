@@ -35,6 +35,10 @@ operation::reviews/create/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/like/success[snippets='http-request,http-response']
 
+=== 내 리뷰 보기 (GET /courses/reviews/me)
+==== 성공
+operation::reviews/find/me/success[snippets='http-request,http-response']
+
 == 게시글 관리
 
 === 모든 게시글 보기 (GET /community)

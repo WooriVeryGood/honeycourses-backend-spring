@@ -95,7 +95,7 @@ public class ReviewServiceTest {
         Mockito.when(reviewRepository.findAllByCourseId(any()))
                 .thenReturn(reviews);
 
-        List<ReviewResponse> responses = reviewService.findAllReviewsByCourseId(2L);
+        List<ReviewResponse> responses = reviewService.findAllReviewsByCourseId(2L, authInfo);
 
         Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
         Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");
@@ -162,5 +162,16 @@ public class ReviewServiceTest {
 
         Assertions.assertThat(response.getLike_count()).isEqualTo(singleReview.getLikeCount() - 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("사용자 본인이 작성한 리뷰들을 불러온다.")
+    void findMyReviews() {
+        Mockito.when(reviewRepository.findByAuthorEmail(any(String.class)))
+                .thenReturn(reviews);
+
+        List<ReviewResponse> responses = reviewService.findMyReviews(authInfo);
+
+        Assertions.assertThat(responses.get(0).isMine()).isEqualTo(true);
     }
 }
