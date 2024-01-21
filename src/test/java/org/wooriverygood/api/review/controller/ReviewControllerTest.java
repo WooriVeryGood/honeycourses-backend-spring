@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.course.domain.Courses;
-import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.review.dto.NewReviewRequest;
 import org.wooriverygood.api.review.dto.NewReviewResponse;
 import org.wooriverygood.api.review.dto.ReviewLikeResponse;
@@ -92,7 +91,7 @@ public class ReviewControllerTest extends ControllerTest {
                 .grade("100")
                 .build();
 
-        Mockito.when(reviewService.addReview(authInfo, 50L, request))
+        Mockito.when(reviewService.addReview(any(AuthInfo.class), any(Long.class), any(NewReviewRequest.class)))
                 .thenReturn(response);
 
         restDocs

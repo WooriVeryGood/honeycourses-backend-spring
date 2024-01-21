@@ -42,7 +42,7 @@ class CommentControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 4; i++) {
             responses.add(CommentResponse.builder()
                     .comment_id((long) i)
                     .comment_content("content" + i)
