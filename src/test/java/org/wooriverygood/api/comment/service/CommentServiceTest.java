@@ -88,7 +88,7 @@ class CommentServiceTest {
         Mockito.when(commentRepository.findAllByPostId(any()))
                 .thenReturn(comments);
 
-        List<CommentResponse> responses = commentService.findAllCommentsByPostId(2L);
+        List<CommentResponse> responses = commentService.findAllComments(2L, authInfo);
 
         Assertions.assertThat(responses.size()).isEqualTo(COMMENT_COUNT);
     }

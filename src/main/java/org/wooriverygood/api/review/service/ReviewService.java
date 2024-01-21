@@ -32,11 +32,11 @@ public class ReviewService {
 
         if(authInfo.getUsername() == null) {
             return reviews.stream()
-                    .map(review -> ReviewResponse.from(review, false))
+                    .map(review -> ReviewResponse.from(review, false, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
                     .toList();
         }
         return reviews.stream()
-                .map(review -> ReviewResponse.from(review, review.isSameAuthor(authInfo.getUsername())))
+                .map(review -> ReviewResponse.from(review, review.isSameAuthor(authInfo.getUsername()), reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
                 .toList();
     }
 
@@ -92,7 +92,7 @@ public class ReviewService {
 
     public List<ReviewResponse> findMyReviews(AuthInfo authInfo) {
         List<Review> reviews= reviewRepository.findByAuthorEmail(authInfo.getUsername());
-        return reviews.stream().map(review -> ReviewResponse.from(review, true)).toList();
+        return reviews.stream().map(review -> ReviewResponse.from(review, true, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername()))).toList();
     }
 
 

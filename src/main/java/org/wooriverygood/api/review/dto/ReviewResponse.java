@@ -18,9 +18,10 @@ public class ReviewResponse {
     private final int like_count;
     private final LocalDateTime review_time;
     private final boolean isMine;
+    private final boolean liked;
 
     @Builder
-    public ReviewResponse(Long review_id, Long course_id, String review_content, String review_title, String instructor_name, String taken_semyr, String grade, int like_count, LocalDateTime review_time, boolean isMine) {
+    public ReviewResponse(Long review_id, Long course_id, String review_content, String review_title, String instructor_name, String taken_semyr, String grade, int like_count, LocalDateTime review_time, boolean isMine, boolean liked) {
         this.review_id = review_id;
         this.course_id = course_id;
         this.review_content = review_content;
@@ -31,9 +32,10 @@ public class ReviewResponse {
         this.like_count = like_count;
         this.review_time = review_time;
         this.isMine = isMine;
+        this.liked = liked;
     }
 
-    public static ReviewResponse from(Review review, boolean isMine) {
+    public static ReviewResponse from(Review review, boolean isMine, boolean liked) {
         return ReviewResponse.builder()
                 .review_id(review.getId())
                 .course_id(review.getCourse().getId())
@@ -45,6 +47,7 @@ public class ReviewResponse {
                 .like_count(review.getLikeCount())
                 .review_time(review.getCreatedAt())
                 .isMine(isMine)
+                .liked(liked)
                 .build();
     }
 }
