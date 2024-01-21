@@ -165,7 +165,7 @@ class PostServiceTest {
 
         List<PostResponse> responses = postService.findMyPosts(authInfo);
 
-        Assertions.assertThat(responses.get(0).isMine()).isEqualTo(true);
+        Assertions.assertThat(responses.get(0).getPost_author()).isEqualTo(authInfo.getUsername());
     }
 
     @Test
