@@ -3,6 +3,7 @@ package org.wooriverygood.api.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -29,9 +30,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http
+                .cors().and()
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
+                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers("/").permitAll() // 권한이 필요없는 엔드 포인트, 루트만 API 작동 여부 확인을 위해 열어둠
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
