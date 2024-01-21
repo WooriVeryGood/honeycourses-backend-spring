@@ -6,12 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.post.dto.PostResponse;
-import org.wooriverygood.api.review.dto.NewReviewRequest;
-import org.wooriverygood.api.review.dto.NewReviewResponse;
-import org.wooriverygood.api.review.dto.ReviewLikeResponse;
-import org.wooriverygood.api.review.dto.ReviewResponse;
+import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
 
@@ -118,7 +116,7 @@ public class ReviewControllerTest extends ControllerTest {
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().put("/courses/reviews/1")
+                .when().put("/courses/reviews/1/like")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/like/success"))
@@ -155,5 +153,84 @@ public class ReviewControllerTest extends ControllerTest {
                 .apply(document("reviews/find/me/success"))
                 .statusCode(HttpStatus.OK.value());
     }
+
+    @Test
+    @DisplayName("권한이 있는 리뷰를 수정한다.")
+    void updateReview() {
+        ReviewUpdateRequest request = ReviewUpdateRequest.builder()
+                .review_title("new title")
+                .review_content("new content")
+                .build();
+
+        Mockito.when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
+                .thenReturn(ReviewUpdateResponse.builder()
+                        .review_id((long)1)
+                        .build());
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/courses/reviews/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/update/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 리뷰를 수정하면 403을 반환한다.")
+    void updateReview_noAuth() {
+        ReviewUpdateRequest request = ReviewUpdateRequest.builder()
+                .review_title("new title")
+                .review_content("new content")
+                .build();
+
+        Mockito.when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
+                .thenThrow(new AuthorizationException());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().put("/courses/reviews/1")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/update/fail/noAuth"))
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @DisplayName("권한이 있는 리뷰를 삭제한다.")
+    void deleteReview() {
+        Mockito.when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
+                .thenReturn(ReviewDeleteResponse.builder()
+                        .review_id(8L)
+                        .build());
+
+        restDocs
+                .header("Authorization", "any")
+                .when().delete("/courses/reviews/8")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/delete/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 리뷰를 삭제하면 403을 반환한다.")
+    void deleteReview_noAuth() {
+        Mockito.when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
+                .thenThrow(new AuthorizationException());
+
+        restDocs
+                .header("Authorization", "any")
+                .when().delete("/courses/reviews/8")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/delete/fail/noAuth"))
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+
 
 }
