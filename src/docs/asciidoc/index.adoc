@@ -18,6 +18,10 @@ operation::courses/find/success[snippets='http-request,http-response']
 ==== 성공
 operation::courses/create/success[snippets='http-request,http-response']
 
+=== 특정 강의 이름 받아오기 (GET /courses/{id}/name)
+==== 성공
+operation::course/get/name/success[snippets='http-request,http-response']
+
 == 리뷰 관리
 === 특정 강의의 리뷰 보기 (GET /courses/{id}/reviews)
 ==== 성공
