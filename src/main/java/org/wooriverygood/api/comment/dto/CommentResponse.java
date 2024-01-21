@@ -15,20 +15,22 @@ public class CommentResponse {
     private final Long post_id;
     private final int comment_likes;
     private final LocalDateTime comment_time;
+    private final boolean liked;
 
 
     @Builder
-    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time) {
+    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked) {
         this.comment_id = comment_id;
         this.comment_content = comment_content;
         this.comment_author = comment_author;
         this.post_id = post_id;
         this.comment_likes = comment_likes;
         this.comment_time = comment_time;
+        this.liked = liked;
     }
 
 
-    public static CommentResponse from(Comment comment) {
+    public static CommentResponse from(Comment comment, boolean liked) {
         return CommentResponse.builder()
                 .comment_id(comment.getId())
                 .comment_content(comment.getContent())
@@ -36,6 +38,7 @@ public class CommentResponse {
                 .post_id(comment.getPost().getId())
                 .comment_likes(comment.getLikeCount())
                 .comment_time(comment.getCreatedAt())
+                .liked(liked)
                 .build();
     }
 }

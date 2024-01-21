@@ -50,6 +50,7 @@ class CommentControllerTest extends ControllerTest {
                     .post_id(post.getId())
                     .comment_likes(i + 8)
                     .comment_time(LocalDateTime.now())
+                    .liked(false)
                     .build());
         }
     }
@@ -57,7 +58,7 @@ class CommentControllerTest extends ControllerTest {
     @Test
     @DisplayName("특정 게시글의 댓글 조회 요청을 받으면 댓글들을 반환한다.")
     void findAllCommentsByPostId() {
-        Mockito.when(commentService.findAllCommentsByPostId(any(Long.class)))
+        Mockito.when(commentService.findAllComments(any(Long.class), any(AuthInfo.class)))
                 .thenReturn(responses);
 
         restDocs

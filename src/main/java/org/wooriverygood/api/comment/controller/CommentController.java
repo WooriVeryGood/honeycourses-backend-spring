@@ -22,8 +22,9 @@ public class CommentController {
     }
 
     @GetMapping("/community/{id}/comments")
-    public ResponseEntity<List<CommentResponse>> findAllCommentsByPostId(@PathVariable("id") Long postId) {
-        List<CommentResponse> responses = commentService.findAllCommentsByPostId(postId);
+    public ResponseEntity<List<CommentResponse>> findAllCommentsByPostId(@PathVariable("id") Long postId,
+                                                                         @Login AuthInfo authInfo) {
+        List<CommentResponse> responses = commentService.findAllComments(postId, authInfo);
         return  ResponseEntity.ok(responses);
     }
 

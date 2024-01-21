@@ -31,9 +31,12 @@ public class CommentService {
         this.commentLikeRepository = commentLikeRepository;
     }
 
-    public List<CommentResponse> findAllCommentsByPostId(Long postId) {
+    public List<CommentResponse> findAllComments(Long postId, AuthInfo authInfo) {
         List<Comment> comments = commentRepository.findAllByPostId(postId);
-        return comments.stream().map(CommentResponse::from).toList();
+        return comments.stream().map(comment -> {
+            boolean liked = commentLikeRepository.existsByCommentAndUsername(comment, authInfo.getUsername());
+            return CommentResponse.from(comment, liked);
+        }).toList();
     }
 
     @Transactional
