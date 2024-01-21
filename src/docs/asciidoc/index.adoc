@@ -31,13 +31,29 @@ operation::reviews/find/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/create/success[snippets='http-request,http-response']
 
-=== 리뷰 좋아요 (PUT /courses/{id}/reviews/{rid})
+=== 리뷰 좋아요 (PUT /courses/reviews/{rid})
 ==== 성공
 operation::reviews/like/success[snippets='http-request,http-response']
 
 === 내 리뷰 보기 (GET /courses/reviews/me)
 ==== 성공
 operation::reviews/find/me/success[snippets='http-request,http-response']
+
+=== 리뷰 수정 (PUT /courses/reviews/{rid})
+==== 성공
+operation::reviews/update/success[snippets='http-request,http-response']
+
+==== 실패
+===== 권한이 없는 경우
+operation::reviews/update/fail/noAuth[snippets='http-request,http-response']
+
+=== 리뷰 삭제 (DELETE /courses/reviews/{rid})
+==== 성공
+operation::reviews/delete/success[snippets='http-request,http-response']
+
+==== 실패
+===== 권한이 없는 경우
+operation::reviews/delete/fail/noAuth[snippets='http-request,http-response']
 
 == 게시글 관리
 

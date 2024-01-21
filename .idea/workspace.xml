@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-86] 댓글 삭제 기능 구현&#10;&#10;### 댓글 좋아요 엔드 포인트 경로 변경&#10;&#10;기존의 /community/comments/{id}/like 에서 /comments/{id}/like 으로 변경했어요.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentUpdateRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentUpdateResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostUpdateResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostUpdateResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/controller/ReviewControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/controller/ReviewControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +125,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "HC-88--community-comment-delete",
+    "git-widget-placeholder": "HC-114-test-code",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -196,30 +187,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CommentControllerTest.updateComment_exception_noAuth" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.comment.controller.CommentControllerTest.updateComment_exception_noAuth&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="CommentServiceTest.updateComment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -268,7 +235,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostServiceTest.updatePost" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PostControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -281,7 +248,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.updatePost&quot;" />
+            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -292,13 +259,26 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="honeycourses-backend-spring.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.wooriverygood.api.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.CommentControllerTest" />
+        <item itemvalue="Gradle.PostControllerTest" />
+        <item itemvalue="Spring Boot.HoneycoursesBackend" />
         <item itemvalue="Gradle.CommentServiceTest.updateComment" />
         <item itemvalue="Gradle.CommentServiceTest.updateComment_exception_noAuth" />
-        <item itemvalue="Gradle.PostServiceTest.updatePost" />
-        <item itemvalue="Gradle.CommentControllerTest.updateComment_exception_noAuth" />
       </list>
     </recent_temporary>
   </component>

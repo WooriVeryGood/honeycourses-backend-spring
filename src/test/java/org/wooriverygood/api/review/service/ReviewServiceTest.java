@@ -9,14 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
-import org.wooriverygood.api.review.dto.NewReviewRequest;
-import org.wooriverygood.api.review.dto.NewReviewResponse;
-import org.wooriverygood.api.review.dto.ReviewLikeResponse;
-import org.wooriverygood.api.review.dto.ReviewResponse;
+import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.support.AuthInfo;
@@ -86,6 +84,18 @@ public class ReviewServiceTest {
             .takenSemyr("22-23")
             .grade("100")
             .authorEmail(authInfo.getUsername())
+            .reviewLikes(new ArrayList<>())
+            .build();
+
+    Review noAuthReview = Review.builder()
+            .id(1L)
+            .course(singleCourse)
+            .reviewContent("test review")
+            .reviewTitle("test review title")
+            .instructorName("jiaoshou")
+            .takenSemyr("22-23")
+            .grade("100")
+            .authorEmail("somerandom-username")
             .reviewLikes(new ArrayList<>())
             .build();
 
@@ -174,4 +184,57 @@ public class ReviewServiceTest {
 
         Assertions.assertThat(responses.get(0).isMine()).isEqualTo(true);
     }
+
+    @Test
+    @DisplayName("권한이 있는 리뷰를 수정한다.")
+    void updateReview() {
+        ReviewUpdateRequest request = ReviewUpdateRequest.builder()
+                .review_title("new title")
+                .review_content("new content")
+                .build();
+
+        Mockito.when(reviewRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleReview));
+
+        ReviewUpdateResponse response = reviewService.updateReview(singleReview.getId(), request, authInfo);
+
+        Assertions.assertThat(response.getReview_id()).isEqualTo(singleReview.getId());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 리뷰는 수정이 불가능하다.")
+    void updateReview_noAuth() {
+        ReviewUpdateRequest request = ReviewUpdateRequest.builder()
+                .review_title("new title")
+                .review_content("new content")
+                .build();
+
+        Mockito.when(reviewRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(noAuthReview));
+
+        Assertions.assertThatThrownBy(() -> reviewService.updateReview(noAuthReview.getId(), request, authInfo))
+                .isInstanceOf(AuthorizationException.class);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 리뷰를 삭제한다.")
+    void deleteReview() {
+        Mockito.when(reviewRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleReview));
+
+        ReviewDeleteResponse response = reviewService.deleteReview(singleReview.getId(), authInfo);
+        Assertions.assertThat(response.getReview_id()).isEqualTo(singleReview.getId());
+    }
+
+    @Test
+    @DisplayName("권한이 없는 리뷰는 삭제가 불가능하다.")
+    void deleteReview_noAuth() {
+        Mockito.when(reviewRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(noAuthReview));
+
+        Assertions.assertThatThrownBy(() -> reviewService.deleteReview(noAuthReview.getId(), authInfo))
+                .isInstanceOf(AuthorizationException.class);
+    }
+
+
 }

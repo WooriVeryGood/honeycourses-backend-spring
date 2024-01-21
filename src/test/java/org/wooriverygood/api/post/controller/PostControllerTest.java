@@ -32,7 +32,7 @@ class PostControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 4; i++) {
             responses.add(PostResponse.builder()
                     .post_id((long) i)
                     .post_title("title" + i)
@@ -157,7 +157,7 @@ class PostControllerTest extends ControllerTest {
         List<PostResponse> responses = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
             responses.add(PostResponse.builder()
-                    .post_id(1L)
+                    .post_id((long) i)
                     .post_title("title")
                     .post_category("자유")
                     .post_content("content")

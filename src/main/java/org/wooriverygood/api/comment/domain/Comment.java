@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "testComments")
+@Table(name = "comments")
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
