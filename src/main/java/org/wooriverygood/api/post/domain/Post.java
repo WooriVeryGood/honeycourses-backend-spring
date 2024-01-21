@@ -64,10 +64,6 @@ public class Post {
         this.postLikes = postLikes;
     }
 
-    public boolean isSameAuthor(String author) {
-        return this.author.equals(author);
-    }
-
     public void validateAuthor(String author) {
         if (!this.author.equals(author)) throw new AuthorizationException();
     }

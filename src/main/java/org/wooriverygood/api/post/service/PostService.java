@@ -37,12 +37,12 @@ public class PostService {
 
         if (authInfo.getUsername() == null)
             return posts.stream()
-                    .map(post -> PostResponse.from(post, false, false))
+                    .map(post -> PostResponse.from(post, false))
                     .toList();
         return posts.stream()
                 .map(post -> {
                     boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-                    return PostResponse.from(post, post.isSameAuthor(authInfo.getUsername()), liked);
+                    return PostResponse.from(post, liked);
                 })
                 .toList();
     }
@@ -51,7 +51,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
         boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-        return PostResponse.from(post, post.isSameAuthor(authInfo.getUsername()), liked);
+        return PostResponse.from(post, liked);
     }
 
     @Transactional
@@ -85,7 +85,7 @@ public class PostService {
 
         return posts.stream().map(post -> {
             boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-            return PostResponse.from(post, true, liked);
+            return PostResponse.from(post, liked);
         }).toList();
     }
 

@@ -38,10 +38,10 @@ class PostControllerTest extends ControllerTest {
                     .post_title("title" + i)
                     .post_category("자유")
                     .post_content("content" + i)
+                    .post_author(authInfo.getUsername())
                     .post_comments(10 + i)
                     .post_likes(2 + i)
                     .post_time(LocalDateTime.now())
-                    .isMine(false)
                     .liked(false)
                     .build());
         }
@@ -71,6 +71,7 @@ class PostControllerTest extends ControllerTest {
                 .post_title("title")
                 .post_category("자유")
                 .post_content("content")
+                .post_author(authInfo.getUsername())
                 .post_comments(2)
                 .post_likes(3)
                 .post_time(LocalDateTime.now())
@@ -162,10 +163,10 @@ class PostControllerTest extends ControllerTest {
                     .post_title("title")
                     .post_category("자유")
                     .post_content("content")
+                    .post_author(authInfo.getUsername())
                     .post_comments(0)
                     .post_likes(0)
                     .post_time(LocalDateTime.now())
-                    .isMine(true)
                     .liked(false)
                     .build());
         }
