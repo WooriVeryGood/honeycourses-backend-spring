@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.wooriverygood.api.course.dto.CourseNameResponse;
 import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.course.dto.NewCourseRequest;
 import org.wooriverygood.api.util.ControllerTest;
@@ -13,6 +14,7 @@ import org.wooriverygood.api.util.ControllerTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 public class CourseControllerTest extends ControllerTest {
@@ -65,5 +67,25 @@ public class CourseControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("courses/create/success"))
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    @DisplayName("특정 강의의 이름을 반환한다.")
+    void getCourseName() {
+        CourseNameResponse response = CourseNameResponse.builder()
+                .course_name("테스트 강의")
+                .build();
+
+        Mockito.when(courseService.getCourseName(any(Long.class)))
+                .thenReturn(response);
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/courses/1/name")
+                .then().log().all()
+                .assertThat()
+                .apply(document("course/get/name/success"))
+                .statusCode(HttpStatus.OK.value());
     }
 }
