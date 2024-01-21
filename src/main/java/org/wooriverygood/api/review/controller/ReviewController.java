@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.wooriverygood.api.review.dto.NewReviewRequest;
-import org.wooriverygood.api.review.dto.NewReviewResponse;
-import org.wooriverygood.api.review.dto.ReviewLikeResponse;
-import org.wooriverygood.api.review.dto.ReviewResponse;
+import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.service.ReviewService;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.support.Login;
@@ -39,7 +36,7 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/courses/{id}/reviews/{rid}")
+    @PutMapping("/courses/reviews/{rid}/like")
     public ResponseEntity<ReviewLikeResponse> likeReview(@PathVariable("rid") Long reviewId, @Login AuthInfo authInfo) {
         ReviewLikeResponse response= reviewService.likeReview(reviewId, authInfo);
         return ResponseEntity.ok(response);
@@ -50,5 +47,21 @@ public class ReviewController {
         List<ReviewResponse> reviewResponses = reviewService.findMyReviews(authInfo);
         return ResponseEntity.ok(reviewResponses);
     }
+
+    @PutMapping("/courses/reviews/{rid}")
+    public ResponseEntity<ReviewUpdateResponse> updateReview(@PathVariable("rid") Long reviewId,
+                                                             @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
+                                                             @Login AuthInfo authInfo) {
+        ReviewUpdateResponse response = reviewService.updateReview(reviewId, reviewUpdateRequest, authInfo);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/courses/reviews/{rid}")
+    public ResponseEntity<ReviewDeleteResponse> deleteReview(@PathVariable("rid") Long reviewId,
+                                                             @Login AuthInfo authInfo) {
+        ReviewDeleteResponse response = reviewService.deleteReview(reviewId, authInfo);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

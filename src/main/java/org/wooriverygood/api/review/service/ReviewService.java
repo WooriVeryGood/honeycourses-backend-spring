@@ -8,12 +8,10 @@ import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.advice.exception.general.ReviewNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
+import org.wooriverygood.api.post.dto.PostUpdateRequest;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
-import org.wooriverygood.api.review.dto.NewReviewRequest;
-import org.wooriverygood.api.review.dto.NewReviewResponse;
-import org.wooriverygood.api.review.dto.ReviewLikeResponse;
-import org.wooriverygood.api.review.dto.ReviewResponse;
+import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.support.AuthInfo;
@@ -119,9 +117,31 @@ public class ReviewService {
     }
 
 
+    @Transactional
+    public ReviewUpdateResponse updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest, AuthInfo authInfo) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(ReviewNotFoundException::new);
+        review.validateAuthor(authInfo.getUsername());
 
+        review.updateTitle(reviewUpdateRequest.getReview_title());
+        review.updateContent(reviewUpdateRequest.getReview_content());
 
+        return ReviewUpdateResponse.builder()
+                .review_id(review.getId())
+                .build();
+    }
 
+    @Transactional
+    public ReviewDeleteResponse deleteReview(Long reviewId, AuthInfo authInfo) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(ReviewNotFoundException::new);
+        review.validateAuthor(authInfo.getUsername());
 
+        reviewLikeRepository.deleteAllByReview(review);
+        reviewRepository.delete(review);
 
+        return ReviewDeleteResponse.builder()
+                .review_id(reviewId)
+                .build();
+    }
 }

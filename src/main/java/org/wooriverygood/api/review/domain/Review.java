@@ -87,7 +87,13 @@ public class Review {
         reviewLike.delete();
     }
 
+    public void updateTitle(String title) {
+        this.reviewTitle = title;
+    }
 
+    public void updateContent(String content) {
+        this.reviewContent = content;
+    }
 
 
 
