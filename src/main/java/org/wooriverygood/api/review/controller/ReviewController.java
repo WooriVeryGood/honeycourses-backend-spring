@@ -22,6 +22,11 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<String> apiOnline() {
+        return ResponseEntity.ok("API Online!");
+    }
+
     @GetMapping("/courses/{id}/reviews")
     public ResponseEntity<List<ReviewResponse>> findAllReviewsByCourseId(@PathVariable("id") Long courseId, @Login AuthInfo authInfo) {
         List<ReviewResponse> reviews = reviewService.findAllReviewsByCourseId(courseId, authInfo);
