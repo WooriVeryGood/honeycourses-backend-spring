@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.review.dto.NewReviewRequest;
 import org.wooriverygood.api.review.dto.NewReviewResponse;
 import org.wooriverygood.api.review.dto.ReviewLikeResponse;
@@ -14,6 +15,7 @@ import org.wooriverygood.api.review.dto.ReviewResponse;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,8 @@ public class ReviewControllerTest extends ControllerTest {
                     .instructor_name("Jiaoshou")
                     .taken_semyr("22-23")
                     .grade("60")
+                    .review_time(LocalDateTime.now())
+                    .isMine(false)
                     .build());
         }
     }
@@ -55,7 +59,7 @@ public class ReviewControllerTest extends ControllerTest {
     @Test
     @DisplayName("특정 강의의 리뷰 조회 요청을 받으면 리뷰들을 반환한다.")
     void findAllReviewsByCourseId() {
-        Mockito.when(reviewService.findAllReviewsByCourseId(any()))
+        Mockito.when(reviewService.findAllReviewsByCourseId(any(), any(AuthInfo.class)))
                 .thenReturn(responses);
 
         restDocs
@@ -118,6 +122,37 @@ public class ReviewControllerTest extends ControllerTest {
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/like/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("사용자 본인이 작성한 리뷰들을 불러온다.")
+    void findMyReviews() {
+        List<ReviewResponse> responses = new ArrayList<>();
+        for (int i = 1; i < 5; i++) {
+            responses.add(ReviewResponse.builder()
+                    .review_id((long)i)
+                    .course_id(1L)
+                    .review_content("Test Review " + i)
+                    .review_title("Title" + i)
+                    .instructor_name("Jiaoshou")
+                    .taken_semyr("22-23")
+                    .grade("60")
+                    .review_time(LocalDateTime.now())
+                    .isMine(true)
+                    .build());
+        }
+
+        Mockito.when(reviewService.findMyReviews(any(AuthInfo.class)))
+                .thenReturn(responses);
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/courses/reviews/me")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/find/me/success"))
                 .statusCode(HttpStatus.OK.value());
     }
 

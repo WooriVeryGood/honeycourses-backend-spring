@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.course.domain.Courses;
 
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "reviews")
 public class Review {
     @Id
@@ -65,6 +68,14 @@ public class Review {
         this.grade = grade;
         this.authorEmail = authorEmail;
         this.reviewLikes = reviewLikes;
+    }
+
+    public boolean isSameAuthor(String author) {
+        return this.authorEmail.equals(author);
+    }
+
+    public void validateAuthor(String author) {
+        if (!this.authorEmail.equals(author)) throw new AuthorizationException();
     }
 
     public void addReviewLike(ReviewLike reviewLike) {

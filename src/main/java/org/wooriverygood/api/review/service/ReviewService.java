@@ -3,6 +3,7 @@ package org.wooriverygood.api.review.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.advice.exception.general.ReviewNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
@@ -28,9 +29,17 @@ public class ReviewService {
     private final CourseRepository courseRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-    public List<ReviewResponse> findAllReviewsByCourseId(Long courseId) {
+    public List<ReviewResponse> findAllReviewsByCourseId(Long courseId, AuthInfo authInfo) {
         List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
-        return reviews.stream().map(ReviewResponse::from).toList();
+
+        if(authInfo.getUsername() == null) {
+            return reviews.stream()
+                    .map(review -> ReviewResponse.from(review, false))
+                    .toList();
+        }
+        return reviews.stream()
+                .map(review -> ReviewResponse.from(review, review.isSameAuthor(authInfo.getUsername())))
+                .toList();
     }
 
     @Transactional
@@ -81,6 +90,11 @@ public class ReviewService {
     private void deleteReviewLike(Review review, ReviewLike reviewLike) {
         review.deleteReviewLike(reviewLike);
         reviewRepository.decreaseLikeCount(review.getId());
+    }
+
+    public List<ReviewResponse> findMyReviews(AuthInfo authInfo) {
+        List<Review> reviews= reviewRepository.findByAuthorEmail(authInfo.getUsername());
+        return reviews.stream().map(review -> ReviewResponse.from(review, true)).toList();
     }
 
 
