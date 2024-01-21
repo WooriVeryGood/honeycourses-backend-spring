@@ -3,7 +3,9 @@ package org.wooriverygood.api.course.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.dto.CourseNameResponse;
 import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.course.dto.NewCourseRequest;
 import org.wooriverygood.api.course.dto.NewCourseResponse;
@@ -26,6 +28,16 @@ public class CourseService {
         Courses course = createCourse(newCourseRequest);
         Courses saved = courseRepository.save(course);
         return createResponse(saved);
+    }
+
+    public CourseNameResponse getCourseName(Long courseId) {
+        Courses courses = courseRepository.findById(courseId)
+                .orElseThrow(CourseNotFoundException::new);
+
+        return CourseNameResponse.builder()
+                .course_name(courses.getCourse_name())
+                .build();
+
     }
 
     private Courses createCourse(NewCourseRequest newCourseRequest) {
