@@ -31,7 +31,7 @@ operation::reviews/find/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/create/success[snippets='http-request,http-response']
 
-=== 리뷰 좋아요 (PUT /courses/{id}/reviews/{rid})
+=== 리뷰 좋아요 (PUT /courses/reviews/{rid})
 ==== 성공
 operation::reviews/like/success[snippets='http-request,http-response']
 

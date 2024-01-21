@@ -118,7 +118,7 @@ public class ReviewControllerTest extends ControllerTest {
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().put("/courses/1/reviews/1")
+                .when().put("/courses/reviews/1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/like/success"))

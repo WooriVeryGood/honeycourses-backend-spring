@@ -34,7 +34,7 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/courses/{id}/reviews/{rid}")
+    @PutMapping("/courses/reviews/{rid}")
     public ResponseEntity<ReviewLikeResponse> likeReview(@PathVariable("rid") Long reviewId, @Login AuthInfo authInfo) {
         ReviewLikeResponse response= reviewService.likeReview(reviewId, authInfo);
         return ResponseEntity.ok(response);
