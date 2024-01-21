@@ -42,6 +42,7 @@ class PostControllerTest extends ControllerTest {
                     .post_likes(2 + i)
                     .post_time(LocalDateTime.now())
                     .isMine(false)
+                    .liked(false)
                     .build());
         }
     }
@@ -165,6 +166,7 @@ class PostControllerTest extends ControllerTest {
                     .post_likes(0)
                     .post_time(LocalDateTime.now())
                     .isMine(true)
+                    .liked(false)
                     .build());
         }
 

@@ -37,18 +37,21 @@ public class PostService {
 
         if (authInfo.getUsername() == null)
             return posts.stream()
-                    .map(post -> PostResponse.from(post, false))
+                    .map(post -> PostResponse.from(post, false, false))
                     .toList();
         return posts.stream()
-                .map(post -> PostResponse.from(post, post.isSameAuthor(authInfo.getUsername())))
+                .map(post -> {
+                    boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
+                    return PostResponse.from(post, post.isSameAuthor(authInfo.getUsername()), liked);
+                })
                 .toList();
     }
 
     public PostResponse findPostById(Long postId, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-
-        return PostResponse.from(post, post.isSameAuthor(authInfo.getUsername()));
+        boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
+        return PostResponse.from(post, post.isSameAuthor(authInfo.getUsername()), liked);
     }
 
     @Transactional
@@ -79,7 +82,11 @@ public class PostService {
 
     public List<PostResponse> findMyPosts(AuthInfo authInfo) {
         List<Post> posts = postRepository.findByAuthor(authInfo.getUsername());
-        return posts.stream().map(post -> PostResponse.from(post, true)).toList();
+
+        return posts.stream().map(post -> {
+            boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
+            return PostResponse.from(post, true, liked);
+        }).toList();
     }
 
     @Transactional

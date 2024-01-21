@@ -17,9 +17,10 @@ public class PostResponse {
     private final int post_likes;
     private final LocalDateTime post_time;
     private final boolean isMine;
+    private final boolean liked;
 
     @Builder
-    public PostResponse(Long post_id, String post_title, String post_content, String post_category, int post_comments, int post_likes, LocalDateTime post_time, boolean isMine) {
+    public PostResponse(Long post_id, String post_title, String post_content, String post_category, int post_comments, int post_likes, LocalDateTime post_time, boolean isMine, boolean liked) {
         this.post_id = post_id;
         this.post_title = post_title;
         this.post_content = post_content;
@@ -28,9 +29,10 @@ public class PostResponse {
         this.post_likes = post_likes;
         this.post_time = post_time;
         this.isMine = isMine;
+        this.liked = liked;
     }
 
-    public static PostResponse from(Post post, boolean isMine) {
+    public static PostResponse from(Post post, boolean isMine, boolean liked) {
         return PostResponse.builder()
                 .post_id(post.getId())
                 .post_title(post.getTitle())
@@ -40,6 +42,7 @@ public class PostResponse {
                 .post_likes(post.getLikeCount())
                 .post_time(post.getCreatedAt())
                 .isMine(isMine)
+                .liked(liked)
                 .build();
     }
 
