@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .requestMatchers("/").permitAll() // 권한이 필요없는 엔드 포인트, 루트만 API 작동 여부 확인을 위해 열어둠
+                                .requestMatchers("/", "/docs/**").permitAll() // 권한이 필요없는 엔드 포인트, 루트와 API 명세 엔드포인트 열어둠
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
                         httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
