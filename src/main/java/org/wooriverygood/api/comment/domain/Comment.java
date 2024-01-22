@@ -32,7 +32,7 @@ public class Comment {
     @Column(name = "comment_author", length = 1000)
     private String author;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
