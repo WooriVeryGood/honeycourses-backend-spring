@@ -35,13 +35,19 @@ public class CommentService {
 
     public List<CommentResponse> findAllComments(Long postId, AuthInfo authInfo) {
         List<Comment> comments = commentRepository.findAllByPostId(postId);
-        return comments.stream().map(comment -> {
-            if (comment.isSoftRemoved())
-                return CommentResponse.softRemovedFrom(comment, convertToReplyResponses(comment, authInfo));
+        return comments.stream().map(comment -> convertToCommentResponse(comment, authInfo))
+                .filter(response -> !Objects.isNull(response))
+                .toList();
+    }
 
-            boolean liked = commentLikeRepository.existsByCommentAndUsername(comment, authInfo.getUsername());
-            return CommentResponse.from(comment, convertToReplyResponses(comment, authInfo), liked);
-        }).toList();
+    private CommentResponse convertToCommentResponse(Comment comment, AuthInfo authInfo) {
+        if (comment.isReply())
+            return null;
+        if (comment.isSoftRemoved())
+            return CommentResponse.softRemovedFrom(comment, convertToReplyResponses(comment, authInfo));
+
+        boolean liked = commentLikeRepository.existsByCommentAndUsername(comment, authInfo.getUsername());
+        return CommentResponse.from(comment, convertToReplyResponses(comment, authInfo), liked);
     }
 
     private List<ReplyResponse> convertToReplyResponses(Comment parent, AuthInfo authInfo) {

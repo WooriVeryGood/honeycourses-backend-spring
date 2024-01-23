@@ -102,6 +102,10 @@ public class Comment {
         return Objects.isNull(parent);
     }
 
+    public boolean isReply() {
+        return !isParent();
+    }
+
     public boolean hasNoReply() {
         return children.isEmpty();
     }

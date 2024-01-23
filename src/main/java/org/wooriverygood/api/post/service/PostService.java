@@ -2,6 +2,7 @@ package org.wooriverygood.api.post.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
@@ -56,7 +57,8 @@ public class PostService {
 
     @Transactional
     public NewPostResponse addPost(AuthInfo authInfo, NewPostRequest newPostRequest) {
-        PostCategory.parse(newPostRequest.getPost_category());
+        if (PostCategory.parse(newPostRequest.getPost_category()) == null)
+            throw new InvalidPostCategoryException();
         Post post = createPost(authInfo, newPostRequest);
         Post saved = postRepository.save(post);
         return createResponse(saved);

@@ -129,3 +129,6 @@ operation::comments/delete/fail/noAuth[snippets='http-request,http-response']
 === 특정 댓글의 대댓글 작성하기 (POST /comments/{id}/reply)
 ==== 성공
 operation::reply/create/success[snippets='http-request,http-response']
+==== 실패
+===== 대댓글에 작성하는 경우
+operation::reply/create/fail/depth[snippets='http-request,http-response']
