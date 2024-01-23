@@ -162,7 +162,7 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("권한이 없는 댓글을 수정한다.")
+    @DisplayName("권한이 없는 댓글을 수정할 수 없다.")
     void updateComment_exception_noAuth() {
         CommentUpdateRequest request = CommentUpdateRequest.builder()
                 .content("new comment content")
@@ -203,6 +203,23 @@ class CommentServiceTest {
 
         Assertions.assertThatThrownBy(() -> commentService.deleteComment(singleComment.getId(), noAuthInfo))
                 .isInstanceOf(AuthorizationException.class);
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 대댓글을 작성한다.")
+    void addReply() {
+        NewReplyRequest request = NewReplyRequest.builder()
+                .content("reply content")
+                .build();
+
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        commentService.addReply(singleComment.getId(), request, authInfo);
+        Comment reply = singleComment.getChildren().get(0);
+
+        Assertions.assertThat(reply.getContent()).isEqualTo(request.getContent());
+        Assertions.assertThat(reply.getParent()).isEqualTo(singleComment);
     }
 
 }

@@ -58,4 +58,12 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/comments/{id}/reply")
+    public ResponseEntity<Void> addReply(@PathVariable("id") Long commentId,
+                                         @RequestBody NewReplyRequest request,
+                                         @Login AuthInfo authInfo) {
+        commentService.addReply(commentId, request, authInfo);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 }

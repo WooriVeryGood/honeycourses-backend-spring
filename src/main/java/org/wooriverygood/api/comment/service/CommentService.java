@@ -14,6 +14,7 @@ import org.wooriverygood.api.post.repository.PostRepository;
 import org.wooriverygood.api.support.AuthInfo;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -118,6 +119,10 @@ public class CommentService {
 
         comment.validateAuthor(authInfo.getUsername());
 
+        if (comment.hasParent()) {
+            Comment parent = comment.getParent();
+            parent.deleteChildren(comment);
+        }
         commentLikeRepository.deleteAllByComment(comment);
         commentRepository.delete(comment);
 
@@ -126,4 +131,19 @@ public class CommentService {
                 .build();
     }
 
+    @Transactional
+    public void addReply(Long commentId, NewReplyRequest request, AuthInfo authInfo) {
+        Comment parent = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+
+        Comment child = Comment.builder()
+                .content(request.getContent())
+                .author(authInfo.getUsername())
+                .post(parent.getPost())
+                .parent(parent)
+                .build();
+        parent.addChildren(child);
+
+        commentRepository.save(child);
+    }
 }

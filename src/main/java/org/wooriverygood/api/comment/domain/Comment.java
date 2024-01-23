@@ -11,7 +11,9 @@ import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.post.domain.Post;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
@@ -25,6 +27,12 @@ public class Comment {
     @Column(name = "comment_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Comment> children = new ArrayList<>();
 
     @Column(name = "comment_content", length = 200, nullable = false)
     private String content;
@@ -48,11 +56,12 @@ public class Comment {
     private LocalDateTime createdAt;
 
     @Builder
-    public Comment(Long id, String content, String author, Post post, List<CommentLike> commentLikes) {
+    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes) {
         this.id = id;
         this.content = content;
         this.author = author;
         this.post = post;
+        this.parent = parent;
         this.commentLikes = commentLikes;
     }
 
@@ -72,4 +81,9 @@ public class Comment {
     public void updateContent(String content) {
         this.content = content;
     }
+
+    public void addChildren(Comment reply) {
+        children.add(reply);
+    }
+
 }

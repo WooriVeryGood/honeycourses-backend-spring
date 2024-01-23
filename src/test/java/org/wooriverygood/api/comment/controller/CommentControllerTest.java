@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 
@@ -210,6 +211,27 @@ class CommentControllerTest extends ControllerTest {
                 .assertThat()
                 .apply(document("comments/delete/fail/noAuth"))
                 .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 대댓글을 작성한다.")
+    void addReply() {
+        NewReplyRequest request = NewReplyRequest.builder()
+                .content("reply content")
+                .build();
+
+        doNothing().when(commentService)
+                .addReply(any(Long.class), any(NewReplyRequest.class), any(AuthInfo.class));
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .body(request)
+                .when().post("/comments/3/reply")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reply/create/success"))
+                .statusCode(HttpStatus.CREATED.value());
     }
 
 }
