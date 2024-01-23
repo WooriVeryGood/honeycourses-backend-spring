@@ -39,7 +39,7 @@ public class PostResponse {
                 .post_content(post.getContent())
                 .post_category(post.getCategory().getValue())
                 .post_author(post.getAuthor())
-                .post_comments(post.getComments().size())
+                .post_comments(post.getCommentCount())
                 .post_likes(post.getLikeCount())
                 .post_time(post.getCreatedAt())
                 .liked(liked)

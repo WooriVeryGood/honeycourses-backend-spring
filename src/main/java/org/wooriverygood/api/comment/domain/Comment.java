@@ -55,14 +55,17 @@ public class Comment {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    private boolean softRemoved;
+
     @Builder
-    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes) {
+    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes, boolean softRemoved) {
         this.id = id;
         this.content = content;
         this.author = author;
         this.post = post;
         this.parent = parent;
         this.commentLikes = commentLikes;
+        this.softRemoved = softRemoved;
     }
 
     public void addCommentLike(CommentLike commentLike) {
@@ -84,6 +87,31 @@ public class Comment {
 
     public void addChildren(Comment reply) {
         children.add(reply);
+    }
+
+    public void deleteChild(Comment reply) {
+        children.remove(reply);
+        reply.delete();
+    }
+
+    public void delete() {
+        parent = null;
+    }
+
+    public boolean isParent() {
+        return Objects.isNull(parent);
+    }
+
+    public boolean hasNoReply() {
+        return children.isEmpty();
+    }
+
+    public void willBeDeleted() {
+        softRemoved = true;
+    }
+
+    public boolean canDelete() {
+        return hasNoReply() && softRemoved;
     }
 
 }

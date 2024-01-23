@@ -84,4 +84,11 @@ public class Post {
     public void updateContent(String content) {
         this.content = content;
     }
+
+    public int getCommentCount() {
+        if (comments == null)
+            return 0;
+        return comments.size();
+    }
+
 }
