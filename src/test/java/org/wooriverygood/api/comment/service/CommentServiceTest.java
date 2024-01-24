@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.advice.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.domain.CommentLike;
 import org.wooriverygood.api.comment.dto.*;
@@ -68,9 +69,20 @@ class CommentServiceTest {
             .commentLikes(new ArrayList<>())
             .build();
 
+    Comment reply = Comment.builder()
+            .id(3L)
+            .post(singlePost)
+            .content("reply content")
+            .author(authInfo.getUsername())
+            .commentLikes(new ArrayList<>())
+            .parent(singleComment)
+            .build();
+
 
     @BeforeEach
     void setUpPosts() {
+        singleComment.getChildren().add(reply);
+
         for (int i = 0; i < COMMENT_COUNT; i++) {
             Comment comment = Comment.builder()
                     .id((long) i)
@@ -162,7 +174,7 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("권한이 없는 댓글을 수정한다.")
+    @DisplayName("권한이 없는 댓글을 수정할 수 없다.")
     void updateComment_exception_noAuth() {
         CommentUpdateRequest request = CommentUpdateRequest.builder()
                 .content("new comment content")
@@ -203,6 +215,87 @@ class CommentServiceTest {
 
         Assertions.assertThatThrownBy(() -> commentService.deleteComment(singleComment.getId(), noAuthInfo))
                 .isInstanceOf(AuthorizationException.class);
+    }
+
+    @Test
+    @DisplayName("특정 댓글의 대댓글을 작성한다.")
+    void addReply() {
+        NewReplyRequest request = NewReplyRequest.builder()
+                .content("reply content")
+                .build();
+
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        commentService.addReply(singleComment.getId(), request, authInfo);
+        Comment reply = singleComment.getChildren().get(0);
+
+        Assertions.assertThat(reply.getContent()).isEqualTo(request.getContent());
+        Assertions.assertThat(reply.getParent()).isEqualTo(singleComment);
+    }
+
+    @Test
+    @DisplayName("대댓글의 대댓글을 작성할 수 없다.")
+    void addReply_exception_depth() {
+        NewReplyRequest request = NewReplyRequest.builder()
+                .content("reply content")
+                .build();
+
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(reply));
+
+        Assertions.assertThatThrownBy(() -> commentService.addReply(reply.getId(), request, authInfo))
+                .isInstanceOf(ReplyDepthException.class);
+    }
+
+    @Test
+    @DisplayName("권한이 있는 대댓글을 삭제한다.")
+    void deleteReply() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(reply));
+
+        CommentDeleteResponse response = commentService.deleteComment(reply.getId(), authInfo);
+
+        Assertions.assertThat(response.getComment_id()).isEqualTo(reply.getId());
+        Assertions.assertThat(singleComment.getChildren().size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("권한이 없는 대댓글을 삭제할 수 없다.")
+    void deleteReply_exception_noAuth() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(reply));
+
+        AuthInfo noAuthInfo = AuthInfo.builder()
+                .sub("no")
+                .username("no")
+                .build();
+
+        Assertions.assertThatThrownBy(() -> commentService.deleteComment(reply.getId(), noAuthInfo))
+                .isInstanceOf(AuthorizationException.class);
+    }
+
+    @Test
+    @DisplayName("부모 댓글을 삭제해도 대댓글은 남아있다.")
+    void deleteComment_keepChildren() {
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(singleComment));
+
+        commentService.deleteComment(singleComment.getId(), authInfo);
+
+        Assertions.assertThat(singleComment.isSoftRemoved()).isEqualTo(true);
+        Assertions.assertThat(singleComment.getChildren().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("특정 대댓글 삭제 후, 삭제 예정으로 처리되고 대댓글이 없는 부모 댓글을 삭제한다.")
+    void deletePrentAndReply() {
+        singleComment.willBeDeleted();
+        Mockito.when(commentRepository.findById(any(Long.class)))
+                .thenReturn(Optional.ofNullable(reply));
+        commentService.deleteComment(reply.getId(), authInfo);
+
+        Assertions.assertThat(singleComment.canDelete()).isEqualTo(true);
     }
 
 }

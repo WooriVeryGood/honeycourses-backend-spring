@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.wooriverygood.api.comment.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class CommentResponse {
@@ -16,10 +17,11 @@ public class CommentResponse {
     private final int comment_likes;
     private final LocalDateTime comment_time;
     private final boolean liked;
+    private final List<ReplyResponse> replies;
 
 
     @Builder
-    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked) {
+    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked, List<ReplyResponse> replies) {
         this.comment_id = comment_id;
         this.comment_content = comment_content;
         this.comment_author = comment_author;
@@ -27,10 +29,11 @@ public class CommentResponse {
         this.comment_likes = comment_likes;
         this.comment_time = comment_time;
         this.liked = liked;
+        this.replies = replies;
     }
 
 
-    public static CommentResponse from(Comment comment, boolean liked) {
+    public static CommentResponse from(Comment comment, List<ReplyResponse> replies, boolean liked) {
         return CommentResponse.builder()
                 .comment_id(comment.getId())
                 .comment_content(comment.getContent())
@@ -39,6 +42,19 @@ public class CommentResponse {
                 .comment_likes(comment.getLikeCount())
                 .comment_time(comment.getCreatedAt())
                 .liked(liked)
+                .replies(replies)
+                .build();
+    }
+
+    public static CommentResponse softRemovedFrom(Comment comment, List<ReplyResponse> replies) {
+        return CommentResponse.builder()
+                .comment_id(comment.getId())
+                .comment_content(null)
+                .comment_author(comment.getAuthor())
+                .post_id(comment.getPost().getId())
+                .comment_likes(comment.getLikeCount())
+                .comment_time(comment.getCreatedAt())
+                .replies(replies)
                 .build();
     }
 }

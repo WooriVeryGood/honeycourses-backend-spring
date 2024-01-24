@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-86] 댓글 삭제 기능 구현&#10;&#10;### 댓글 좋아요 엔드 포인트 경로 변경&#10;&#10;기존의 /community/comments/{id}/like 에서 /comments/{id}/like 으로 변경했어요.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/controller/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentLikeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentLikeRepository.java" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요.">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/PostLikeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/PostLikeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,12 +84,18 @@
   "keyToString": {
     "Gradle.Build honeycourses-backend-spring.executor": "Run",
     "Gradle.CommentControllerTest.addComment.executor": "Run",
+    "Gradle.CommentControllerTest.addReply.executor": "Run",
     "Gradle.CommentControllerTest.deleteComment.executor": "Run",
     "Gradle.CommentControllerTest.executor": "Run",
     "Gradle.CommentControllerTest.findAllCommentsByPostId.executor": "Run",
     "Gradle.CommentControllerTest.updateComment.executor": "Run",
     "Gradle.CommentControllerTest.updateComment_exception_noAuth.executor": "Run",
     "Gradle.CommentControllerTest.updateComment_exception_noContent.executor": "Run",
+    "Gradle.CommentServiceTest.addReply.executor": "Run",
+    "Gradle.CommentServiceTest.addReply_exception_depth.executor": "Run",
+    "Gradle.CommentServiceTest.deletePrentAndReply.executor": "Run",
+    "Gradle.CommentServiceTest.deleteReply.executor": "Run",
+    "Gradle.CommentServiceTest.deleteReply_keep_parent.executor": "Run",
     "Gradle.CommentServiceTest.executor": "Run",
     "Gradle.CommentServiceTest.likeComment_up.executor": "Run",
     "Gradle.CommentServiceTest.updateComment.executor": "Run",
@@ -127,12 +127,12 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Shell Script.gradlew.executor": "Run",
-    "Spring Boot.HoneycoursesBackend.executor": "Run",
+    "Spring Boot.HoneycoursesBackend.executor": "Debug",
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "HC-119-post-comment-like",
+    "git-widget-placeholder": "HC-129-comments-reply",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -194,7 +194,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CommentServiceTest.updateComment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -207,7 +207,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.updateComment&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -218,7 +218,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CommentServiceTest.updateComment_exception_noAuth" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentServiceTest.deletePrentAndReply" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -231,7 +231,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.updateComment_exception_noAuth&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.deletePrentAndReply&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -242,7 +242,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentServiceTest.deleteReply" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -255,7 +255,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.deleteReply&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -266,26 +266,37 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="honeycourses-backend-spring.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.wooriverygood.api.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="CommentServiceTest.deleteReply_keep_parent" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.deleteReply_keep_parent&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.CommentControllerTest" />
-        <item itemvalue="Gradle.PostControllerTest" />
-        <item itemvalue="Spring Boot.HoneycoursesBackend" />
-        <item itemvalue="Gradle.CommentServiceTest.updateComment" />
-        <item itemvalue="Gradle.CommentServiceTest.updateComment_exception_noAuth" />
+        <item itemvalue="Gradle.CommentServiceTest.deletePrentAndReply" />
+        <item itemvalue="Gradle.CommentServiceTest.deleteReply_keep_parent" />
+        <item itemvalue="Gradle.CommentServiceTest" />
+        <item itemvalue="Gradle.CommentServiceTest.deleteReply" />
       </list>
     </recent_temporary>
   </component>
@@ -510,7 +521,31 @@
       <option name="project" value="LOCAL" />
       <updated>1705751775137</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="[HC-129] 지연 로딩 적용">
+      <option name="closed" value="true" />
+      <created>1705951323612</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1705951323612</updated>
+    </task>
+    <task id="LOCAL-00027" summary="[HC-129] 대댓글 작성 기능 구현&#10;&#10;댓글과 대댓글 모두 Comment 객체로 처리했어요.&#10;&#10;- Comment 클래스에 parent, children 필드 추가&#10;&#10;일반 댓글은 parent 필드 값이 null 이며, childrent 필드에는 대댓글 객체들이 들어가요.&#10;&#10;따라서 대댓글은 모두 같은 부모 댓글을 바라보며, 대댓글의 대댓글은 불가능해요.">
+      <option name="closed" value="true" />
+      <created>1706040434040</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1706040434040</updated>
+    </task>
+    <task id="LOCAL-00028" summary="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요.">
+      <option name="closed" value="true" />
+      <created>1706042871509</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1706042871509</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -528,9 +563,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="project init" />
-    <MESSAGE value="commit test" />
-    <MESSAGE value="feat. /api/courses get 기능" />
     <MESSAGE value="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정" />
     <MESSAGE value="[HC-68] 모든 게시글 불러오기 기능 구현" />
     <MESSAGE value="[HC-68] 특정 게시글 정보 조회 기능 구현&#10;&#10;- Post 패키지명에 따라서 이름 변경" />
@@ -553,7 +585,10 @@
     <MESSAGE value="[HC-86] 게시글 삭제 기능 구현&#10;&#10;### 테스트 코드 수정&#10;&#10;Mock.when 시, 패러미터로 any()를 할당 안해서 adoc 문서에 Response 객체가 안 나타나는 현상 해결했어요.&#10;&#10;### CourseNotFoundException 위치 이동&#10;&#10;advice/exception 폴더로 이동했어요." />
     <MESSAGE value="[HC-86] 테스트 코드 수정&#10;&#10;PostServiceTest의 deletePost 메서드에서 CommentRepository를 사용하기 때문에 추가했어요." />
     <MESSAGE value="[HC-86] 댓글 삭제 기능 구현&#10;&#10;### 댓글 좋아요 엔드 포인트 경로 변경&#10;&#10;기존의 /community/comments/{id}/like 에서 /comments/{id}/like 으로 변경했어요." />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-86] 댓글 삭제 기능 구현&#10;&#10;### 댓글 좋아요 엔드 포인트 경로 변경&#10;&#10;기존의 /community/comments/{id}/like 에서 /comments/{id}/like 으로 변경했어요." />
+    <MESSAGE value="[HC-129] 지연 로딩 적용" />
+    <MESSAGE value="[HC-129] 대댓글 작성 기능 구현&#10;&#10;댓글과 대댓글 모두 Comment 객체로 처리했어요.&#10;&#10;- Comment 클래스에 parent, children 필드 추가&#10;&#10;일반 댓글은 parent 필드 값이 null 이며, childrent 필드에는 대댓글 객체들이 들어가요.&#10;&#10;따라서 대댓글은 모두 같은 부모 댓글을 바라보며, 대댓글의 대댓글은 불가능해요." />
+    <MESSAGE value="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요." />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
