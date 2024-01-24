@@ -17,13 +17,13 @@ public enum PostCategory {
         return this.value.equals(value);
     }
 
-    public static PostCategory parse(String value) throws InvalidPostCategoryException {
+    public static PostCategory parse(String value)  {
         return switch (value) {
             case "자유" -> PostCategory.FREE;
             case "질문" -> PostCategory.QUESTION;
             case "중고거래" -> PostCategory.TRADE;
             case "구인" -> PostCategory.OFFER;
-            default -> throw new InvalidPostCategoryException();
+            default -> null;
         };
     }
 }

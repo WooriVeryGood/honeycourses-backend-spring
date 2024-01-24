@@ -2,6 +2,7 @@ package org.wooriverygood.api.comment.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.advice.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.domain.CommentLike;
 import org.wooriverygood.api.comment.dto.*;
@@ -14,6 +15,7 @@ import org.wooriverygood.api.post.repository.PostRepository;
 import org.wooriverygood.api.support.AuthInfo;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -33,9 +35,25 @@ public class CommentService {
 
     public List<CommentResponse> findAllComments(Long postId, AuthInfo authInfo) {
         List<Comment> comments = commentRepository.findAllByPostId(postId);
-        return comments.stream().map(comment -> {
-            boolean liked = commentLikeRepository.existsByCommentAndUsername(comment, authInfo.getUsername());
-            return CommentResponse.from(comment, liked);
+        return comments.stream().map(comment -> convertToCommentResponse(comment, authInfo))
+                .filter(response -> !Objects.isNull(response))
+                .toList();
+    }
+
+    private CommentResponse convertToCommentResponse(Comment comment, AuthInfo authInfo) {
+        if (comment.isReply())
+            return null;
+        if (comment.isSoftRemoved())
+            return CommentResponse.softRemovedFrom(comment, convertToReplyResponses(comment, authInfo));
+
+        boolean liked = commentLikeRepository.existsByCommentAndUsername(comment, authInfo.getUsername());
+        return CommentResponse.from(comment, convertToReplyResponses(comment, authInfo), liked);
+    }
+
+    private List<ReplyResponse> convertToReplyResponses(Comment parent, AuthInfo authInfo) {
+        return parent.getChildren().stream().map(reply -> {
+            boolean liked = commentLikeRepository.existsByCommentAndUsername(reply, authInfo.getUsername());
+            return ReplyResponse.from(reply, liked);
         }).toList();
     }
 
@@ -119,11 +137,54 @@ public class CommentService {
         comment.validateAuthor(authInfo.getUsername());
 
         commentLikeRepository.deleteAllByComment(comment);
-        commentRepository.delete(comment);
+        deleteCommentOrReply(comment);
 
         return CommentDeleteResponse.builder()
                 .comment_id(commentId)
                 .build();
     }
 
+    private void deleteCommentOrReply(Comment comment) {
+        if (comment.isParent()) {
+            deleteParent(comment);
+            return;
+        }
+        deleteChild(comment);
+    }
+
+    private void deleteParent(Comment parent) {
+        if (parent.hasNoReply()) {
+            commentRepository.delete(parent);
+            return;
+        }
+        parent.willBeDeleted();
+    }
+
+    private void deleteChild(Comment reply) {
+        Comment parent = reply.getParent();
+        parent.deleteChild(reply);
+        commentRepository.delete(reply);
+
+        if (parent.canDelete())
+            commentRepository.delete(parent);
+    }
+
+    @Transactional
+    public void addReply(Long commentId, NewReplyRequest request, AuthInfo authInfo) {
+        Comment parent = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+
+        if (!parent.isParent())
+            throw new ReplyDepthException();
+
+        Comment child = Comment.builder()
+                .content(request.getContent())
+                .author(authInfo.getUsername())
+                .post(parent.getPost())
+                .parent(parent)
+                .build();
+        parent.addChildren(child);
+
+        commentRepository.save(child);
+    }
 }
