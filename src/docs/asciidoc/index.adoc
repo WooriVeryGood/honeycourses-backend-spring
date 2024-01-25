@@ -61,6 +61,12 @@ operation::reviews/delete/fail/noAuth[snippets='http-request,http-response']
 ==== 성공
 operation::post/find/all/success[snippets='http-request,http-response']
 
+=== 특정 카테고리 게시글 보기 (GET /community/category/{category})
+유효한 category 값: free(자유), question(질문), trade(중고거래), offer(구인)
+
+==== 성공
+operation::post/find/category/success[snippets='http-request,http-response']
+
 === 특정 게시글 보기 (GET /community/{id})
 ==== 성공
 operation::post/find/one/success[snippets='http-request,http-response']

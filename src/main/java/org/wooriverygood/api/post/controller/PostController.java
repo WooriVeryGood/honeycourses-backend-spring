@@ -33,6 +33,15 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<PostsResponse> findPostsByCategory(@Login AuthInfo authInfo,
+                                                             @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
+                                                             @PathVariable("category") String postCategory) {
+        Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
+        PostsResponse response = postService.findPostsByCategory(authInfo, pageable, postCategory);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> findPostById(@PathVariable("id") Long postId,
                                                      @Login AuthInfo authInfo) {
