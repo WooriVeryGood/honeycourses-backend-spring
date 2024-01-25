@@ -166,7 +166,7 @@ public class PostService {
 
     public PostsResponse findPostsByCategory(AuthInfo authInfo, Pageable pageable, String postCategory) {
         PostCategory category = PostCategory.parse(postCategory);
-        Page<Post> page = postRepository.findAllByCategory(category, pageable);
+        Page<Post> page = postRepository.findAllByCategoryOrderByIdDesc(category, pageable);
         return convertToPostsResponse(authInfo, page);
     }
 }
