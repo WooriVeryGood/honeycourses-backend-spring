@@ -11,21 +11,28 @@ public class ReplyResponse {
 
     private final Long reply_id;
     private final String reply_content;
+
     private final String reply_author;
+
     private final int reply_likes;
+
     private final LocalDateTime reply_time;
+
     private final boolean liked;
+
+    private final boolean updated;
 
 
     @Builder
 
-    public ReplyResponse(Long reply_id, String reply_content, String reply_author, int reply_likes, LocalDateTime reply_time, boolean liked) {
+    public ReplyResponse(Long reply_id, String reply_content, String reply_author, int reply_likes, LocalDateTime reply_time, boolean liked, boolean updated) {
         this.reply_id = reply_id;
         this.reply_content = reply_content;
         this.reply_author = reply_author;
         this.reply_likes = reply_likes;
         this.reply_time = reply_time;
         this.liked = liked;
+        this.updated = updated;
     }
 
     public static ReplyResponse from(Comment reply, boolean liked) {
@@ -36,6 +43,7 @@ public class ReplyResponse {
                 .reply_likes(reply.getLikeCount())
                 .reply_time(reply.getCreatedAt())
                 .liked(liked)
+                .updated(reply.isUpdated())
                 .build();
     }
 
