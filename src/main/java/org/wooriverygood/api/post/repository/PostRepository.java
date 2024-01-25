@@ -8,13 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.post.domain.Post;
 
-import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAllByOrderByIdDesc(Pageable pageable);
 
-    List<Post> findByAuthor(String author);
+    Page<Post> findByAuthorOrderByIdDesc(String author, Pageable pageable);
 
     @Transactional
     @Modifying(clearAutomatically = true)

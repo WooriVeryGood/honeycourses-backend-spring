@@ -38,19 +38,7 @@ public class PostService {
 
     public PostsResponse findPosts(AuthInfo authInfo, Pageable pageable) {
         Page<Post> page = postRepository.findAllByOrderByIdDesc(pageable);
-
-        List<PostResponse> posts = page.getContent().stream()
-                .map(post -> {
-                    boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-                    return PostResponse.from(post, liked);
-                })
-                .toList();
-
-        return PostsResponse.builder()
-                .posts(posts)
-                .totalPageCount(page.getTotalPages())
-                .totalPostCount(page.getTotalElements())
-                .build();
+        return convertToPostsResponse(authInfo, page);
     }
 
     public PostResponse findPostById(Long postId, AuthInfo authInfo) {
@@ -87,13 +75,24 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> findMyPosts(AuthInfo authInfo) {
-        List<Post> posts = postRepository.findByAuthor(authInfo.getUsername());
+    public PostsResponse findMyPosts(AuthInfo authInfo, Pageable pageable) {
+        Page<Post> page = postRepository.findByAuthorOrderByIdDesc(authInfo.getUsername(), pageable);
+        return convertToPostsResponse(authInfo, page);
+    }
 
-        return posts.stream().map(post -> {
-            boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-            return PostResponse.from(post, liked);
-        }).toList();
+    private PostsResponse convertToPostsResponse(AuthInfo authInfo, Page<Post> page) {
+        List<PostResponse> posts = page.getContent().stream()
+                .map(post -> {
+                    boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
+                    return PostResponse.from(post, liked);
+                })
+                .toList();
+
+        return PostsResponse.builder()
+                .posts(posts)
+                .totalPageCount(page.getTotalPages())
+                .totalPostCount(page.getTotalElements())
+                .build();
     }
 
     @Transactional

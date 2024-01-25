@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -167,7 +168,7 @@ class PostControllerTest extends ControllerTest {
     @DisplayName("사용자 본인이 작성한 게시글을 불러온다.")
     void findMyPosts() {
         List<PostResponse> responses = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
+        for (int i = 1; i < 21; i++) {
             responses.add(PostResponse.builder()
                     .post_id((long) i)
                     .post_title("title")
@@ -182,13 +183,19 @@ class PostControllerTest extends ControllerTest {
                     .build());
         }
 
-        Mockito.when(postService.findMyPosts(any(AuthInfo.class)))
-                .thenReturn(responses);
+        response = PostsResponse.builder()
+                .posts(this.responses.stream().filter(it -> it.getPost_id() >= 11 && it.getPost_id() <= 20).toList())
+                .totalPostCount(20)
+                .totalPageCount(2)
+                .build();
+
+        Mockito.when(postService.findMyPosts(any(AuthInfo.class), any(PageRequest.class)))
+                .thenReturn(response);
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/community/me")
+                .when().get("/community/me?page=1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("post/find/me/success"))

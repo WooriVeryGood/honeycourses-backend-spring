@@ -49,6 +49,8 @@ class PostServiceTest {
 
     List<Post> posts = new ArrayList<>();
 
+    List<Post> myPosts = new ArrayList<>();
+
     AuthInfo authInfo = AuthInfo.builder()
             .sub("22222-34534-123")
             .username("22222-34534-123")
@@ -88,6 +90,7 @@ class PostServiceTest {
                     .postLikes(new ArrayList<>())
                     .build();
             posts.add(post);
+            if (post.getId() > 9) myPosts.add(post);
         }
     }
 
@@ -171,12 +174,19 @@ class PostServiceTest {
     @Test
     @DisplayName("사용자 본인이 작성한 게시글을 불러온다.")
     void findMyPosts() {
-        Mockito.when(postRepository.findByAuthor(any(String.class)))
-                .thenReturn(posts);
+        Pageable pageable = PageRequest.of(0, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), this.myPosts.size());
+        List<Post> posts = this.myPosts.subList(start, end);
+        PageImpl<Post> page = new PageImpl<>(posts, pageable, this.myPosts.size());
+        Mockito.when(postRepository.findByAuthorOrderByIdDesc(any(String.class), any(PageRequest.class)))
+                .thenReturn(page);
 
-        List<PostResponse> responses = postService.findMyPosts(authInfo);
+        PostsResponse response = postService.findMyPosts(authInfo, pageable);
 
-        Assertions.assertThat(responses.get(0).getPost_author()).isEqualTo(authInfo.getUsername());
+        Assertions.assertThat(response.getPosts().size()).isEqualTo(10);
+        Assertions.assertThat(response.getTotalPageCount()).isEqualTo(2);
+        Assertions.assertThat(response.getTotalPostCount()).isEqualTo(14);
     }
 
     @Test
