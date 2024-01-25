@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
@@ -25,6 +26,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 class PostControllerTest extends ControllerTest {
 
     PostsResponse response;
+
+    PostsResponse freePostsResponse;
+
     List<PostResponse> responses = new ArrayList<>();
 
     AuthInfo authInfo = AuthInfo.builder()
@@ -35,11 +39,12 @@ class PostControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
+        List<PostResponse> postResponses = new ArrayList<>();
         for (int i = 1; i <= 23; i++) {
-            responses.add(PostResponse.builder()
+            PostResponse postResponse = PostResponse.builder()
                     .post_id((long) i)
                     .post_title("title" + i)
-                    .post_category("자유")
+                    .post_category(i % 4 == 0 ? "자유" : "구인")
                     .post_content("content" + i)
                     .post_author(authInfo.getUsername())
                     .post_comments(10 + i)
@@ -47,17 +52,26 @@ class PostControllerTest extends ControllerTest {
                     .post_time(LocalDateTime.now())
                     .liked(i % 5 == 0)
                     .updated(i % 2 == 0)
-                    .build());
+                    .build();
+            responses.add(postResponse);
+            if (i % 4 == 0)
+                postResponses.add(postResponse);
         }
         response = PostsResponse.builder()
                 .posts(responses.stream().filter(it -> it.getPost_id() >= 4 && it.getPost_id() < 14).toList())
                 .totalPostCount(23)
                 .totalPageCount(3)
                 .build();
+
+        freePostsResponse = PostsResponse.builder()
+                .posts(postResponses)
+                .totalPostCount(5)
+                .totalPageCount(1)
+                .build();
     }
 
     @Test
-    @DisplayName("게시글을 전부 반환한다.")
+    @DisplayName("전체 게시글의 2번째 페이지를 반환한다.")
     void findPosts() {
         Mockito.when(postService.findPosts(any(AuthInfo.class), any(Pageable.class)))
                 .thenReturn(response);
@@ -69,6 +83,22 @@ class PostControllerTest extends ControllerTest {
                 .then().log().all()
                 .assertThat()
                 .apply(document("post/find/all/success"))
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("자유 카테고리의 1번째 페이지를 반환한다.")
+    void findPostsByCategory() {
+        Mockito.when(postService.findPostsByCategory(any(AuthInfo.class), any(Pageable.class), any(String.class)))
+                .thenReturn(freePostsResponse);
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/community/category/free")
+                .then().log().all()
+                .assertThat()
+                .apply(document("post/find/category/success"))
                 .statusCode(HttpStatus.OK.value());
     }
 

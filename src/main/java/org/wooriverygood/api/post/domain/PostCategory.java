@@ -5,6 +5,7 @@ import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
 
 @Getter
 public enum PostCategory {
+
     FREE("자유"), QUESTION("질문"), TRADE("중고거래"), OFFER("구인");
 
     private final String value;
@@ -19,11 +20,11 @@ public enum PostCategory {
 
     public static PostCategory parse(String value)  {
         return switch (value) {
-            case "자유" -> PostCategory.FREE;
-            case "질문" -> PostCategory.QUESTION;
-            case "중고거래" -> PostCategory.TRADE;
-            case "구인" -> PostCategory.OFFER;
-            default -> null;
+            case "자유", "free" -> PostCategory.FREE;
+            case "질문", "question" -> PostCategory.QUESTION;
+            case "중고거래", "trade" -> PostCategory.TRADE;
+            case "구인", "offer" -> PostCategory.OFFER;
+            default -> throw new InvalidPostCategoryException();
         };
     }
 }
