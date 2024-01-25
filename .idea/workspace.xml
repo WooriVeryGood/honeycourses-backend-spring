@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-140] 게시글 페이지네이션 기능 구현 &#10;&#10;## api에 요청 시, 응답 객체 변경 (프론트에서 반영해줘야 함!!!)&#10;&#10;/community?page={pageNo} 에 요청 시, 다음과 같은 응답 객체 반환해요.&#10;&#10;{&#10;  &quot;posts&quot;: [기존 게시글 응답 객체],  // 기본 값으로 10개이며, 해당 페이지의 게시글 개수가 10개 미만이면, 해당하는 개수만큼 들어있어요.&#10;  &quot;totalPageCount&quot;: 3,  // 총 페이지 개수 &#10;  &quot;totalPostCount&quot;: 23  // 총 게시글 개수&#10;}&#10;&#10;- pageNo의 기본값은 0이에요. 만약 최신 게시글 10개만 불러오려면, /community 경로로 요청하면 돼요. 즉, 이 경우에는 물음표 뒤 생략이 가능해요.&#10;&#10;## 예제&#10;&#10;총 23개의 게시글이 존재하면, 총 3개의 페이지로 구분할 수 있어요.&#10;&#10;- 1번째부터 10번째 게시글&#10;- 11번째부터 20번째 게시글&#10;- 21번째부터 23번째 게시글&#10;&#10;따라서, 만약 11번째부터 20번째 게시글을 불러오고 싶으면, api 경로의 pageNo에 1를 넣어줘요. (/community?page=1)">
+      <change beforePath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostCategory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/PostRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
@@ -111,6 +113,7 @@
     "Gradle.PostControllerTest.findPost.executor": "Run",
     "Gradle.PostControllerTest.findPost_exception_invalidId.executor": "Run",
     "Gradle.PostControllerTest.findPosts.executor": "Run",
+    "Gradle.PostControllerTest.findPostsByCategory.executor": "Run",
     "Gradle.PostControllerTest.likePost_up.executor": "Run",
     "Gradle.PostControllerTest.updatePost.executor": "Run",
     "Gradle.PostServiceTest.addPost_exception_invalid_category.executor": "Run",
@@ -118,6 +121,7 @@
     "Gradle.PostServiceTest.executor": "Run",
     "Gradle.PostServiceTest.findAllPosts_login.executor": "Run",
     "Gradle.PostServiceTest.findMyPosts.executor": "Run",
+    "Gradle.PostServiceTest.findPosts_category_free.executor": "Run",
     "Gradle.PostServiceTest.likePost.executor": "Run",
     "Gradle.PostServiceTest.likePost_down.executor": "Run",
     "Gradle.PostServiceTest.likePost_up.executor": "Debug",
@@ -132,13 +136,13 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Shell Script.gradlew.executor": "Run",
-    "Spring Boot.HoneycoursesBackend.executor": "Debug",
+    "Spring Boot.HoneycoursesBackend.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
     "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "HC-140-pagination",
+    "git-widget-placeholder": "HC-142-post-category",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -175,7 +179,7 @@
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.PostServiceTest.findMyPosts">
+  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
     <configuration name="PostControllerTest.findMyPosts" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -200,7 +204,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostControllerTest.findPosts" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PostControllerTest.findPostsByCategory" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -213,31 +217,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest.findPosts&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="PostServiceTest.findAllPosts_login" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.findAllPosts_login&quot;" />
+            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest.findPostsByCategory&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -272,6 +252,30 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="PostServiceTest.findPosts_category_free" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.findPosts_category_free&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="honeycourses-backend-spring.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
@@ -287,11 +291,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.HoneycoursesBackend" />
+        <item itemvalue="Gradle.PostServiceTest.findPosts_category_free" />
+        <item itemvalue="Gradle.PostControllerTest.findPostsByCategory" />
         <item itemvalue="Gradle.PostServiceTest.findMyPosts" />
         <item itemvalue="Gradle.PostControllerTest.findMyPosts" />
-        <item itemvalue="Gradle.PostServiceTest.findAllPosts_login" />
-        <item itemvalue="Gradle.PostControllerTest.findPosts" />
-        <item itemvalue="Spring Boot.HoneycoursesBackend" />
       </list>
     </recent_temporary>
   </component>

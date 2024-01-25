@@ -51,6 +51,8 @@ class PostServiceTest {
 
     List<Post> myPosts = new ArrayList<>();
 
+    List<Post> freePosts = new ArrayList<>();
+
     AuthInfo authInfo = AuthInfo.builder()
             .sub("22222-34534-123")
             .username("22222-34534-123")
@@ -91,12 +93,13 @@ class PostServiceTest {
                     .build();
             posts.add(post);
             if (post.getId() > 9) myPosts.add(post);
+            if (post.getId() > 9) freePosts.add(post);
         }
     }
 
     @Test
     @DisplayName("로그인 한 상황에서 게시글을 불러온다.")
-    void findAllPosts_login() {
+    void findPosts_login() {
         Pageable pageable = PageRequest.of(0, 10);
 
         int start = (int) pageable.getOffset();
@@ -111,6 +114,24 @@ class PostServiceTest {
         Assertions.assertThat(response.getPosts().size()).isEqualTo(10);
         Assertions.assertThat(response.getTotalPageCount()).isEqualTo(3);
         Assertions.assertThat(response.getTotalPostCount()).isEqualTo(POST_COUNT);
+    }
+
+    @Test
+    @DisplayName("자유 카테고리의 게시글을 불러온다.")
+    void findPosts_category_free() {
+        Pageable pageable = PageRequest.of(0, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), this.freePosts.size());
+        List<Post> posts = this.freePosts.subList(start, end);
+        PageImpl<Post> page = new PageImpl<>(posts, pageable, this.freePosts.size());
+        Mockito.when(postRepository.findAllByCategory(any(PostCategory.class), any(PageRequest.class)))
+                .thenReturn(page);
+
+        PostsResponse response = postService.findPostsByCategory(authInfo, pageable, "자유");
+
+        Assertions.assertThat(response.getPosts().size()).isEqualTo(10);
+        Assertions.assertThat(response.getTotalPageCount()).isEqualTo(2);
+        Assertions.assertThat(response.getTotalPostCount()).isEqualTo(14);
     }
 
     @Test

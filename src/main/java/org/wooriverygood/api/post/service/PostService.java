@@ -50,8 +50,7 @@ public class PostService {
 
     @Transactional
     public NewPostResponse addPost(AuthInfo authInfo, NewPostRequest newPostRequest) {
-        if (PostCategory.parse(newPostRequest.getPost_category()) == null)
-            throw new InvalidPostCategoryException();
+        PostCategory.parse(newPostRequest.getPost_category());
         Post post = createPost(authInfo, newPostRequest);
         Post saved = postRepository.save(post);
         return createResponse(saved);
@@ -165,4 +164,9 @@ public class PostService {
                 .build();
     }
 
+    public PostsResponse findPostsByCategory(AuthInfo authInfo, Pageable pageable, String postCategory) {
+        PostCategory category = PostCategory.parse(postCategory);
+        Page<Post> page = postRepository.findAllByCategory(category, pageable);
+        return convertToPostsResponse(authInfo, page);
+    }
 }

@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.post.domain.Post;
+import org.wooriverygood.api.post.domain.PostCategory;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAllByOrderByIdDesc(Pageable pageable);
+
+    Page<Post> findAllByCategory(PostCategory category, Pageable pageable);
 
     Page<Post> findByAuthorOrderByIdDesc(String author, Pageable pageable);
 
