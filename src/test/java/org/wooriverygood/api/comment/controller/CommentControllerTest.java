@@ -53,8 +53,9 @@ class CommentControllerTest extends ControllerTest {
                     .post_id(post.getId())
                     .comment_likes(i + 8)
                     .comment_time(LocalDateTime.now())
-                    .liked(false)
+                    .liked(i % 3 == 0)
                     .replies(new ArrayList<>())
+                    .updated(i % 2 == 0)
                     .build());
         }
         for (int i = 12; i <= 15; i++) {
@@ -66,6 +67,7 @@ class CommentControllerTest extends ControllerTest {
                             .reply_likes(i - 6)
                             .reply_time(LocalDateTime.now())
                             .liked(false)
+                            .updated(i % 2 == 0)
                             .build());
         }
     }

@@ -171,6 +171,7 @@ class CommentServiceTest {
         CommentUpdateResponse response = commentService.updateComment(singleComment.getId(), request, authInfo);
 
         Assertions.assertThat(response.getComment_id()).isEqualTo(singleComment.getId());
+        Assertions.assertThat(singleComment.isUpdated()).isEqualTo(true);
     }
 
     @Test
@@ -293,6 +294,7 @@ class CommentServiceTest {
         singleComment.willBeDeleted();
         Mockito.when(commentRepository.findById(any(Long.class)))
                 .thenReturn(Optional.ofNullable(reply));
+
         commentService.deleteComment(reply.getId(), authInfo);
 
         Assertions.assertThat(singleComment.canDelete()).isEqualTo(true);
