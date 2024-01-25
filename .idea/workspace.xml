@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요.">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-129] 댓글 조회 시 대댓글 포함 및 대댓글 삭제 기능 구현&#10;&#10;#### 댓글 조회&#10;&#10;댓글 조회 시, 응답 객체의 replies 필드에 대댓글 응답 객체들이 들어있어요.&#10;&#10;#### 대댓글 삭제&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;대댓글이 달린 부모 댓글을 삭제하면,&#10;&#10;- 부모 댓글의 softRemoved 필드값이 true가 돼요.&#10;- 부모 댓글의 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 부모 댓글의 내용은 null로 반환돼요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요.&#10;&#10;#### 게시글 카테고리 유효성 검증&#10;&#10;유효하지 않을 시, PostService에서 InvalidPostCategoryException을 던져요.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/service/CommentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +133,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "HC-129-comments-reply",
+    "git-widget-placeholder": "HC-137-community-update",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -169,7 +170,7 @@
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.CommentControllerTest">
+  <component name="RunManager" selected="Gradle.PostServiceTest.updatePost">
     <configuration name="CommentControllerTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -242,30 +243,6 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="CommentServiceTest.deleteReply" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.comment.service.CommentServiceTest.deleteReply&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="CommentServiceTest.deleteReply_keep_parent" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -290,13 +267,37 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="PostServiceTest.updatePost" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.updatePost&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.PostServiceTest.updatePost" />
         <item itemvalue="Gradle.CommentControllerTest" />
         <item itemvalue="Gradle.CommentServiceTest.deletePrentAndReply" />
         <item itemvalue="Gradle.CommentServiceTest.deleteReply_keep_parent" />
         <item itemvalue="Gradle.CommentServiceTest" />
-        <item itemvalue="Gradle.CommentServiceTest.deleteReply" />
       </list>
     </recent_temporary>
   </component>
@@ -320,6 +321,7 @@
       <workItem from="1705241248366" duration="871000" />
       <workItem from="1705301106038" duration="464000" />
       <workItem from="1705302176845" duration="9723000" />
+      <workItem from="1706178673625" duration="644000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />

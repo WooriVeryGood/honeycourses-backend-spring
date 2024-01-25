@@ -213,6 +213,7 @@ class PostServiceTest {
         PostUpdateResponse response = postService.updatePost(singlePost.getId(), request, authInfo);
 
         Assertions.assertThat(response.getPost_id()).isEqualTo(singlePost.getId());
+        Assertions.assertThat(singlePost.isUpdated()).isEqualTo(true);
     }
 
     @Test

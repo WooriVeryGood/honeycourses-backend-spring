@@ -48,13 +48,16 @@ public class Post {
     @ColumnDefault("0")
     private int likeCount;
 
+    @ColumnDefault("false")
+    private boolean updated;
+
     @Column(name = "post_time")
     @CreatedDate
     private LocalDateTime createdAt;
 
 
     @Builder
-    public Post(Long id, PostCategory category, String title, String content, String author, List<Comment> comments, List<PostLike> postLikes) {
+    public Post(Long id, PostCategory category, String title, String content, String author, List<Comment> comments, List<PostLike> postLikes, boolean updated) {
         this.id = id;
         this.category = category;
         this.title = title;
@@ -62,6 +65,7 @@ public class Post {
         this.author = author;
         this.comments = comments;
         this.postLikes = postLikes;
+        this.updated = updated;
     }
 
     public void validateAuthor(String author) {
@@ -79,10 +83,12 @@ public class Post {
 
     public void updateTitle(String title) {
         this.title = title;
+        updated = true;
     }
 
     public void updateContent(String content) {
         this.content = content;
+        updated = true;
     }
 
     public int getCommentCount() {

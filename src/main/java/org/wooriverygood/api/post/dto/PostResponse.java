@@ -10,17 +10,28 @@ import java.time.LocalDateTime;
 public class PostResponse {
 
     private final Long post_id;
+
     private final String post_title;
+
     private final String post_content;
+
     private final String post_category;
+
     private final String post_author;
+
     private final int post_comments;
+
     private final int post_likes;
+
     private final LocalDateTime post_time;
+
     private final boolean liked;
 
+    private final boolean updated;
+
+
     @Builder
-    public PostResponse(Long post_id, String post_title, String post_content, String post_category, String post_author, int post_comments, int post_likes, LocalDateTime post_time, boolean liked) {
+    public PostResponse(Long post_id, String post_title, String post_content, String post_category, String post_author, int post_comments, int post_likes, LocalDateTime post_time, boolean liked, boolean updated) {
         this.post_id = post_id;
         this.post_title = post_title;
         this.post_content = post_content;
@@ -30,6 +41,7 @@ public class PostResponse {
         this.post_likes = post_likes;
         this.post_time = post_time;
         this.liked = liked;
+        this.updated = updated;
     }
 
     public static PostResponse from(Post post, boolean liked) {
@@ -43,6 +55,7 @@ public class PostResponse {
                 .post_likes(post.getLikeCount())
                 .post_time(post.getCreatedAt())
                 .liked(liked)
+                .updated(post.isUpdated())
                 .build();
     }
 
