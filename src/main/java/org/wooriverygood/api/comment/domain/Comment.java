@@ -56,8 +56,10 @@ public class Comment {
     private LocalDateTime createdAt;
 
     @Column(name = "soft_removed")
+    @ColumnDefault("false")
     private boolean softRemoved;
 
+    @ColumnDefault("false")
     private boolean updated;
 
     @Builder

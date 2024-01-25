@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
@@ -22,6 +23,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 
 class PostControllerTest extends ControllerTest {
 
+    PostsResponse response;
     List<PostResponse> responses = new ArrayList<>();
 
     AuthInfo authInfo = AuthInfo.builder()
@@ -32,7 +34,7 @@ class PostControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= 23; i++) {
             responses.add(PostResponse.builder()
                     .post_id((long) i)
                     .post_title("title" + i)
@@ -42,22 +44,27 @@ class PostControllerTest extends ControllerTest {
                     .post_comments(10 + i)
                     .post_likes(2 + i)
                     .post_time(LocalDateTime.now())
-                    .liked(i % 3 == 0)
+                    .liked(i % 5 == 0)
                     .updated(i % 2 == 0)
                     .build());
         }
+        response = PostsResponse.builder()
+                .posts(responses.stream().filter(it -> it.getPost_id() >= 4 && it.getPost_id() < 14).toList())
+                .totalPostCount(23)
+                .totalPageCount(3)
+                .build();
     }
 
     @Test
     @DisplayName("게시글을 전부 반환한다.")
-    void findAllPosts() {
-        Mockito.when(postService.findAllPosts(any(AuthInfo.class)))
-                .thenReturn(responses);
+    void findPosts() {
+        Mockito.when(postService.findPosts(any(AuthInfo.class), any(Pageable.class)))
+                .thenReturn(response);
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/community")
+                .when().get("/community?page=1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("post/find/all/success"))

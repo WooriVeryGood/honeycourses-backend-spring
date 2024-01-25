@@ -1,5 +1,7 @@
 package org.wooriverygood.api.post.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
@@ -27,25 +29,28 @@ public class PostService {
     private final CommentRepository commentRepository;
 
 
+
     public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.postLikeRepository = postLikeRepository;
         this.commentRepository = commentRepository;
     }
 
-    public List<PostResponse> findAllPosts(AuthInfo authInfo) {
-        List<Post> posts = postRepository.findAll();
+    public PostsResponse findPosts(AuthInfo authInfo, Pageable pageable) {
+        Page<Post> page = postRepository.findAllByOrderByIdDesc(pageable);
 
-        if (authInfo.getUsername() == null)
-            return posts.stream()
-                    .map(post -> PostResponse.from(post, false))
-                    .toList();
-        return posts.stream()
+        List<PostResponse> posts = page.getContent().stream()
                 .map(post -> {
                     boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
                     return PostResponse.from(post, liked);
                 })
                 .toList();
+
+        return PostsResponse.builder()
+                .posts(posts)
+                .totalPageCount(page.getTotalPages())
+                .totalPostCount(page.getTotalElements())
+                .build();
     }
 
     public PostResponse findPostById(Long postId, AuthInfo authInfo) {
