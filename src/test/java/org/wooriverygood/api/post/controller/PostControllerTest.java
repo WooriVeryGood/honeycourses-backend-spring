@@ -42,7 +42,8 @@ class PostControllerTest extends ControllerTest {
                     .post_comments(10 + i)
                     .post_likes(2 + i)
                     .post_time(LocalDateTime.now())
-                    .liked(false)
+                    .liked(i % 3 == 0)
+                    .updated(i % 2 == 0)
                     .build());
         }
     }
@@ -75,6 +76,8 @@ class PostControllerTest extends ControllerTest {
                 .post_comments(2)
                 .post_likes(3)
                 .post_time(LocalDateTime.now())
+                .liked(false)
+                .updated(false)
                 .build();
 
         Mockito.when(postService.findPostById(any(Long.class), any(AuthInfo.class)))
@@ -168,6 +171,7 @@ class PostControllerTest extends ControllerTest {
                     .post_likes(0)
                     .post_time(LocalDateTime.now())
                     .liked(false)
+                    .updated(false)
                     .build());
         }
 

@@ -55,10 +55,13 @@ public class Comment {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Column(name = "soft_removed")
     private boolean softRemoved;
 
+    private boolean updated;
+
     @Builder
-    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes, boolean softRemoved) {
+    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes, boolean softRemoved, boolean updated) {
         this.id = id;
         this.content = content;
         this.author = author;
@@ -66,6 +69,7 @@ public class Comment {
         this.parent = parent;
         this.commentLikes = commentLikes;
         this.softRemoved = softRemoved;
+        this.updated = updated;
     }
 
     public void addCommentLike(CommentLike commentLike) {
@@ -83,6 +87,7 @@ public class Comment {
 
     public void updateContent(String content) {
         this.content = content;
+        updated = true;
     }
 
     public void addChildren(Comment reply) {

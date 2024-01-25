@@ -11,17 +11,26 @@ import java.util.List;
 public class CommentResponse {
 
     private final Long comment_id;
+
     private final String comment_content;
+
     private final String comment_author;
+
     private final Long post_id;
+
     private final int comment_likes;
+
     private final LocalDateTime comment_time;
+
     private final boolean liked;
+
     private final List<ReplyResponse> replies;
+
+    private final boolean updated;
 
 
     @Builder
-    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked, List<ReplyResponse> replies) {
+    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked, List<ReplyResponse> replies, boolean updated) {
         this.comment_id = comment_id;
         this.comment_content = comment_content;
         this.comment_author = comment_author;
@@ -30,6 +39,7 @@ public class CommentResponse {
         this.comment_time = comment_time;
         this.liked = liked;
         this.replies = replies;
+        this.updated = updated;
     }
 
 
@@ -43,6 +53,7 @@ public class CommentResponse {
                 .comment_time(comment.getCreatedAt())
                 .liked(liked)
                 .replies(replies)
+                .updated(comment.isUpdated())
                 .build();
     }
 
@@ -55,6 +66,7 @@ public class CommentResponse {
                 .comment_likes(comment.getLikeCount())
                 .comment_time(comment.getCreatedAt())
                 .replies(replies)
+                .updated(comment.isUpdated())
                 .build();
     }
 }
