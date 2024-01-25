@@ -124,7 +124,7 @@ class PostServiceTest {
         int end = Math.min(start + pageable.getPageSize(), this.freePosts.size());
         List<Post> posts = this.freePosts.subList(start, end);
         PageImpl<Post> page = new PageImpl<>(posts, pageable, this.freePosts.size());
-        Mockito.when(postRepository.findAllByCategory(any(PostCategory.class), any(PageRequest.class)))
+        Mockito.when(postRepository.findAllByCategoryOrderByIdDesc(any(PostCategory.class), any(PageRequest.class)))
                 .thenReturn(page);
 
         PostsResponse response = postService.findPostsByCategory(authInfo, pageable, "자유");
