@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
@@ -42,9 +45,11 @@ class PostServiceTest {
     @Mock
     private CommentRepository commentRepository;
 
-    private final int POST_COUNT = 10;
+    private final int POST_COUNT = 23;
 
     List<Post> posts = new ArrayList<>();
+
+    List<Post> myPosts = new ArrayList<>();
 
     AuthInfo authInfo = AuthInfo.builder()
             .sub("22222-34534-123")
@@ -74,9 +79,9 @@ class PostServiceTest {
 
     @BeforeEach
     void setUpPosts() {
-        for (int i = 0; i < POST_COUNT; i++) {
+        for (int i = 1; i <= POST_COUNT; i++) {
             Post post = Post.builder()
-                    .id((long) (i + 1))
+                    .id((long) i)
                     .category(PostCategory.FREE)
                     .title("title" + i)
                     .content("content" + i)
@@ -85,18 +90,27 @@ class PostServiceTest {
                     .postLikes(new ArrayList<>())
                     .build();
             posts.add(post);
+            if (post.getId() > 9) myPosts.add(post);
         }
     }
 
     @Test
-    @DisplayName("로그인 한 상황에서 모든 게시글을 불러온다.")
+    @DisplayName("로그인 한 상황에서 게시글을 불러온다.")
     void findAllPosts_login() {
-        Mockito.when(postRepository.findAll())
-                .thenReturn(posts);
+        Pageable pageable = PageRequest.of(0, 10);
 
-        List<PostResponse> responses = postService.findAllPosts(authInfo);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), this.posts.size());
+        List<Post> posts = this.posts.subList(start, end);
+        PageImpl<Post> page = new PageImpl<>(posts, pageable, this.posts.size());
+        Mockito.when(postRepository.findAllByOrderByIdDesc(any(PageRequest.class)))
+                .thenReturn(page);
 
-        Assertions.assertThat(responses.size()).isEqualTo(POST_COUNT);
+        PostsResponse response = postService.findPosts(authInfo, pageable);
+
+        Assertions.assertThat(response.getPosts().size()).isEqualTo(10);
+        Assertions.assertThat(response.getTotalPageCount()).isEqualTo(3);
+        Assertions.assertThat(response.getTotalPostCount()).isEqualTo(POST_COUNT);
     }
 
     @Test
@@ -160,12 +174,19 @@ class PostServiceTest {
     @Test
     @DisplayName("사용자 본인이 작성한 게시글을 불러온다.")
     void findMyPosts() {
-        Mockito.when(postRepository.findByAuthor(any(String.class)))
-                .thenReturn(posts);
+        Pageable pageable = PageRequest.of(0, 10);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), this.myPosts.size());
+        List<Post> posts = this.myPosts.subList(start, end);
+        PageImpl<Post> page = new PageImpl<>(posts, pageable, this.myPosts.size());
+        Mockito.when(postRepository.findByAuthorOrderByIdDesc(any(String.class), any(PageRequest.class)))
+                .thenReturn(page);
 
-        List<PostResponse> responses = postService.findMyPosts(authInfo);
+        PostsResponse response = postService.findMyPosts(authInfo, pageable);
 
-        Assertions.assertThat(responses.get(0).getPost_author()).isEqualTo(authInfo.getUsername());
+        Assertions.assertThat(response.getPosts().size()).isEqualTo(10);
+        Assertions.assertThat(response.getTotalPageCount()).isEqualTo(2);
+        Assertions.assertThat(response.getTotalPostCount()).isEqualTo(14);
     }
 
     @Test

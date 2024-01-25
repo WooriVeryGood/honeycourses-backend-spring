@@ -1,5 +1,7 @@
 package org.wooriverygood.api.post.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
@@ -27,25 +29,16 @@ public class PostService {
     private final CommentRepository commentRepository;
 
 
+
     public PostService(PostRepository postRepository, PostLikeRepository postLikeRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.postLikeRepository = postLikeRepository;
         this.commentRepository = commentRepository;
     }
 
-    public List<PostResponse> findAllPosts(AuthInfo authInfo) {
-        List<Post> posts = postRepository.findAll();
-
-        if (authInfo.getUsername() == null)
-            return posts.stream()
-                    .map(post -> PostResponse.from(post, false))
-                    .toList();
-        return posts.stream()
-                .map(post -> {
-                    boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-                    return PostResponse.from(post, liked);
-                })
-                .toList();
+    public PostsResponse findPosts(AuthInfo authInfo, Pageable pageable) {
+        Page<Post> page = postRepository.findAllByOrderByIdDesc(pageable);
+        return convertToPostsResponse(authInfo, page);
     }
 
     public PostResponse findPostById(Long postId, AuthInfo authInfo) {
@@ -82,13 +75,24 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> findMyPosts(AuthInfo authInfo) {
-        List<Post> posts = postRepository.findByAuthor(authInfo.getUsername());
+    public PostsResponse findMyPosts(AuthInfo authInfo, Pageable pageable) {
+        Page<Post> page = postRepository.findByAuthorOrderByIdDesc(authInfo.getUsername(), pageable);
+        return convertToPostsResponse(authInfo, page);
+    }
 
-        return posts.stream().map(post -> {
-            boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-            return PostResponse.from(post, liked);
-        }).toList();
+    private PostsResponse convertToPostsResponse(AuthInfo authInfo, Page<Post> page) {
+        List<PostResponse> posts = page.getContent().stream()
+                .map(post -> {
+                    boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
+                    return PostResponse.from(post, liked);
+                })
+                .toList();
+
+        return PostsResponse.builder()
+                .posts(posts)
+                .totalPageCount(page.getTotalPages())
+                .totalPostCount(page.getTotalElements())
+                .build();
     }
 
     @Transactional
