@@ -54,6 +54,7 @@ public class ReviewService {
                 .authorEmail(authInfo.getUsername())
                 .build();
         Review saved = reviewRepository.save(review);
+        reviewRepository.increaseReviewCount(review.getCourse().getId());
         return createResponse(saved);
     }
 
@@ -138,6 +139,7 @@ public class ReviewService {
 
         reviewLikeRepository.deleteAllByReview(review);
         reviewRepository.delete(review);
+        reviewRepository.decreaseReviewCount(review.getCourse().getId());
 
         return ReviewDeleteResponse.builder()
                 .review_id(reviewId)

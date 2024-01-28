@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -30,14 +31,19 @@ public class Courses {
     @Column(name = "kaikeYuanxi", nullable = false)
     private String kaikeYuanxi;
 
+    @Column(name = "review_count", nullable = false)
+    @ColumnDefault("0")
+    private int reviewCount;
+
     @Builder
-    public Courses(Long id, String course_name, String course_category, int course_credit, int isYouguan, String kaikeYuanxi) {
+    public Courses(Long id, String course_name, String course_category, int course_credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
         this.id = id;
         this.course_name = course_name;
         this.course_category = course_category;
         this.course_credit = course_credit;
         this.isYouguan = isYouguan;
         this.kaikeYuanxi = kaikeYuanxi;
+        this.reviewCount = reviewCount;
     }
 
 

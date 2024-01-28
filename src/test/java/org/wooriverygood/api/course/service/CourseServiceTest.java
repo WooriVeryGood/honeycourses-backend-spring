@@ -49,6 +49,7 @@ public class CourseServiceTest {
                     .course_credit(5)
                     .isYouguan(0)
                     .kaikeYuanxi("Xinke")
+                    .reviewCount(0)
                     .build());
         }
     }
@@ -60,6 +61,7 @@ public class CourseServiceTest {
             .course_credit(5)
             .isYouguan(0)
             .kaikeYuanxi("Xinke")
+            .reviewCount(0)
             .build();
 
 
@@ -93,6 +95,7 @@ public class CourseServiceTest {
                         .course_credit(newCourseRequest.getCourse_credit())
                         .kaikeYuanxi(newCourseRequest.getKaikeYuanxi())
                         .isYouguan(newCourseRequest.getIsYouguan())
+                        .reviewCount(0)
                         .build());
 
         NewCourseResponse response = courseService.addCourse(newCourseRequest);
