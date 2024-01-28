@@ -57,8 +57,11 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewLike> reviewLikes;
 
+    @ColumnDefault("false")
+    private boolean updated;
+
     @Builder
-    public Review(Long id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail, List<ReviewLike> reviewLikes) {
+    public Review(Long id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail, List<ReviewLike> reviewLikes, boolean updated) {
         this.id = id;
         this.course = course;
         this.reviewContent = reviewContent;
@@ -68,6 +71,7 @@ public class Review {
         this.grade = grade;
         this.authorEmail = authorEmail;
         this.reviewLikes = reviewLikes;
+        this.updated = updated;
     }
 
     public boolean isSameAuthor(String author) {
@@ -87,12 +91,13 @@ public class Review {
         reviewLike.delete();
     }
 
-    public void updateTitle(String title) {
+    public void updateReview(String title, String instructorName, String takenSemyr, String content, String grade) {
         this.reviewTitle = title;
-    }
-
-    public void updateContent(String content) {
         this.reviewContent = content;
+        this.instructorName = instructorName;
+        this.takenSemyr = takenSemyr;
+        this.grade = grade;
+        updated = true;
     }
 
 

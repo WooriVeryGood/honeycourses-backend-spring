@@ -49,6 +49,7 @@ public class ReviewControllerTest extends ControllerTest {
                     .grade("60")
                     .review_time(LocalDateTime.now())
                     .isMine(false)
+                    .updated(false)
                     .build());
         }
     }
@@ -137,6 +138,7 @@ public class ReviewControllerTest extends ControllerTest {
                     .grade("60")
                     .review_time(LocalDateTime.now())
                     .isMine(true)
+                    .updated(false)
                     .build());
         }
 
@@ -159,6 +161,9 @@ public class ReviewControllerTest extends ControllerTest {
         ReviewUpdateRequest request = ReviewUpdateRequest.builder()
                 .review_title("new title")
                 .review_content("new content")
+                .instructor_name("jiaoshou")
+                .taken_semyr("18-19")
+                .grade("100")
                 .build();
 
         Mockito.when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
