@@ -123,8 +123,7 @@ public class ReviewService {
                 .orElseThrow(ReviewNotFoundException::new);
         review.validateAuthor(authInfo.getUsername());
 
-        review.updateTitle(reviewUpdateRequest.getReview_title());
-        review.updateContent(reviewUpdateRequest.getReview_content());
+        review.updateReview(reviewUpdateRequest.getReview_title(), reviewUpdateRequest.getInstructor_name(), reviewUpdateRequest.getTaken_semyr(), reviewUpdateRequest.getReview_content(), reviewUpdateRequest.getGrade());
 
         return ReviewUpdateResponse.builder()
                 .review_id(review.getId())
