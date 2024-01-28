@@ -70,6 +70,7 @@ public class ReviewServiceTest {
                     .grade("60")
                     .authorEmail("author" + i)
                     .reviewLikes(new ArrayList<>())
+                    .updated(false)
                     .build();
             reviews.add(review);
         }
@@ -85,6 +86,7 @@ public class ReviewServiceTest {
             .grade("100")
             .authorEmail(authInfo.getUsername())
             .reviewLikes(new ArrayList<>())
+            .updated(false)
             .build();
 
     Review noAuthReview = Review.builder()
@@ -97,6 +99,7 @@ public class ReviewServiceTest {
             .grade("100")
             .authorEmail("somerandom-username")
             .reviewLikes(new ArrayList<>())
+            .updated(false)
             .build();
 
     @Test
@@ -191,6 +194,9 @@ public class ReviewServiceTest {
         ReviewUpdateRequest request = ReviewUpdateRequest.builder()
                 .review_title("new title")
                 .review_content("new content")
+                .instructor_name("jiaoshou")
+                .taken_semyr("18-19")
+                .grade("100")
                 .build();
 
         Mockito.when(reviewRepository.findById(any(Long.class)))
@@ -199,6 +205,7 @@ public class ReviewServiceTest {
         ReviewUpdateResponse response = reviewService.updateReview(singleReview.getId(), request, authInfo);
 
         Assertions.assertThat(response.getReview_id()).isEqualTo(singleReview.getId());
+        Assertions.assertThat(singleReview.isUpdated()).isEqualTo(true);
     }
 
     @Test
