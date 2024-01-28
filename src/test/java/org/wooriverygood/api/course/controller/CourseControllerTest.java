@@ -30,6 +30,7 @@ public class CourseControllerTest extends ControllerTest {
                     .course_name("Gaoshu"+i)
                     .isYouguan(0)
                     .kaikeYuanxi("Xinke")
+                    .reviewCount(0)
                     .build());
         }
     }
