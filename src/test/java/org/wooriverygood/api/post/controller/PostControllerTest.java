@@ -1,6 +1,5 @@
 package org.wooriverygood.api.post.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,71 +9,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
-import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.util.ControllerTest;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import org.wooriverygood.api.util.ResponseFixture;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
-
 class PostControllerTest extends ControllerTest {
 
-    PostsResponse response;
-
-    PostsResponse freePostsResponse;
-
-    List<PostResponse> responses = new ArrayList<>();
-
-    AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
-            .build();
-
-
-    @BeforeEach
-    void setUp() {
-        List<PostResponse> postResponses = new ArrayList<>();
-        for (int i = 1; i <= 23; i++) {
-            PostResponse postResponse = PostResponse.builder()
-                    .post_id((long) i)
-                    .post_title("title" + i)
-                    .post_category(i % 4 == 0 ? "자유" : "구인")
-                    .post_content("content" + i)
-                    .post_author(authInfo.getUsername())
-                    .post_comments(10 + i)
-                    .post_likes(2 + i)
-                    .post_time(LocalDateTime.now())
-                    .liked(i % 5 == 0)
-                    .updated(i % 2 == 0)
-                    .build();
-            responses.add(postResponse);
-            if (i % 4 == 0)
-                postResponses.add(postResponse);
-        }
-        response = PostsResponse.builder()
-                .posts(responses.stream().filter(it -> it.getPost_id() >= 4 && it.getPost_id() < 14).toList())
-                .totalPostCount(23)
-                .totalPageCount(3)
-                .build();
-
-        freePostsResponse = PostsResponse.builder()
-                .posts(postResponses)
-                .totalPostCount(5)
-                .totalPageCount(1)
-                .build();
-    }
 
     @Test
-    @DisplayName("전체 게시글의 2번째 페이지를 반환한다.")
+    @DisplayName("전체 게시글의 1번째 페이지를 반환한다.")
     void findPosts() {
         Mockito.when(postService.findPosts(any(AuthInfo.class), any(Pageable.class)))
-                .thenReturn(response);
+                .thenReturn(ResponseFixture.postsResponse(1, 39, testAuthInfo));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -87,10 +37,10 @@ class PostControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("자유 카테고리의 1번째 페이지를 반환한다.")
+    @DisplayName("자유 카테고리의 2번째 페이지를 반환한다.")
     void findPostsByCategory() {
         Mockito.when(postService.findPostsByCategory(any(AuthInfo.class), any(Pageable.class), any(String.class)))
-                .thenReturn(freePostsResponse);
+                .thenReturn(ResponseFixture.postsResponse(2, 39, "자유", testAuthInfo));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -105,26 +55,13 @@ class PostControllerTest extends ControllerTest {
     @Test
     @DisplayName("특정 게시글 조회 요청을 받으면 게시글을 반환한다.")
     void findPost() {
-        PostResponse response = PostResponse.builder()
-                .post_id(1L)
-                .post_title("title")
-                .post_category("자유")
-                .post_content("content")
-                .post_author(authInfo.getUsername())
-                .post_comments(2)
-                .post_likes(3)
-                .post_time(LocalDateTime.now())
-                .liked(false)
-                .updated(false)
-                .build();
-
         Mockito.when(postService.findPostById(any(Long.class), any(AuthInfo.class)))
-                .thenReturn(response);
+                .thenReturn(ResponseFixture.postResponse(4L, testAuthInfo));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/community/1")
+                .when().get("/community/4")
                 .then().log().all()
                 .assertThat()
                 .apply(document("post/find/one/success"))
@@ -135,7 +72,7 @@ class PostControllerTest extends ControllerTest {
     @DisplayName("유효하지 않은 id로 게시글을 조회하면 404를 반환한다.")
     void findPost_exception_invalidId() {
         Mockito.when(postService.findPostById(any(Long.class), any(AuthInfo.class)))
-                        .thenThrow(new PostNotFoundException());
+                .thenThrow(new PostNotFoundException());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -161,7 +98,7 @@ class PostControllerTest extends ControllerTest {
                         .post_id(6L)
                         .title(request.getPost_title())
                         .category(request.getPost_category())
-                        .author(authInfo.getUsername())
+                        .author(testAuthInfo.getUsername())
                         .build());
 
         restDocs
@@ -197,30 +134,8 @@ class PostControllerTest extends ControllerTest {
     @Test
     @DisplayName("사용자 본인이 작성한 게시글을 불러온다.")
     void findMyPosts() {
-        List<PostResponse> responses = new ArrayList<>();
-        for (int i = 1; i < 21; i++) {
-            responses.add(PostResponse.builder()
-                    .post_id((long) i)
-                    .post_title("title")
-                    .post_category("자유")
-                    .post_content("content")
-                    .post_author(authInfo.getUsername())
-                    .post_comments(0)
-                    .post_likes(0)
-                    .post_time(LocalDateTime.now())
-                    .liked(false)
-                    .updated(false)
-                    .build());
-        }
-
-        response = PostsResponse.builder()
-                .posts(this.responses.stream().filter(it -> it.getPost_id() >= 11 && it.getPost_id() <= 20).toList())
-                .totalPostCount(20)
-                .totalPageCount(2)
-                .build();
-
         Mockito.when(postService.findMyPosts(any(AuthInfo.class), any(PageRequest.class)))
-                .thenReturn(response);
+                .thenReturn(ResponseFixture.postsResponse(1, 14, testAuthInfo));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -260,9 +175,9 @@ class PostControllerTest extends ControllerTest {
                 .build();
 
         Mockito.when(postService.updatePost(any(Long.class), any(PostUpdateRequest.class), any(AuthInfo.class)))
-                        .thenReturn(PostUpdateResponse.builder()
-                                .post_id((long) 1)
-                                .build());
+                .thenReturn(PostUpdateResponse.builder()
+                        .post_id((long) 1)
+                        .build());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -284,7 +199,7 @@ class PostControllerTest extends ControllerTest {
                 .build();
 
         Mockito.when(postService.updatePost(any(Long.class), any(PostUpdateRequest.class), any(AuthInfo.class)))
-                        .thenThrow(new AuthorizationException());
+                .thenThrow(new AuthorizationException());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
