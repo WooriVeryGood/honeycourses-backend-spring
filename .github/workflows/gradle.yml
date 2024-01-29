@@ -28,7 +28,7 @@ jobs:
           arguments: build
 
       - name: List JAR contents
-        run: jar tvf build/libs/*.jar | grep 'static/docs'
+        run: jar tvf build/libs/*.jar
 
       # 3. Docker 이미지 빌드
       - name: docker image build
