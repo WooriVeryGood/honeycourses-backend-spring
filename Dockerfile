@@ -10,7 +10,7 @@ ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
 # REST Doc 문서화 html 복사
-COPY build/docs/asciidoc/index.html /app/static/docs
+COPY src/main/resources/static/docs /app/static/docs
 
 # Working directory 세팅
 WORKDIR /app
