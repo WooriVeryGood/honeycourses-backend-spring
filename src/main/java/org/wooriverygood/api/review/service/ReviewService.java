@@ -28,6 +28,8 @@ public class ReviewService {
     private final ReviewLikeRepository reviewLikeRepository;
 
     public List<ReviewResponse> findAllReviewsByCourseId(Long courseId, AuthInfo authInfo) {
+        Courses course = courseRepository.findById(courseId)
+                .orElseThrow(CourseNotFoundException::new);
         List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
 
         if(authInfo.getUsername() == null) {
@@ -54,6 +56,7 @@ public class ReviewService {
                 .authorEmail(authInfo.getUsername())
                 .build();
         Review saved = reviewRepository.save(review);
+        reviewRepository.increaseReviewCount(review.getCourse().getId());
         return createResponse(saved);
     }
 
@@ -138,6 +141,7 @@ public class ReviewService {
 
         reviewLikeRepository.deleteAllByReview(review);
         reviewRepository.delete(review);
+        reviewRepository.decreaseReviewCount(review.getCourse().getId());
 
         return ReviewDeleteResponse.builder()
                 .review_id(reviewId)

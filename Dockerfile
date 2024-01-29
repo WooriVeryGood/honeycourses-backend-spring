@@ -4,7 +4,7 @@
 FROM openjdk:17
 
 # 인자 설정 - JAR_File
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=build/libs/honeycourses-backend-spring-1.0-SNAPSHOT.jar
 
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar

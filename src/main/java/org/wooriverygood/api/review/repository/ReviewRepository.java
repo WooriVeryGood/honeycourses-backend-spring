@@ -21,4 +21,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE reviews SET like_count = like_count - 1 WHERE review_id = :reviewId", nativeQuery = true)
     void decreaseLikeCount(Long reviewId);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE courses SET review_count = review_count + 1 WHERE course_id = :courseId", nativeQuery = true)
+    void increaseReviewCount(Long courseId);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE courses SET review_count = review_count - 1 WHERE course_id = :courseId", nativeQuery = true)
+    void decreaseReviewCount(Long courseId);
 }
