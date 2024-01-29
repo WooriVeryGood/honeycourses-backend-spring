@@ -27,9 +27,6 @@ jobs:
         with:
           arguments: build
 
-      - name: List JAR contents
-        run: jar tvf build/libs/*.jar
-
       # 3. Docker 이미지 빌드
       - name: docker image build
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-prod .
