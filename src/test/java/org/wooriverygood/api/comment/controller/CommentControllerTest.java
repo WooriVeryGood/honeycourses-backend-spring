@@ -38,11 +38,6 @@ class CommentControllerTest extends ControllerTest {
             .postLikes(new ArrayList<>())
             .build();
 
-    AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
-            .build();
-
     @BeforeEach
     void setUp() {
         for (int i = 1; i <= 4; i++) {
@@ -98,7 +93,7 @@ class CommentControllerTest extends ControllerTest {
         NewCommentResponse response = NewCommentResponse.builder()
                 .comment_id(51L)
                 .content("content51")
-                .author(authInfo.getUsername())
+                .author(testAuthInfo.getUsername())
                 .build();
 
         Mockito.when(commentService.addComment(any(AuthInfo.class), any(Long.class), any(NewCommentRequest.class)))
