@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
@@ -38,7 +39,6 @@ public class ReviewServiceTest {
 
     @Mock
     private ReviewLikeRepository reviewLikeRepository;
-
     private final int REVIEW_COUNT = 10;
 
     List<Review> reviews = new ArrayList<>();
@@ -105,15 +105,27 @@ public class ReviewServiceTest {
     @Test
     @DisplayName("유효한 id를 통해 특정 수업의 리뷰들을 불러온다.")
     void findAllReviewsByCourseId() {
+        Mockito.when(courseRepository.findById(any())).thenReturn(Optional.ofNullable(singleCourse));
         Mockito.when(reviewRepository.findAllByCourseId(any()))
                 .thenReturn(reviews);
 
-        List<ReviewResponse> responses = reviewService.findAllReviewsByCourseId(2L, authInfo);
+        List<ReviewResponse> responses = reviewService.findAllReviewsByCourseId(1L, authInfo);
 
         Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
         Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");
 
     }
+
+    @Test
+    @DisplayName("존재하지 않는 강의의 리뷰는 불러올 수 없다.")
+    void findAllReviewsByCourseId_noCourse() {
+        Mockito.when(courseRepository.findById(any())).thenThrow(CourseNotFoundException.class);
+
+        Assertions.assertThatThrownBy(() -> reviewService.findAllReviewsByCourseId(99L, authInfo))
+                .isInstanceOf(CourseNotFoundException.class);
+
+    }
+
 
     @Test
     @DisplayName("특정 강의의 리뷰를 작성한다.")

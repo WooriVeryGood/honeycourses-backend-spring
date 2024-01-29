@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.support.AuthInfo;
@@ -67,6 +68,22 @@ public class ReviewControllerTest extends ControllerTest {
                 .then().log().all()
                 .apply(document("reviews/find/success"))
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("유효하지 않은 수업의 리뷰를 조회하면 404를 반환한다.")
+    void findReviews_exception_invalidId() {
+        Mockito.when(reviewService.findAllReviewsByCourseId(any(Long.class), any(AuthInfo.class)))
+                .thenThrow(new CourseNotFoundException());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/courses/1/reviews")
+                .then().log().all()
+                .assertThat()
+                .apply(document("reviews/find/fail"))
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
