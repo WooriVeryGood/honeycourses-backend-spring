@@ -4,7 +4,6 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -20,6 +19,7 @@ import org.wooriverygood.api.post.controller.PostController;
 import org.wooriverygood.api.post.service.PostService;
 import org.wooriverygood.api.review.controller.ReviewController;
 import org.wooriverygood.api.review.service.ReviewService;
+import org.wooriverygood.api.support.AuthInfo;
 import org.wooriverygood.api.support.AuthenticationPrincipalArgumentResolver;
 
 
@@ -56,6 +56,8 @@ public class ControllerTest {
     @MockBean
     protected AuthenticationPrincipalArgumentResolver authenticationPrincipalArgumentResolver;
 
+    protected AuthInfo testAuthInfo;
+
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         restDocs = RestAssuredMockMvc.given()
@@ -74,5 +76,10 @@ public class ControllerTest {
                                         .remove("X-Frame-Options")))
                         .build())
                 .log().all();
+
+        testAuthInfo = AuthInfo.builder()
+                .sub("22432-12312-3531")
+                .username("22432-12312-3531")
+                .build();
     }
 }
