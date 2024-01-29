@@ -23,13 +23,16 @@ jobs:
 
       # 2. Spring Boot 애플리케이션 빌드
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: build
 
+      - name: List JAR contents
+        run: jar tvf build/libs/*.jar | grep 'static/docs'
+
       # 3. Docker 이미지 빌드
       - name: docker image build
-        run: docker build --build-arg JAR_FILE=build/libs/honeycourses-backend-spring-1.0-SNAPSHOT.jar -t ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-prod .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-prod .
 
       # 4. DockerHub 로그인
       - name: docker login
