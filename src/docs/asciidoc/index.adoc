@@ -27,6 +27,9 @@ operation::course/get/name/success[snippets='http-request,http-response']
 ==== 성공
 operation::reviews/find/success[snippets='http-request,http-response']
 
+==== 실패 (존재하지 않는 수업)
+operation::reviews/find/fail[snippets='http-request,http-response']
+
 === 특정 강의의 리뷰 작성하기 (POST /courses/{id}/reviews)
 ==== 성공
 operation::reviews/create/success[snippets='http-request,http-response']

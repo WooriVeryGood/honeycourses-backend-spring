@@ -28,6 +28,8 @@ public class ReviewService {
     private final ReviewLikeRepository reviewLikeRepository;
 
     public List<ReviewResponse> findAllReviewsByCourseId(Long courseId, AuthInfo authInfo) {
+        Courses course = courseRepository.findById(courseId)
+                .orElseThrow(CourseNotFoundException::new);
         List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
 
         if(authInfo.getUsername() == null) {
