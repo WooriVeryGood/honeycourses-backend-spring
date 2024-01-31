@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-140] 게시글 페이지네이션 기능 구현 &#10;&#10;## api에 요청 시, 응답 객체 변경 (프론트에서 반영해줘야 함!!!)&#10;&#10;/community?page={pageNo} 에 요청 시, 다음과 같은 응답 객체 반환해요.&#10;&#10;{&#10;  &quot;posts&quot;: [기존 게시글 응답 객체],  // 기본 값으로 10개이며, 해당 페이지의 게시글 개수가 10개 미만이면, 해당하는 개수만큼 들어있어요.&#10;  &quot;totalPageCount&quot;: 3,  // 총 페이지 개수 &#10;  &quot;totalPostCount&quot;: 23  // 총 게시글 개수&#10;}&#10;&#10;- pageNo의 기본값은 0이에요. 만약 최신 게시글 10개만 불러오려면, /community 경로로 요청하면 돼요. 즉, 이 경우에는 물음표 뒤 생략이 가능해요.&#10;&#10;## 예제&#10;&#10;총 23개의 게시글이 존재하면, 총 3개의 페이지로 구분할 수 있어요.&#10;&#10;- 1번째부터 10번째 게시글&#10;- 11번째부터 20번째 게시글&#10;- 21번째부터 23번째 게시글&#10;&#10;따라서, 만약 11번째부터 20번째 게시글을 불러오고 싶으면, api 경로의 pageNo에 1를 넣어줘요. (/community?page=1)">
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/DuplicatedCommentReportException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/domain/CommentReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/PostCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/PostRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/repository/PostRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/controller/PostControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/service/PostServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/CommentResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/ReplyResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/ReplyResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/controller/ReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/controller/ReportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/repository/CommentReportRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/repository/CommentReportRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/service/ReportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/report/service/ReportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/comment/controller/CommentControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/report/controller/ReportControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/report/controller/ReportControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/report/service/ReportServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/report/service/ReportServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +132,14 @@
     "Gradle.PostServiceTest.likePost_down.executor": "Run",
     "Gradle.PostServiceTest.likePost_up.executor": "Debug",
     "Gradle.PostServiceTest.updatePost.executor": "Run",
+    "Gradle.ReportControllerTest.reportComment.executor": "Run",
+    "Gradle.ReportControllerTest.reportPost (1).executor": "Run",
+    "Gradle.ReportControllerTest.reportPost.executor": "Run",
+    "Gradle.ReportServiceTest.reportComment.executor": "Run",
+    "Gradle.ReportServiceTest.reportComment_exception_duplicated.executor": "Run",
+    "Gradle.ReportServiceTest.reportPost.executor": "Run",
+    "Gradle.ReportServiceTest.reportPost_exception_duplicated.executor": "Run",
+    "Gradle.ReportServiceTest.reportPost_exception_invalidId.executor": "Run",
     "Notification.DisplayName-DoNotAsk-Lombok plugin": "Lombok integration problem",
     "Notification.DoNotAsk-Lombok plugin": "true",
     "RequestMappingsPanelOrder0": "0",
@@ -142,7 +156,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
     "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "HC-142-post-category",
+    "git-widget-placeholder": "HC-157-community-report",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -165,22 +179,23 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="org.wooriverygood.api.comment.dto" />
       <recent name="org.wooriverygood.api.advice.exception" />
+      <recent name="org.wooriverygood.api.report.domain" />
+      <recent name="report.controller" />
+      <recent name="org.wooriverygood.api.comment.dto" />
       <recent name="org.wooriverygood.api.exception" />
-      <recent name="org.wooriverygood.api.post.dto" />
-      <recent name="org.wooriverygood.api.post.repository" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.report.service" />
       <recent name="org.wooriverygood.api.comment.controller" />
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
-    <configuration name="PostControllerTest.findMyPosts" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.ReportServiceTest.reportComment_exception_duplicated">
+    <configuration name="ReportControllerTest.reportComment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -193,7 +208,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest.findMyPosts&quot;" />
+            <option value="&quot;org.wooriverygood.api.report.controller.ReportControllerTest.reportComment&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -204,7 +219,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostControllerTest.findPostsByCategory" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReportServiceTest.reportComment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -217,7 +232,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.controller.PostControllerTest.findPostsByCategory&quot;" />
+            <option value="&quot;org.wooriverygood.api.report.service.ReportServiceTest.reportComment&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -228,7 +243,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostServiceTest.findMyPosts" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReportServiceTest.reportComment_exception_duplicated" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -241,7 +256,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.findMyPosts&quot;" />
+            <option value="&quot;org.wooriverygood.api.report.service.ReportServiceTest.reportComment_exception_duplicated&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -252,7 +267,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostServiceTest.findPosts_category_free" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReportServiceTest.reportPost_exception_duplicated" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -265,7 +280,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.service.PostServiceTest.findPosts_category_free&quot;" />
+            <option value="&quot;org.wooriverygood.api.report.service.ReportServiceTest.reportPost_exception_duplicated&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -276,26 +291,37 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="honeycourses-backend-spring.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.wooriverygood.api.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="ReportServiceTest.reportPost_exception_invalidId" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.report.service.ReportServiceTest.reportPost_exception_invalidId&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.HoneycoursesBackend" />
-        <item itemvalue="Gradle.PostServiceTest.findPosts_category_free" />
-        <item itemvalue="Gradle.PostControllerTest.findPostsByCategory" />
-        <item itemvalue="Gradle.PostServiceTest.findMyPosts" />
-        <item itemvalue="Gradle.PostControllerTest.findMyPosts" />
+        <item itemvalue="Gradle.ReportServiceTest.reportComment_exception_duplicated" />
+        <item itemvalue="Gradle.ReportServiceTest.reportComment" />
+        <item itemvalue="Gradle.ReportControllerTest.reportComment" />
+        <item itemvalue="Gradle.ReportServiceTest.reportPost_exception_duplicated" />
+        <item itemvalue="Gradle.ReportServiceTest.reportPost_exception_invalidId" />
       </list>
     </recent_temporary>
   </component>
@@ -569,7 +595,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706186960797</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요.">
+      <option name="closed" value="true" />
+      <created>1706705822386</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1706705822386</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -587,7 +621,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[HC-68] 댓글 패키지 생성" />
     <MESSAGE value="[HC-68] 댓글 조회 기능 구현" />
     <MESSAGE value="[HC-68] 게시글 조회 응답 객체에 댓글 개수 추가" />
     <MESSAGE value="[HC-68] 게시글 및 댓글에 작성자 필드 추가" />
@@ -612,7 +645,8 @@
     <MESSAGE value="[HC-137] 게시글 수정 여부 반환 &#10;&#10;게시글 조회 응답 객체에 수정 여부(updated)도 같이 반환해요.&#10;&#10;만약 수정한 적이 있다면 updated의 값은 true에요." />
     <MESSAGE value="[HC-137] 댓글 및 답글 수정 여부 반환 &#10;&#10;댓글 및 답글 조회 응답 객체에 수정 여부(updated)도 같이 반환해요.&#10;&#10;만약 수정한 적이 있다면 updated의 값은 true에요." />
     <MESSAGE value="[HC-140] 게시글 페이지네이션 기능 구현 &#10;&#10;## api에 요청 시, 응답 객체 변경 (프론트에서 반영해줘야 함!!!)&#10;&#10;/community?page={pageNo} 에 요청 시, 다음과 같은 응답 객체 반환해요.&#10;&#10;{&#10;  &quot;posts&quot;: [기존 게시글 응답 객체],  // 기본 값으로 10개이며, 해당 페이지의 게시글 개수가 10개 미만이면, 해당하는 개수만큼 들어있어요.&#10;  &quot;totalPageCount&quot;: 3,  // 총 페이지 개수 &#10;  &quot;totalPostCount&quot;: 23  // 총 게시글 개수&#10;}&#10;&#10;- pageNo의 기본값은 0이에요. 만약 최신 게시글 10개만 불러오려면, /community 경로로 요청하면 돼요. 즉, 이 경우에는 물음표 뒤 생략이 가능해요.&#10;&#10;## 예제&#10;&#10;총 23개의 게시글이 존재하면, 총 3개의 페이지로 구분할 수 있어요.&#10;&#10;- 1번째부터 10번째 게시글&#10;- 11번째부터 20번째 게시글&#10;- 21번째부터 23번째 게시글&#10;&#10;따라서, 만약 11번째부터 20번째 게시글을 불러오고 싶으면, api 경로의 pageNo에 1를 넣어줘요. (/community?page=1)" />
-    <option name="LAST_COMMIT_MESSAGE" value="[HC-140] 게시글 페이지네이션 기능 구현 &#10;&#10;## api에 요청 시, 응답 객체 변경 (프론트에서 반영해줘야 함!!!)&#10;&#10;/community?page={pageNo} 에 요청 시, 다음과 같은 응답 객체 반환해요.&#10;&#10;{&#10;  &quot;posts&quot;: [기존 게시글 응답 객체],  // 기본 값으로 10개이며, 해당 페이지의 게시글 개수가 10개 미만이면, 해당하는 개수만큼 들어있어요.&#10;  &quot;totalPageCount&quot;: 3,  // 총 페이지 개수 &#10;  &quot;totalPostCount&quot;: 23  // 총 게시글 개수&#10;}&#10;&#10;- pageNo의 기본값은 0이에요. 만약 최신 게시글 10개만 불러오려면, /community 경로로 요청하면 돼요. 즉, 이 경우에는 물음표 뒤 생략이 가능해요.&#10;&#10;## 예제&#10;&#10;총 23개의 게시글이 존재하면, 총 3개의 페이지로 구분할 수 있어요.&#10;&#10;- 1번째부터 10번째 게시글&#10;- 11번째부터 20번째 게시글&#10;- 21번째부터 23번째 게시글&#10;&#10;따라서, 만약 11번째부터 20번째 게시글을 불러오고 싶으면, api 경로의 pageNo에 1를 넣어줘요. (/community?page=1)" />
+    <MESSAGE value="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요." />
+    <option name="LAST_COMMIT_MESSAGE" value="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

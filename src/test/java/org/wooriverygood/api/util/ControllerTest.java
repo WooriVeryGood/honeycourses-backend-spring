@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wooriverygood.api.comment.controller.CommentController;
 import org.wooriverygood.api.comment.service.CommentService;
+import org.wooriverygood.api.report.controller.ReportController;
+import org.wooriverygood.api.report.service.ReportService;
 import org.wooriverygood.api.course.controller.CourseController;
 import org.wooriverygood.api.course.service.CourseService;
 import org.wooriverygood.api.post.controller.PostController;
@@ -33,7 +35,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         CommentController.class,
         PostController.class,
         CourseController.class,
-        ReviewController.class
+        ReviewController.class,
+        ReportController.class
 })
 @WithMockUser
 @ExtendWith(RestDocumentationExtension.class)
@@ -52,6 +55,9 @@ public class ControllerTest {
 
     @MockBean
     protected PostService postService;
+
+    @MockBean
+    protected ReportService reportService;
 
     @MockBean
     protected AuthenticationPrincipalArgumentResolver authenticationPrincipalArgumentResolver;

@@ -22,10 +22,12 @@ public class ReplyResponse {
 
     private final boolean updated;
 
+    private final boolean reported;
+
 
     @Builder
 
-    public ReplyResponse(Long reply_id, String reply_content, String reply_author, int reply_likes, LocalDateTime reply_time, boolean liked, boolean updated) {
+    public ReplyResponse(Long reply_id, String reply_content, String reply_author, int reply_likes, LocalDateTime reply_time, boolean liked, boolean updated, boolean reported) {
         this.reply_id = reply_id;
         this.reply_content = reply_content;
         this.reply_author = reply_author;
@@ -33,17 +35,20 @@ public class ReplyResponse {
         this.reply_time = reply_time;
         this.liked = liked;
         this.updated = updated;
+        this.reported = reported;
     }
 
     public static ReplyResponse from(Comment reply, boolean liked) {
+        boolean reported = reply.getReportCount() >= 5;
         return ReplyResponse.builder()
                 .reply_id(reply.getId())
-                .reply_content(reply.getContent())
+                .reply_content(reported ? null : reply.getContent())
                 .reply_author(reply.getAuthor())
                 .reply_likes(reply.getLikeCount())
                 .reply_time(reply.getCreatedAt())
                 .liked(liked)
                 .updated(reply.isUpdated())
+                .reported(reported)
                 .build();
     }
 

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.comment.domain.Comment;
+import org.wooriverygood.api.report.domain.PostReport;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,6 +49,13 @@ public class Post {
     @ColumnDefault("0")
     private int likeCount;
 
+    @OneToMany(mappedBy = "post")
+    private List<PostReport> reports;
+
+    @Column(name = "report_count")
+    @ColumnDefault("0")
+    private int reportCount;
+
     @ColumnDefault("false")
     private boolean updated;
 
@@ -57,7 +65,7 @@ public class Post {
 
 
     @Builder
-    public Post(Long id, PostCategory category, String title, String content, String author, List<Comment> comments, List<PostLike> postLikes, boolean updated) {
+    public Post(Long id, PostCategory category, String title, String content, String author, List<Comment> comments, List<PostLike> postLikes, List<PostReport> reports, boolean updated) {
         this.id = id;
         this.category = category;
         this.title = title;
@@ -65,6 +73,7 @@ public class Post {
         this.author = author;
         this.comments = comments;
         this.postLikes = postLikes;
+        this.reports = reports;
         this.updated = updated;
     }
 
@@ -86,6 +95,10 @@ public class Post {
         updated = true;
     }
 
+    public void addReport(PostReport report) {
+        reports.add(report);
+    }
+
     public void updateContent(String content) {
         this.content = content;
         updated = true;
@@ -95,6 +108,13 @@ public class Post {
         if (comments == null)
             return 0;
         return comments.size();
+    }
+
+    public boolean hasReportByUser(String username) {
+        for (PostReport report: reports)
+            if (report.isOwner(username))
+                return true;
+        return false;
     }
 
 }
