@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.post.domain.Post;
+import org.wooriverygood.api.report.domain.CommentReport;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,6 +52,13 @@ public class Comment {
     @ColumnDefault("0")
     private int likeCount;
 
+    @OneToMany(mappedBy = "comment")
+    private List<CommentReport> reports;
+
+    @Column(name = "report_count")
+    @ColumnDefault("0")
+    private int reportCount;
+
     @Column(name = "comment_time")
     @CreatedDate
     private LocalDateTime createdAt;
@@ -63,13 +71,14 @@ public class Comment {
     private boolean updated;
 
     @Builder
-    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes, boolean softRemoved, boolean updated) {
+    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes, List<CommentReport> reports, boolean softRemoved, boolean updated) {
         this.id = id;
         this.content = content;
         this.author = author;
         this.post = post;
         this.parent = parent;
         this.commentLikes = commentLikes;
+        this.reports = reports;
         this.softRemoved = softRemoved;
         this.updated = updated;
     }
@@ -81,6 +90,17 @@ public class Comment {
     public void deleteCommentLike(CommentLike commentLike) {
         commentLikes.remove(commentLike);
         commentLike.delete();
+    }
+
+    public void addReport(CommentReport report) {
+        reports.add(report);
+    }
+
+    public boolean hasReportByUser(String username) {
+        for (CommentReport report: reports)
+            if (report.isOwner(username))
+                return true;
+        return false;
     }
 
     public void validateAuthor(String author) {

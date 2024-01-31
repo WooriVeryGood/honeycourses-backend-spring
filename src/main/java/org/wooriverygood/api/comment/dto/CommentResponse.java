@@ -28,9 +28,11 @@ public class CommentResponse {
 
     private final boolean updated;
 
+    private final boolean reported;
+
 
     @Builder
-    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked, List<ReplyResponse> replies, boolean updated) {
+    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked, List<ReplyResponse> replies, boolean updated, boolean reported) {
         this.comment_id = comment_id;
         this.comment_content = comment_content;
         this.comment_author = comment_author;
@@ -40,13 +42,15 @@ public class CommentResponse {
         this.liked = liked;
         this.replies = replies;
         this.updated = updated;
+        this.reported = reported;
     }
 
 
     public static CommentResponse from(Comment comment, List<ReplyResponse> replies, boolean liked) {
+        boolean reported = comment.getReportCount() >= 5;
         return CommentResponse.builder()
                 .comment_id(comment.getId())
-                .comment_content(comment.getContent())
+                .comment_content(reported ? null : comment.getContent())
                 .comment_author(comment.getAuthor())
                 .post_id(comment.getPost().getId())
                 .comment_likes(comment.getLikeCount())
@@ -54,10 +58,12 @@ public class CommentResponse {
                 .liked(liked)
                 .replies(replies)
                 .updated(comment.isUpdated())
+                .reported(reported)
                 .build();
     }
 
     public static CommentResponse softRemovedFrom(Comment comment, List<ReplyResponse> replies) {
+        boolean reported = comment.getReportCount() >= 5;
         return CommentResponse.builder()
                 .comment_id(comment.getId())
                 .comment_content(null)
@@ -67,6 +73,7 @@ public class CommentResponse {
                 .comment_time(comment.getCreatedAt())
                 .replies(replies)
                 .updated(comment.isUpdated())
+                .reported(reported)
                 .build();
     }
 }
