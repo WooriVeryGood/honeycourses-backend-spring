@@ -147,3 +147,7 @@ operation::reply/create/fail/depth[snippets='http-request,http-response']
 === 특정 게시글 신고하기 (POST /posts/{id}/report)
 ==== 성공
 operation::posts/report/success[snippets='http-request,http-response']
+
+=== 특정 댓글 신고하기 (POST /comments/{id}/report)
+==== 성공
+operation::comments/report/success[snippets='http-request,http-response']

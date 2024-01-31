@@ -30,4 +30,12 @@ public class ReportController {
         reportService.reportPost(postId, request, authInfo);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PostMapping("/comments/{id}/report")
+    public ResponseEntity<Void> reportComment(@PathVariable("id") Long commentId,
+                                              @Valid @RequestBody ReportRequest request,
+                                              @Login AuthInfo authInfo) {
+        reportService.reportComment(commentId, request, authInfo);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
