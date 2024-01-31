@@ -29,9 +29,11 @@ public class PostResponse {
 
     private final boolean updated;
 
+    private final boolean reported;
+
 
     @Builder
-    public PostResponse(Long post_id, String post_title, String post_content, String post_category, String post_author, int post_comments, int post_likes, LocalDateTime post_time, boolean liked, boolean updated) {
+    public PostResponse(Long post_id, String post_title, String post_content, String post_category, String post_author, int post_comments, int post_likes, LocalDateTime post_time, boolean liked, boolean updated, boolean reported) {
         this.post_id = post_id;
         this.post_title = post_title;
         this.post_content = post_content;
@@ -42,13 +44,15 @@ public class PostResponse {
         this.post_time = post_time;
         this.liked = liked;
         this.updated = updated;
+        this.reported = reported;
     }
 
     public static PostResponse from(Post post, boolean liked) {
+        boolean reported = post.getReportCount() >= 5;
         return PostResponse.builder()
                 .post_id(post.getId())
-                .post_title(post.getTitle())
-                .post_content(post.getContent())
+                .post_title(reported ? null : post.getTitle())
+                .post_content(reported ? null : post.getContent())
                 .post_category(post.getCategory().getValue())
                 .post_author(post.getAuthor())
                 .post_comments(post.getCommentCount())
@@ -56,6 +60,7 @@ public class PostResponse {
                 .post_time(post.getCreatedAt())
                 .liked(liked)
                 .updated(post.isUpdated())
+                .reported(reported)
                 .build();
     }
 

@@ -141,3 +141,9 @@ operation::reply/create/success[snippets='http-request,http-response']
 ==== 실패
 ===== 대댓글에 작성하는 경우
 operation::reply/create/fail/depth[snippets='http-request,http-response']
+
+== 신고 관리
+
+=== 특정 게시글 신고하기 (POST /posts/{id}/report)
+==== 성공
+operation::posts/report/success[snippets='http-request,http-response']
