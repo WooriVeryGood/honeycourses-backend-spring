@@ -20,7 +20,7 @@ public class Courses {
     private String course_category;
 
     @Column(name = "course_credit", nullable = false)
-    private int course_credit;
+    private double course_credit;
 
     @Column(name = "course_name", nullable = false)
     private String course_name;
@@ -36,7 +36,7 @@ public class Courses {
     private int reviewCount;
 
     @Builder
-    public Courses(Long id, String course_name, String course_category, int course_credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
+    public Courses(Long id, String course_name, String course_category, double course_credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
         this.id = id;
         this.course_name = course_name;
         this.course_category = course_category;
