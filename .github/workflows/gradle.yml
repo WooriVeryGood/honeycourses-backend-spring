@@ -44,8 +44,8 @@ jobs:
       # 5. Docker Hub 이미지 푸시
       - name: docker Hub push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-prod
-  
-  # 위 이미지를 pull해서 ec2에서 실행      
+
+  # 위 이미지를 pull해서 ec2에서 실행
   run-docker-image-on-ec2-prod:
     if: github.ref == 'refs/heads/main'
     # build-docker-image (위)과정이 완료되어야 실행됩니다.
@@ -68,7 +68,7 @@ jobs:
       # 4. 미사용 이미지를 정리합니다
       - name: delete old docker image
         run: sudo docker system prune -f
-  
+
   build-docker-image-dev:
     if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
@@ -98,7 +98,7 @@ jobs:
 
       - name: docker Hub push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-dev
-  
+
   run-docker-image-on-ec2-dev:
     if: github.ref == 'refs/heads/dev'
     needs: build-docker-image-dev
