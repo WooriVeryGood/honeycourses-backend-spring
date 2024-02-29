@@ -59,7 +59,7 @@ jobs:
 
       # 2. 기존의 컨테이너를 중지시킵니다
       - name: docker stop container
-        run: sudo docker stop github-actions-demo
+        run: sudo docker stop github-actions-demo 2>/dev/null || true
 
       # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
       - name: docker run new container
@@ -109,7 +109,7 @@ jobs:
         run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-dev
 
       - name: docker stop container
-        run: sudo docker stop dev-server
+        run: sudo docker stop dev-server 2>/dev/null || true
 
       - name: docker run new container
         run: sudo docker run --name dev-server --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/honeycourses-backend-spring-dev
