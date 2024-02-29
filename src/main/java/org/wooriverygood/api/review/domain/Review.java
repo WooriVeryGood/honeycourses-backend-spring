@@ -61,7 +61,7 @@ public class Review {
     private boolean updated;
 
     @Builder
-    public Review(Long id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail, List<ReviewLike> reviewLikes, boolean updated) {
+    public Review(Long id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail, LocalDateTime createdAt, List<ReviewLike> reviewLikes, boolean updated) {
         this.id = id;
         this.course = course;
         this.reviewContent = reviewContent;
@@ -70,6 +70,7 @@ public class Review {
         this.takenSemyr = takenSemyr;
         this.grade = grade;
         this.authorEmail = authorEmail;
+        this.createdAt = createdAt;
         this.reviewLikes = reviewLikes;
         this.updated = updated;
     }

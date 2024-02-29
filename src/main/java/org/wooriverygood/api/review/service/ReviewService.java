@@ -3,12 +3,10 @@ package org.wooriverygood.api.review.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.advice.exception.general.ReviewNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
-import org.wooriverygood.api.post.dto.PostUpdateRequest;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
 import org.wooriverygood.api.review.dto.*;
@@ -16,6 +14,8 @@ import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.support.AuthInfo;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,5 +146,15 @@ public class ReviewService {
         return ReviewDeleteResponse.builder()
                 .review_id(reviewId)
                 .build();
+    }
+
+    public boolean canAccessReviews(AuthInfo authInfo) {
+        Optional<Review> review = reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(authInfo.getUsername());
+        if (review.isEmpty()) {
+            return false;
+        }
+        LocalDateTime now = LocalDateTime.now();
+        long distance = ChronoUnit.MONTHS.between(review.get().getCreatedAt(), now);
+        return distance <= 6;
     }
 }

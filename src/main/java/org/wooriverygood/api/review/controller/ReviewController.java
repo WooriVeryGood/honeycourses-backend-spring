@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.wooriverygood.api.advice.exception.ReviewAccessDeniedException;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.service.ReviewService;
 import org.wooriverygood.api.support.AuthInfo;
@@ -26,6 +27,9 @@ public class ReviewController {
 
     @GetMapping("/courses/{id}/reviews")
     public ResponseEntity<List<ReviewResponse>> findAllReviewsByCourseId(@PathVariable("id") Long courseId, @Login AuthInfo authInfo) {
+        if (!reviewService.canAccessReviews(authInfo)) {
+            throw new ReviewAccessDeniedException();
+        }
         List<ReviewResponse> reviews = reviewService.findAllReviewsByCourseId(courseId, authInfo);
         return ResponseEntity.ok(reviews);
     }
