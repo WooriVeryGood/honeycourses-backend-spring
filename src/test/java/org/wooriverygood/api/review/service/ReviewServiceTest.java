@@ -20,6 +20,7 @@ import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.support.AuthInfo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +88,7 @@ public class ReviewServiceTest {
             .authorEmail(authInfo.getUsername())
             .reviewLikes(new ArrayList<>())
             .updated(false)
+            .createdAt(LocalDateTime.of(2022, 6, 13, 12, 00))
             .build();
 
     Review noAuthReview = Review.builder()
@@ -100,6 +102,7 @@ public class ReviewServiceTest {
             .authorEmail("somerandom-username")
             .reviewLikes(new ArrayList<>())
             .updated(false)
+            .createdAt(LocalDateTime.of(2024, 1, 13, 12, 00))
             .build();
 
     @Test
@@ -255,5 +258,31 @@ public class ReviewServiceTest {
                 .isInstanceOf(AuthorizationException.class);
     }
 
+    @Test
+    @DisplayName("리뷰를 작성하지 않았다면, false를 반환한다.")
+    void canAccessReviews_false_noReview() {
+        Mockito.when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThat(reviewService.canAccessReviews(authInfo)).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("마지막으로 작성한 리뷰가 현재 기준으로 6개월보다 멀다면, false를 반환한다.")
+    void canAccessReviews_false_sixMonths() {
+        Mockito.when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
+                .thenReturn(Optional.ofNullable(singleReview));
+
+        Assertions.assertThat(reviewService.canAccessReviews(authInfo)).isEqualTo(false);
+    }
+
+    @Test
+    @DisplayName("마지막으로 작성한 리뷰가 현재 기준으로 6개월보다 가깝다면, true를 반환한다.")
+    void canAccessReviews_true() {
+        Mockito.when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
+                .thenReturn(Optional.ofNullable(noAuthReview));
+
+        Assertions.assertThat(reviewService.canAccessReviews(authInfo)).isEqualTo(true);
+    }
 
 }

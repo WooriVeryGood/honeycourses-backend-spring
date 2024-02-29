@@ -7,10 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.review.domain.Review;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+
     List<Review> findAllByCourseId(Long courseId);
+
     List<Review> findByAuthorEmail(String author);
+
+    Optional<Review> findTopByAuthorEmailOrderByCreatedAtDesc(String author);
 
     @Transactional
     @Modifying(clearAutomatically = true)
