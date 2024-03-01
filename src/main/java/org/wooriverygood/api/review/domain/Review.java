@@ -80,7 +80,9 @@ public class Review {
     }
 
     public void validateAuthor(String author) {
-        if (!this.authorEmail.equals(author)) throw new AuthorizationException();
+        if (!this.authorEmail.equals(author)) {
+            throw new AuthorizationException();
+        }
     }
 
     public void addReviewLike(ReviewLike reviewLike) {

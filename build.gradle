@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
     id "org.asciidoctor.jvm.convert" version "3.3.2"  // .adoc 파일 생성을 위한 플러그인
+    id 'jacoco'
 }
 
 group = 'org.wooriverygood'
@@ -32,8 +33,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    runtimeOnly 'com.h2database:h2'
-
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
@@ -55,6 +54,7 @@ ext {
 }
 
 test {
+    finalizedBy jacocoTestReport
     useJUnitPlatform()
     outputs.dir snippetsDir
 }
@@ -80,4 +80,31 @@ task copyDocument(type: Copy) { // 생성된 html 파일을 옮긴다
 
 build {
     dependsOn copyDocument // build 이후 html 파일 복사
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = true
+    }
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+            enabled = true
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.75
+            }
+
+            excludes = ['*.*Controller', '*.advice.*', '*.dto.*', '*.config.*', '*.domain.*', '*.support.*']
+        }
+    }
 }
