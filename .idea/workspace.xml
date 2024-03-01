@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/ReviewAccessDeniedException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/src/docs/asciidoc/index.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/controller/ReviewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/domain/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/domain/Review.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/repository/ReviewRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/service/ReviewService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/controller/ReviewControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/controller/ReviewControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/service/ReviewServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/service/ReviewServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,13 +153,13 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Shell Script.gradlew.executor": "Run",
-    "Spring Boot.HoneycoursesBackend.executor": "Debug",
+    "Spring Boot.HoneycoursesBackend.executor": "Coverage",
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "create.test.in.the.same.root": "true",
     "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "HC-200-review-date",
+    "git-widget-placeholder": "HC-203-test-coverage",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
@@ -204,7 +197,7 @@
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.ReviewControllerTest.findAllReviewsByCourseId_success">
+  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
     <configuration name="ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -249,6 +242,9 @@
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
+        <extension name="coverage" runner="jacoco" />
+      </EXTENSION>
       <DebugAllEnabled>false</DebugAllEnabled>
       <RunAsTest>true</RunAsTest>
       <method v="2" />
@@ -325,6 +321,21 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="HoneycoursesBackend" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="honeycourses-backend-spring.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.wooriverygood.api.HoneycoursesBackend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied" />
+      <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_success" />
+      <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_false_noReview" />
+      <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths" />
+      <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_true" />
+      <item itemvalue="Spring Boot.HoneycoursesBackend" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_success" />
@@ -678,5 +689,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$Tests_in__honeycourses_backend_spring_test_.ic" NAME="Tests in 'honeycourses-backend-spring.test' Coverage Results" MODIFIED="1705668873722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/honeycourses_backend_spring$HoneycoursesBackend.ic" NAME="HoneycoursesBackend Coverage Results" MODIFIED="1709279852010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
