@@ -124,7 +124,7 @@ public class ReviewService {
     public ReviewUpdateResponse updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest, AuthInfo authInfo) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
-        review.validateAuthor(authInfo.getUsername());
+//        review.validateAuthor(authInfo.getUsername());
 
         review.updateReview(reviewUpdateRequest.getReview_title(), reviewUpdateRequest.getInstructor_name(), reviewUpdateRequest.getTaken_semyr(), reviewUpdateRequest.getReview_content(), reviewUpdateRequest.getGrade());
 
