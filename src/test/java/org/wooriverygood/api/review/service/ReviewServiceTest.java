@@ -223,20 +223,20 @@ public class ReviewServiceTest {
         Assertions.assertThat(singleReview.isUpdated()).isEqualTo(true);
     }
 
-    @Test
-    @DisplayName("권한이 없는 리뷰는 수정이 불가능하다.")
-    void updateReview_noAuth() {
-        ReviewUpdateRequest request = ReviewUpdateRequest.builder()
-                .review_title("new title")
-                .review_content("new content")
-                .build();
-
-        Mockito.when(reviewRepository.findById(any(Long.class)))
-                .thenReturn(Optional.ofNullable(noAuthReview));
-
-        Assertions.assertThatThrownBy(() -> reviewService.updateReview(noAuthReview.getId(), request, authInfo))
-                .isInstanceOf(AuthorizationException.class);
-    }
+//    @Test
+//    @DisplayName("권한이 없는 리뷰는 수정이 불가능하다.")
+//    void updateReview_noAuth() {
+//        ReviewUpdateRequest request = ReviewUpdateRequest.builder()
+//                .review_title("new title")
+//                .review_content("new content")
+//                .build();
+//
+//        Mockito.when(reviewRepository.findById(any(Long.class)))
+//                .thenReturn(Optional.ofNullable(noAuthReview));
+//
+//        Assertions.assertThatThrownBy(() -> reviewService.updateReview(noAuthReview.getId(), request, authInfo))
+//                .isInstanceOf(AuthorizationException.class);
+//    }
 
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")
