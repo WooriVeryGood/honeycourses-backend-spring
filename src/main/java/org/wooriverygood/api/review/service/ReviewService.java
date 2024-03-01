@@ -126,7 +126,7 @@ public class ReviewService {
                 .orElseThrow(ReviewNotFoundException::new);
 //        review.validateAuthor(authInfo.getUsername());
 
-        review.updateReview(reviewUpdateRequest.getReview_title(), reviewUpdateRequest.getInstructor_name(), reviewUpdateRequest.getTaken_semyr(), reviewUpdateRequest.getReview_content(), reviewUpdateRequest.getGrade());
+        review.updateReview(reviewUpdateRequest.getReview_title(), reviewUpdateRequest.getInstructor_name(), reviewUpdateRequest.getTaken_semyr(), reviewUpdateRequest.getReview_content(), reviewUpdateRequest.getGrade(), authInfo.getUsername());
 
         return ReviewUpdateResponse.builder()
                 .review_id(review.getId())
