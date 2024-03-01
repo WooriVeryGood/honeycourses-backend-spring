@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.advice.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
+import org.wooriverygood.api.advice.exception.ReviewAccessDeniedException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.support.AuthInfo;
@@ -56,8 +57,10 @@ public class ReviewControllerTest extends ControllerTest {
     }
 
     @Test
-    @DisplayName("특정 강의의 리뷰 조회 요청을 받으면 리뷰들을 반환한다.")
-    void findAllReviewsByCourseId() {
+    @DisplayName("최근 작성한 리뷰가 6개월 미만이라면, 특정 강의의 리뷰 조회 요청을 받으면 리뷰들을 반환한다.")
+    void findAllReviewsByCourseId_success() {
+        Mockito.when(reviewService.canAccessReviews(any(AuthInfo.class)))
+                .thenReturn(true);
         Mockito.when(reviewService.findAllReviewsByCourseId(any(), any(AuthInfo.class)))
                 .thenReturn(responses);
 
@@ -71,8 +74,25 @@ public class ReviewControllerTest extends ControllerTest {
     }
 
     @Test
+    @DisplayName("최근 작성한 리뷰가 6개월 이상이거나 없다면, 리뷰 요청에 대한 BadRequest 예외를 반환한다.")
+    void findAllReviewsByCourseId_exception_accessDenied() {
+        Mockito.when(reviewService.canAccessReviews(any(AuthInfo.class)))
+                .thenThrow(new ReviewAccessDeniedException());
+
+        restDocs
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer aws-cognito-access-token")
+                .when().get("/courses/1/reviews")
+                .then().log().all()
+                .apply(document("reviews/find/fail/denied"))
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("유효하지 않은 수업의 리뷰를 조회하면 404를 반환한다.")
     void findReviews_exception_invalidId() {
+        Mockito.when(reviewService.canAccessReviews(any(AuthInfo.class)))
+                .thenReturn(true);
         Mockito.when(reviewService.findAllReviewsByCourseId(any(Long.class), any(AuthInfo.class)))
                 .thenThrow(new CourseNotFoundException());
 
@@ -82,7 +102,7 @@ public class ReviewControllerTest extends ControllerTest {
                 .when().get("/courses/1/reviews")
                 .then().log().all()
                 .assertThat()
-                .apply(document("reviews/find/fail"))
+                .apply(document("reviews/find/fail/noCourse"))
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
