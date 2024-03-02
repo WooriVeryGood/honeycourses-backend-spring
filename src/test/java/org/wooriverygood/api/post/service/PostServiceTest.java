@@ -159,23 +159,23 @@ class PostServiceTest {
     @DisplayName("새로운 게시글을 작성한다.")
     void addPost() {
         NewPostRequest newPostRequest = NewPostRequest.builder()
-                .post_title("title")
-                .post_category("자유")
-                .post_content("content")
+                .postTitle("title")
+                .postCategory("자유")
+                .postContent("content")
                 .build();
 
         Mockito.when(postRepository.save(any(Post.class)))
                 .thenReturn(Post.builder()
-                        .title(newPostRequest.getPost_title())
-                        .category(PostCategory.parse(newPostRequest.getPost_category()))
-                        .content(newPostRequest.getPost_content())
+                        .title(newPostRequest.getPostTitle())
+                        .category(PostCategory.parse(newPostRequest.getPostCategory()))
+                        .content(newPostRequest.getPostContent())
                         .author(authInfo.getUsername())
                         .build());
 
         NewPostResponse response = postService.addPost(authInfo, newPostRequest);
 
-        Assertions.assertThat(response.getTitle()).isEqualTo(newPostRequest.getPost_title());
-        Assertions.assertThat(response.getCategory()).isEqualTo(newPostRequest.getPost_category());
+        Assertions.assertThat(response.getTitle()).isEqualTo(newPostRequest.getPostTitle());
+        Assertions.assertThat(response.getCategory()).isEqualTo(newPostRequest.getPostCategory());
         Assertions.assertThat(response.getAuthor()).isEqualTo(authInfo.getUsername());
     }
 
@@ -183,9 +183,9 @@ class PostServiceTest {
     @DisplayName("새로운 게시글의 카테고리가 유효하지 않으면 등록에 실패한다.")
     void addPost_exception_invalid_category() {
         NewPostRequest newPostRequest = NewPostRequest.builder()
-                .post_title("title")
-                .post_category("자유유")
-                .post_content("content")
+                .postTitle("title")
+                .postCategory("자유유")
+                .postContent("content")
                 .build();
 
         Assertions.assertThatThrownBy(() -> postService.addPost(authInfo, newPostRequest))
@@ -218,7 +218,7 @@ class PostServiceTest {
 
         PostLikeResponse response = postService.likePost(singlePost.getId(), authInfo);
 
-        Assertions.assertThat(response.getLike_count()).isEqualTo(singlePost.getLikeCount() + 1);
+        Assertions.assertThat(response.getLikeCount()).isEqualTo(singlePost.getLikeCount() + 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(true);
     }
 
@@ -237,7 +237,7 @@ class PostServiceTest {
 
         PostLikeResponse response = postService.likePost(singlePost.getId(), authInfo);
 
-        Assertions.assertThat(response.getLike_count()).isEqualTo(singlePost.getLikeCount() - 1);
+        Assertions.assertThat(response.getLikeCount()).isEqualTo(singlePost.getLikeCount() - 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(false);
     }
 
@@ -245,8 +245,8 @@ class PostServiceTest {
     @DisplayName("권한이 있는 게시글을 수정한다.")
     void updatePost() {
         PostUpdateRequest request = PostUpdateRequest.builder()
-                .post_title("new title")
-                .post_content("new content")
+                .postTitle("new title")
+                .postContent("new content")
                 .build();
 
         Mockito.when(postRepository.findById(any(Long.class)))
@@ -262,8 +262,8 @@ class PostServiceTest {
     @DisplayName("권한이 없는 게시글을 수정할 수 없다.")
     void updatePost_exception_noAuth() {
         PostUpdateRequest request = PostUpdateRequest.builder()
-                .post_title("new title")
-                .post_content("new content")
+                .postTitle("new title")
+                .postContent("new content")
                 .build();
 
         Mockito.when(postRepository.findById(any(Long.class)))
@@ -281,7 +281,7 @@ class PostServiceTest {
 
         PostDeleteResponse response = postService.deletePost(singlePost.getId(), authInfo);
 
-        Assertions.assertThat(response.getPost_id()).isEqualTo(singlePost.getId());
+        Assertions.assertThat(response.getPostId()).isEqualTo(singlePost.getId());
     }
 
     @Test

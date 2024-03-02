@@ -1,5 +1,7 @@
 package org.wooriverygood.api.post.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,16 +9,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostUpdateRequest {
 
     @NotBlank(message = "제목이 없습니다.")
-    private String post_title;
+    private String postTitle;
 
-    private String post_content;
+    private String postContent;
 
     @Builder
-    public PostUpdateRequest(String post_title, String post_content) {
-        this.post_title = post_title;
-        this.post_content = post_content;
+    public PostUpdateRequest(String postTitle, String postContent) {
+        this.postTitle = postTitle;
+        this.postContent = postContent;
     }
 }
