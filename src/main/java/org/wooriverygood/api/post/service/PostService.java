@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
 import org.wooriverygood.api.advice.exception.PostNotFoundException;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
@@ -50,7 +49,7 @@ public class PostService {
 
     @Transactional
     public NewPostResponse addPost(AuthInfo authInfo, NewPostRequest newPostRequest) {
-        PostCategory.parse(newPostRequest.getPost_category());
+        PostCategory.parse(newPostRequest.getPostCategory());
         Post post = createPost(authInfo, newPostRequest);
         Post saved = postRepository.save(post);
         return createResponse(saved);
@@ -58,16 +57,16 @@ public class PostService {
 
     private Post createPost(AuthInfo authInfo, NewPostRequest newPostRequest) {
         return Post.builder()
-                .title(newPostRequest.getPost_title())
-                .content(newPostRequest.getPost_content())
-                .category(PostCategory.parse(newPostRequest.getPost_category()))
+                .title(newPostRequest.getPostTitle())
+                .content(newPostRequest.getPostContent())
+                .category(PostCategory.parse(newPostRequest.getPostCategory()))
                 .author(authInfo.getUsername())
                 .build();
     }
 
     private NewPostResponse createResponse(Post post) {
         return NewPostResponse.builder()
-                .post_id(post.getId())
+                .postId(post.getId())
                 .title(post.getTitle())
                 .category(post.getCategory().getValue())
                 .author(post.getAuthor())
@@ -129,7 +128,7 @@ public class PostService {
     private PostLikeResponse createPostLikeResponse(Post post, boolean liked) {
         int likeCount = post.getLikeCount() + (liked ? 1 : -1);
         return PostLikeResponse.builder()
-                .like_count(likeCount)
+                .likeCount(likeCount)
                 .liked(liked)
                 .build();
     }
@@ -140,8 +139,8 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(authInfo.getUsername());
 
-        post.updateTitle(postUpdateRequest.getPost_title());
-        post.updateContent(postUpdateRequest.getPost_content());
+        post.updateTitle(postUpdateRequest.getPostTitle());
+        post.updateContent(postUpdateRequest.getPostContent());
 
         return PostUpdateResponse.builder()
                 .post_id(post.getId())
@@ -160,7 +159,7 @@ public class PostService {
         postRepository.delete(post);
 
         return PostDeleteResponse.builder()
-                .post_id(postId)
+                .postId(postId)
                 .build();
     }
 
