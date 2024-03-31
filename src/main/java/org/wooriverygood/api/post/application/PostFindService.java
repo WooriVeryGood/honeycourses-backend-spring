@@ -32,7 +32,7 @@ public class PostFindService {
     }
 
     private Page<Post> findPostsPage(Pageable pageable, String postCategory) {
-        if (postCategory == null || postCategory.isEmpty())
+        if (postCategory.isEmpty())
             return postRepository.findAllByOrderByIdDesc(pageable);
         PostCategory category = PostCategory.parse(postCategory);
         return postRepository.findAllByCategoryOrderByIdDesc(category, pageable);

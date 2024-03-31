@@ -13,6 +13,10 @@ import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.util.ApiTest;
 import org.wooriverygood.api.util.ResponseFixture;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -38,8 +42,30 @@ class PostApiTest extends ApiTest {
     @Test
     @DisplayName("자유 카테고리의 2번째 페이지를 반환한다.")
     void findPostsByCategory() {
+        List<PostResponse> responses = new ArrayList<>();
+        int bound = Math.min(39 - 2 * 10 + 1, 10);
+        int start = 2 * 10 + 1;
+        for (long i = start; i < start + bound; i++)
+            responses.add(PostResponse.builder()
+                    .postId(i)
+                    .postTitle("title_" + i)
+                    .postCategory("자유")
+                    .postContent("content_" + i)
+                    .postAuthor("author")
+                    .postComments((int) (Math.random() * 100))
+                    .postLikes((int) (Math.random() * 100))
+                    .postTime(LocalDateTime.now())
+                    .liked(i % 6 == 0)
+                    .updated(i % 9 == 0)
+                    .reported(false)
+                    .build());
+
         when(postFindService.findPosts(any(AuthInfo.class), any(Pageable.class), anyString()))
-                .thenReturn(ResponseFixture.postsResponse(2, 39, "자유", testAuthInfo));
+                .thenReturn(PostsResponse.builder()
+                        .posts(responses)
+                        .totalPostCount(39)
+                        .totalPageCount((int) Math.ceil((double) 39 / 10))
+                        .build());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
