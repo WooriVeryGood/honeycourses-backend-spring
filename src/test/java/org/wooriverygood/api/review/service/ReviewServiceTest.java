@@ -18,7 +18,7 @@ import org.wooriverygood.api.review.domain.ReviewLike;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.wooriverygood.api.report.dto.ReportRequest;
 import org.wooriverygood.api.report.service.ReportService;
-import org.wooriverygood.api.support.AuthInfo;
-import org.wooriverygood.api.support.Login;
+import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.global.auth.Login;
 
 @RestController
 public class ReportController {

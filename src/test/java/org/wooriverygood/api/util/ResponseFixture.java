@@ -2,7 +2,7 @@ package org.wooriverygood.api.util;
 
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.dto.PostsResponse;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ public class ResponseFixture {
 
     public static PostResponse postResponse(long id, String category, AuthInfo authInfo) {
         return PostResponse.builder()
-                .post_id(id)
-                .post_title("title_" + id)
-                .post_category(category)
-                .post_content("content_" + id)
-                .post_author(authInfo.getUsername())
-                .post_comments((int) (Math.random() * 100))
-                .post_likes((int) (Math.random() * 100))
-                .post_time(LocalDateTime.now())
+                .postId(id)
+                .postTitle("title_" + id)
+                .postCategory(category)
+                .postContent("content_" + id)
+                .postAuthor(authInfo.getUsername())
+                .postComments((int) (Math.random() * 100))
+                .postLikes((int) (Math.random() * 100))
+                .postTime(LocalDateTime.now())
                 .liked(id % 6 == 0)
                 .updated(id % 9 == 0)
                 .reported(false)
@@ -45,14 +45,14 @@ public class ResponseFixture {
 
     public static PostResponse reportedPostResponse(long id, String category, AuthInfo authInfo) {
         return PostResponse.builder()
-                .post_id(id)
-                .post_title(null)
-                .post_category(category)
-                .post_content(null)
-                .post_author(authInfo.getUsername())
-                .post_comments((int) (Math.random() * 100))
-                .post_likes((int) (Math.random() * 100))
-                .post_time(LocalDateTime.now())
+                .postId(id)
+                .postTitle(null)
+                .postCategory(category)
+                .postContent(null)
+                .postAuthor(authInfo.getUsername())
+                .postComments((int) (Math.random() * 100))
+                .postLikes((int) (Math.random() * 100))
+                .postTime(LocalDateTime.now())
                 .liked(id % 6 == 0)
                 .updated(id % 9 == 0)
                 .reported(true)

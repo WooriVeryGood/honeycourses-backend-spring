@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[hotfix] 리뷰 갱신 시, 작성자 정보 및 작성 날짜 갱신" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[hotfix] 리뷰 갱신 시, 작성자 정보 및 작성 날짜 갱신">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/InvalidPostContentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/InvalidPostTitleException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Content.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Title.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/general/ReviewNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/ReviewNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/NewCommentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/dto/NewCommentResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/domain/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/dto/PostResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/post/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/service/ReviewService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,99 +99,99 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build honeycourses-backend-spring.executor": "Run",
-    "Gradle.CommentControllerTest.addComment.executor": "Run",
-    "Gradle.CommentControllerTest.addReply.executor": "Run",
-    "Gradle.CommentControllerTest.deleteComment.executor": "Run",
-    "Gradle.CommentControllerTest.executor": "Run",
-    "Gradle.CommentControllerTest.findAllCommentsByPostId.executor": "Run",
-    "Gradle.CommentControllerTest.updateComment.executor": "Run",
-    "Gradle.CommentControllerTest.updateComment_exception_noAuth.executor": "Run",
-    "Gradle.CommentControllerTest.updateComment_exception_noContent.executor": "Run",
-    "Gradle.CommentServiceTest.addReply.executor": "Run",
-    "Gradle.CommentServiceTest.addReply_exception_depth.executor": "Run",
-    "Gradle.CommentServiceTest.deletePrentAndReply.executor": "Run",
-    "Gradle.CommentServiceTest.deleteReply.executor": "Run",
-    "Gradle.CommentServiceTest.deleteReply_keep_parent.executor": "Run",
-    "Gradle.CommentServiceTest.executor": "Run",
-    "Gradle.CommentServiceTest.likeComment_up.executor": "Run",
-    "Gradle.CommentServiceTest.updateComment.executor": "Run",
-    "Gradle.CommentServiceTest.updateComment_exception_noAuth.executor": "Run",
-    "Gradle.CourseServiceTest.executor": "Debug",
-    "Gradle.PostControllerTest.addPost.executor": "Run",
-    "Gradle.PostControllerTest.addPost_exception_noTitle.executor": "Run",
-    "Gradle.PostControllerTest.deletePost.executor": "Run",
-    "Gradle.PostControllerTest.executor": "Run",
-    "Gradle.PostControllerTest.findAllPosts.executor": "Run",
-    "Gradle.PostControllerTest.findMyPosts.executor": "Run",
-    "Gradle.PostControllerTest.findPost.executor": "Run",
-    "Gradle.PostControllerTest.findPost_exception_invalidId.executor": "Run",
-    "Gradle.PostControllerTest.findPosts.executor": "Run",
-    "Gradle.PostControllerTest.findPostsByCategory.executor": "Run",
-    "Gradle.PostControllerTest.likePost_up.executor": "Run",
-    "Gradle.PostControllerTest.updatePost.executor": "Run",
-    "Gradle.PostServiceTest.addPost_exception_invalid_category.executor": "Run",
-    "Gradle.PostServiceTest.deletePost.executor": "Run",
-    "Gradle.PostServiceTest.executor": "Run",
-    "Gradle.PostServiceTest.findAllPosts_login.executor": "Run",
-    "Gradle.PostServiceTest.findMyPosts.executor": "Run",
-    "Gradle.PostServiceTest.findPosts_category_free.executor": "Run",
-    "Gradle.PostServiceTest.likePost.executor": "Run",
-    "Gradle.PostServiceTest.likePost_down.executor": "Run",
-    "Gradle.PostServiceTest.likePost_up.executor": "Debug",
-    "Gradle.PostServiceTest.updatePost.executor": "Run",
-    "Gradle.ReportControllerTest.reportComment.executor": "Run",
-    "Gradle.ReportControllerTest.reportPost (1).executor": "Run",
-    "Gradle.ReportControllerTest.reportPost.executor": "Run",
-    "Gradle.ReportServiceTest.reportComment.executor": "Run",
-    "Gradle.ReportServiceTest.reportComment_exception_duplicated.executor": "Run",
-    "Gradle.ReportServiceTest.reportPost.executor": "Run",
-    "Gradle.ReportServiceTest.reportPost_exception_duplicated.executor": "Run",
-    "Gradle.ReportServiceTest.reportPost_exception_invalidId.executor": "Run",
-    "Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied.executor": "Run",
-    "Gradle.ReviewControllerTest.findAllReviewsByCourseId_success.executor": "Run",
-    "Gradle.ReviewServiceTest.canAccessReviews_false_noReview.executor": "Run",
-    "Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths.executor": "Run",
-    "Gradle.ReviewServiceTest.canAccessReviews_true.executor": "Run",
-    "Notification.DisplayName-DoNotAsk-Lombok plugin": "Lombok integration problem",
-    "Notification.DoNotAsk-Lombok plugin": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Shell Script.gradlew.executor": "Run",
-    "Spring Boot.HoneycoursesBackend.executor": "Debug",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "create.test.in.the.same.root": "true",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "HC-203-test-coverage",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build honeycourses-backend-spring.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.addComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.addReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.deleteComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.findAllCommentsByPostId.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.updateComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.updateComment_exception_noAuth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.updateComment_exception_noContent.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.addReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.addReply_exception_depth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.deletePrentAndReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.deleteReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.deleteReply_keep_parent.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.likeComment_up.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.updateComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.updateComment_exception_noAuth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CourseServiceTest.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.PostControllerTest.addPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.addPost_exception_noTitle.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.deletePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findAllPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findMyPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPost_exception_invalidId.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPostsByCategory.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.likePost_up.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.updatePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.addPost_exception_invalid_category.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.deletePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.findAllPosts_login.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.findMyPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.findPosts_category_free.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.likePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.likePost_down.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.likePost_up.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.PostServiceTest.updatePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportControllerTest.reportComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportControllerTest.reportPost (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportControllerTest.reportPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportComment_exception_duplicated.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportPost_exception_duplicated.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportPost_exception_invalidId.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewControllerTest.findAllReviewsByCourseId_success.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewServiceTest.canAccessReviews_false_noReview.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewServiceTest.canAccessReviews_true.executor&quot;: &quot;Run&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Lombok plugin&quot;: &quot;Lombok integration problem&quot;,
+    &quot;Notification.DoNotAsk-Lombok plugin&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Shell Script.gradlew.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.HoneycoursesBackend.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;HC-204-refactoring&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.wooriverygood.api.advice.exception" />
@@ -364,6 +379,13 @@
       <workItem from="1705301106038" duration="464000" />
       <workItem from="1705302176845" duration="9723000" />
       <workItem from="1706178673625" duration="8490000" />
+      <workItem from="1709456222138" duration="35181000" />
+      <workItem from="1710220773073" duration="12992000" />
+      <workItem from="1710523632668" duration="12399000" />
+      <workItem from="1710688247926" duration="603000" />
+      <workItem from="1710840155920" duration="1431000" />
+      <workItem from="1711206789197" duration="198000" />
+      <workItem from="1711212584044" duration="711000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
