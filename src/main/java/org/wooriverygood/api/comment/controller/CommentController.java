@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.service.CommentService;
-import org.wooriverygood.api.support.AuthInfo;
-import org.wooriverygood.api.support.Login;
+import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.global.auth.Login;
 
 import java.util.List;
 

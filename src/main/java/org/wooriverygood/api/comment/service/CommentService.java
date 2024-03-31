@@ -9,10 +9,10 @@ import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.advice.exception.CommentNotFoundException;
-import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.post.exception.PostNotFoundException;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.util.List;
 import java.util.Objects;
@@ -69,11 +69,7 @@ public class CommentService {
                 .build();
         Comment saved = commentRepository.save(comment);
 
-        return NewCommentResponse.builder()
-                .comment_id(saved.getId())
-                .content(saved.getContent())
-                .author(saved.getAuthor())
-                .build();
+        return NewCommentResponse.of(saved);
     }
 
     @Transactional

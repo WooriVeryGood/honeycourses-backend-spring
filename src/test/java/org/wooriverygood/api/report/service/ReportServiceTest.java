@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.advice.exception.CommentNotFoundException;
 import org.wooriverygood.api.advice.exception.DuplicatedCommentReportException;
 import org.wooriverygood.api.advice.exception.DuplicatedPostReportException;
-import org.wooriverygood.api.advice.exception.PostNotFoundException;
+import org.wooriverygood.api.post.exception.PostNotFoundException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
@@ -19,7 +19,7 @@ import org.wooriverygood.api.post.repository.PostRepository;
 import org.wooriverygood.api.report.dto.ReportRequest;
 import org.wooriverygood.api.report.repository.CommentReportRepository;
 import org.wooriverygood.api.report.repository.PostReportRepository;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.util.ArrayList;
 import java.util.Optional;

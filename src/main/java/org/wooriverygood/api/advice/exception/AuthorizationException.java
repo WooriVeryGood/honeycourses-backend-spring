@@ -1,6 +1,6 @@
 package org.wooriverygood.api.advice.exception;
 
-import org.wooriverygood.api.advice.exception.general.ForbiddenException;
+import org.wooriverygood.api.global.error.exception.ForbiddenException;
 
 public class AuthorizationException extends ForbiddenException {
 

@@ -1,6 +1,6 @@
 package org.wooriverygood.api.advice.exception;
 
-import org.wooriverygood.api.advice.exception.general.BadRequestException;
+import org.wooriverygood.api.global.error.exception.BadRequestException;
 
 public class ReviewAccessDeniedException extends BadRequestException {
 

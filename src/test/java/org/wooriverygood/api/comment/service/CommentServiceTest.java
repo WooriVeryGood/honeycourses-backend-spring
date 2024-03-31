@@ -19,7 +19,7 @@ import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.util.ArrayList;
 import java.util.List;

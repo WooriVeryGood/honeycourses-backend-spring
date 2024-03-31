@@ -1,6 +1,6 @@
 package org.wooriverygood.api.advice.exception;
 
-import org.wooriverygood.api.advice.exception.general.NotFoundException;
+import org.wooriverygood.api.global.error.exception.NotFoundException;
 
 public class CourseNotFoundException extends NotFoundException {
     private static final String MESSAGE = "강의를 찾을 수 없습니다.";

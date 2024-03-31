@@ -1,7 +1,7 @@
 package org.wooriverygood.api.post.domain;
 
 import lombok.Getter;
-import org.wooriverygood.api.advice.exception.InvalidPostCategoryException;
+import org.wooriverygood.api.post.exception.InvalidPostCategoryException;
 
 @Getter
 public enum PostCategory {

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.wooriverygood.api.advice.exception.ReviewAccessDeniedException;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.service.ReviewService;
-import org.wooriverygood.api.support.AuthInfo;
-import org.wooriverygood.api.support.Login;
+import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.global.auth.Login;
 
 import java.util.List;
 

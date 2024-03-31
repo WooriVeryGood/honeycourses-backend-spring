@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
-import org.wooriverygood.api.advice.exception.general.ReviewNotFoundException;
+import org.wooriverygood.api.advice.exception.ReviewNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
@@ -12,7 +12,7 @@ import org.wooriverygood.api.review.domain.ReviewLike;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

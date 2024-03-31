@@ -17,6 +17,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findTopByAuthorEmailOrderByCreatedAtDesc(String author);
 
+    void deleteAllInBatch();
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE reviews SET like_count = like_count + 1 WHERE review_id = :reviewId", nativeQuery = true)

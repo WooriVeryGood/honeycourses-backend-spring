@@ -34,9 +34,11 @@ public class PostResponse {
 
     private final boolean reported;
 
+    private final int viewCount;
+
 
     @Builder
-    public PostResponse(Long postId, String postTitle, String postContent, String postCategory, String postAuthor, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported) {
+    public PostResponse(Long postId, String postTitle, String postContent, String postCategory, String postAuthor, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount) {
         this.postId = postId;
         this.postTitle = postTitle;
         this.postContent = postContent;
@@ -48,14 +50,15 @@ public class PostResponse {
         this.liked = liked;
         this.updated = updated;
         this.reported = reported;
+        this.viewCount = viewCount;
     }
 
-    public static PostResponse from(Post post, boolean liked) {
+    public static PostResponse of(Post post, boolean liked) {
         boolean reported = post.getReportCount() >= 5;
         return PostResponse.builder()
                 .postId(post.getId())
-                .postTitle(reported ? null : post.getTitle())
-                .postContent(reported ? null : post.getContent())
+                .postTitle(reported ? null : post.getTitle().getValue())
+                .postContent(reported ? null : post.getContent().getValue())
                 .postCategory(post.getCategory().getValue())
                 .postAuthor(post.getAuthor())
                 .postComments(post.getCommentCount())
@@ -64,6 +67,7 @@ public class PostResponse {
                 .liked(liked)
                 .updated(post.isUpdated())
                 .reported(reported)
+                .viewCount(post.getViewCount())
                 .build();
     }
 

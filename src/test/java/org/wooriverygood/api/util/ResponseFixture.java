@@ -2,7 +2,7 @@ package org.wooriverygood.api.util;
 
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.dto.PostsResponse;
-import org.wooriverygood.api.support.AuthInfo;
+import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
