@@ -104,7 +104,7 @@ jacocoTestCoverageVerification {
                 minimum = 0.75
             }
 
-            excludes = ['*.*Controller', '*.advice.*', '*.dto.*', '*.config.*', '*.domain.*', '*.support.*']
+            excludes = ['*.*Controller', '*.advice.*', '*.dto.*', '*.global.*', '*.domain.*']
         }
     }
 }
