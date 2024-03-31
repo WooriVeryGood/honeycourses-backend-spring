@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
+import org.wooriverygood.api.post.dto.PostDetailResponse;
 import org.wooriverygood.api.post.dto.PostResponse;
 import org.wooriverygood.api.post.dto.PostsResponse;
 import org.wooriverygood.api.post.exception.PostNotFoundException;
@@ -39,12 +40,12 @@ public class PostFindService {
     }
 
     @Transactional
-    public PostResponse findPostById(Long postId, AuthInfo authInfo) {
+    public PostDetailResponse findPostById(long postId, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
         boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
         postRepository.increaseViewCount(postId);
-        return PostResponse.of(post, liked);
+        return PostDetailResponse.of(post, liked);
     }
 
     public PostsResponse findMyPosts(AuthInfo authInfo, Pageable pageable) {

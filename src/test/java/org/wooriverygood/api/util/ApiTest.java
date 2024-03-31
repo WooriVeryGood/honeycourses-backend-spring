@@ -19,8 +19,9 @@ import org.wooriverygood.api.report.service.ReportService;
 import org.wooriverygood.api.course.controller.CourseController;
 import org.wooriverygood.api.course.service.CourseService;
 import org.wooriverygood.api.post.api.PostApi;
-import org.wooriverygood.api.review.controller.ReviewController;
-import org.wooriverygood.api.review.service.ReviewService;
+import org.wooriverygood.api.review.api.ReviewApi;
+import org.wooriverygood.api.review.application.ReviewValidateAccessService;
+import org.wooriverygood.api.review.application.ReviewService;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.AuthenticationPrincipalArgumentResolver;
 
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         CommentController.class,
         PostApi.class,
         CourseController.class,
-        ReviewController.class,
+        ReviewApi.class,
         ReportController.class
 })
 @WithMockUser
@@ -49,6 +50,9 @@ public class ApiTest {
 
     @MockBean
     protected ReviewService reviewService;
+
+    @MockBean
+    protected ReviewValidateAccessService reviewValidateAccessService;
 
     @MockBean
     protected CommentService commentService;

@@ -6,13 +6,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
-import org.wooriverygood.api.post.dto.PostResponse;
+import org.wooriverygood.api.post.dto.PostDetailResponse;
 import org.wooriverygood.api.post.dto.PostsResponse;
 import org.wooriverygood.api.post.exception.PostNotFoundException;
 import org.wooriverygood.api.post.repository.PostLikeRepository;
@@ -26,6 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 
 class PostFindServiceTest extends MockTest {
@@ -83,7 +83,7 @@ class PostFindServiceTest extends MockTest {
         int end = Math.min(start + pageable.getPageSize(), this.posts.size());
         List<Post> posts = this.posts.subList(start, end);
         PageImpl<Post> page = new PageImpl<>(posts, pageable, this.posts.size());
-        Mockito.when(postRepository.findAllByOrderByIdDesc(any(PageRequest.class)))
+        when(postRepository.findAllByOrderByIdDesc(any(PageRequest.class)))
                 .thenReturn(page);
 
         PostsResponse response = postFindService.findPosts(authInfo, pageable, "");
@@ -101,7 +101,7 @@ class PostFindServiceTest extends MockTest {
         int end = Math.min(start + pageable.getPageSize(), this.freePosts.size());
         List<Post> posts = this.freePosts.subList(start, end);
         PageImpl<Post> page = new PageImpl<>(posts, pageable, this.freePosts.size());
-        Mockito.when(postRepository.findAllByCategoryOrderByIdDesc(any(PostCategory.class), any(PageRequest.class)))
+        when(postRepository.findAllByCategoryOrderByIdDesc(any(PostCategory.class), any(PageRequest.class)))
                 .thenReturn(page);
 
         PostsResponse response = postFindService.findPosts(authInfo, pageable, "자유");
@@ -123,10 +123,10 @@ class PostFindServiceTest extends MockTest {
                 .comments(new ArrayList<>())
                 .postLikes(new ArrayList<>())
                 .build();
-        Mockito.when(postRepository.findById(any()))
+        when(postRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(singlePost));
 
-        PostResponse response = postFindService.findPostById(6L, authInfo);
+        PostDetailResponse response = postFindService.findPostById(6L, authInfo);
 
         assertThat(response).isNotNull();
     }
@@ -134,7 +134,7 @@ class PostFindServiceTest extends MockTest {
     @Test
     @DisplayName("유효하지 않은 id를 이용하여 특정 게시글을 불러오면 에러를 반환한다.")
     void findPostById_exception_invalidId() {
-        Mockito.when(postRepository.findById(any()))
+        when(postRepository.findById(any()))
                 .thenThrow(PostNotFoundException.class);
 
         Assertions.assertThatThrownBy(() -> postFindService.findPostById(6L, authInfo))
@@ -150,7 +150,7 @@ class PostFindServiceTest extends MockTest {
         int end = Math.min(start + pageable.getPageSize(), this.myPosts.size());
         List<Post> posts = this.myPosts.subList(start, end);
         PageImpl<Post> page = new PageImpl<>(posts, pageable, this.myPosts.size());
-        Mockito.when(postRepository.findByAuthorOrderByIdDesc(any(String.class), any(PageRequest.class)))
+        when(postRepository.findByAuthorOrderByIdDesc(any(String.class), any(PageRequest.class)))
                 .thenReturn(page);
 
         PostsResponse response = postFindService.findMyPosts(authInfo, pageable);

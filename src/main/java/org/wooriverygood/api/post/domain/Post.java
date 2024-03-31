@@ -1,18 +1,16 @@
 package org.wooriverygood.api.post.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.report.domain.PostReport;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,18 +38,18 @@ public class Post {
     @Column(name = "post_author", length = 1000)
     private String author;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostLike> postLikes;
+    private List<PostLike> postLikes = new ArrayList<>();
 
     @Column(name = "like_count")
     @ColumnDefault("0")
     private int likeCount;
 
     @OneToMany(mappedBy = "post")
-    private List<PostReport> reports;
+    private List<PostReport> reports = new ArrayList<>();
 
     @Column(name = "report_count")
     @ColumnDefault("0")
@@ -120,6 +118,18 @@ public class Post {
             if (report.isOwner(username))
                 return true;
         return false;
+    }
+
+    public String getTitle() {
+        return isReportedTooMuch() ? null : title.getValue();
+    }
+
+    public String getContent() {
+        return isReportedTooMuch() ? null : content.getValue();
+    }
+
+    public boolean isReportedTooMuch() {
+        return reportCount >= 5;
     }
 
 }

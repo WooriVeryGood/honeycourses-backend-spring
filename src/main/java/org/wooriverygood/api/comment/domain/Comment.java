@@ -1,13 +1,11 @@
 package org.wooriverygood.api.comment.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.report.domain.CommentReport;
 
@@ -20,7 +18,7 @@ import java.util.Objects;
 @Table(name = "comments")
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
 
     @Id
@@ -46,14 +44,14 @@ public class Comment {
     private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentLike> commentLikes;
+    private List<CommentLike> commentLikes = new ArrayList<>();
 
     @Column(name = "like_count")
     @ColumnDefault("0")
     private int likeCount;
 
     @OneToMany(mappedBy = "comment")
-    private List<CommentReport> reports;
+    private List<CommentReport> reports = new ArrayList<>();
 
     @Column(name = "report_count")
     @ColumnDefault("0")

@@ -1,10 +1,10 @@
-package org.wooriverygood.api.review.service;
+package org.wooriverygood.api.review.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
-import org.wooriverygood.api.advice.exception.ReviewNotFoundException;
+import org.wooriverygood.api.review.exception.ReviewNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
@@ -14,8 +14,6 @@ import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.global.auth.AuthInfo;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,7 +122,7 @@ public class ReviewService {
     public ReviewUpdateResponse updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest, AuthInfo authInfo) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
-//        review.validateAuthor(authInfo.getUsername());
+        review.validateAuthor(authInfo.getUsername());
 
         review.updateReview(reviewUpdateRequest.getReview_title(), reviewUpdateRequest.getInstructor_name(), reviewUpdateRequest.getTaken_semyr(), reviewUpdateRequest.getReview_content(), reviewUpdateRequest.getGrade(), authInfo.getUsername());
 
@@ -148,13 +146,4 @@ public class ReviewService {
                 .build();
     }
 
-    public boolean canAccessReviews(AuthInfo authInfo) {
-        Optional<Review> review = reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(authInfo.getUsername());
-        if (review.isEmpty()) {
-            return false;
-        }
-        LocalDateTime now = LocalDateTime.now();
-        long distance = ChronoUnit.MONTHS.between(review.get().getCreatedAt(), now);
-        return distance <= 6;
-    }
 }

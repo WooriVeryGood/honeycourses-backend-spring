@@ -33,18 +33,18 @@ public class PostApi {
 
     @GetMapping
     public ResponseEntity<PostsResponse> findPosts(@Login AuthInfo authInfo,
-                                                   @RequestParam(required = false, defaultValue = "", value = "category") String category,
-                                                   @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
+                                                   @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
+                                                   @RequestParam(required = false, defaultValue = "", value = "category") String category) {
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
         PostsResponse response = postFindService.findPosts(authInfo, pageable, category);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> findPostById(@PathVariable("id") Long postId,
-                                                     @Login AuthInfo authInfo) {
-        PostResponse postResponse = postFindService.findPostById(postId, authInfo);
-        return ResponseEntity.ok(postResponse);
+    public ResponseEntity<PostDetailResponse> findPostById(@PathVariable("id") Long postId,
+                                                           @Login AuthInfo authInfo) {
+        PostDetailResponse postDetailResponse = postFindService.findPostById(postId, authInfo);
+        return ResponseEntity.ok(postDetailResponse);
     }
 
     @PostMapping
@@ -63,22 +63,22 @@ public class PostApi {
     }
 
     @PutMapping("/{id}/like")
-    public ResponseEntity<PostLikeResponse> togglePostLike(@PathVariable("id") long postId,
-                                                     @Login AuthInfo authInfo) {
+    public ResponseEntity<PostLikeResponse> togglePostLike(@PathVariable("id") Long postId,
+                                                           @Login AuthInfo authInfo) {
         PostLikeResponse response = postLikeToggleService.togglePostLike(postId, authInfo);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable("id") long postId,
-                                                         @Valid @RequestBody PostUpdateRequest postUpdateRequest,
-                                                         @Login AuthInfo authInfo) {
+    public ResponseEntity<Void> updatePost(@PathVariable("id") Long postId,
+                                           @Valid @RequestBody PostUpdateRequest postUpdateRequest,
+                                           @Login AuthInfo authInfo) {
         postUpdateService.updatePost(postId, postUpdateRequest, authInfo);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable("id") long postId,
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long postId,
                                            @Login AuthInfo authInfo) {
         postDeleteService.deletePost(authInfo, postId);
         return ResponseEntity.noContent().build();

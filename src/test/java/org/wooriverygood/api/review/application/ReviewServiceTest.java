@@ -1,4 +1,4 @@
-package org.wooriverygood.api.review.service;
+package org.wooriverygood.api.review.application;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.course.repository.CourseRepository;
@@ -256,33 +256,6 @@ public class ReviewServiceTest {
 
         Assertions.assertThatThrownBy(() -> reviewService.deleteReview(noAuthReview.getId(), authInfo))
                 .isInstanceOf(AuthorizationException.class);
-    }
-
-    @Test
-    @DisplayName("리뷰를 작성하지 않았다면, false를 반환한다.")
-    void canAccessReviews_false_noReview() {
-        Mockito.when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
-                .thenReturn(Optional.empty());
-
-        Assertions.assertThat(reviewService.canAccessReviews(authInfo)).isEqualTo(false);
-    }
-
-    @Test
-    @DisplayName("마지막으로 작성한 리뷰가 현재 기준으로 6개월보다 멀다면, false를 반환한다.")
-    void canAccessReviews_false_sixMonths() {
-        Mockito.when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
-                .thenReturn(Optional.ofNullable(singleReview));
-
-        Assertions.assertThat(reviewService.canAccessReviews(authInfo)).isEqualTo(false);
-    }
-
-    @Test
-    @DisplayName("마지막으로 작성한 리뷰가 현재 기준으로 6개월보다 가깝다면, true를 반환한다.")
-    void canAccessReviews_true() {
-        Mockito.when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
-                .thenReturn(Optional.ofNullable(noAuthReview));
-
-        Assertions.assertThat(reviewService.canAccessReviews(authInfo)).isEqualTo(true);
     }
 
 }

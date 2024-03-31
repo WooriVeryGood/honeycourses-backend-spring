@@ -1,14 +1,12 @@
 package org.wooriverygood.api.post.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "postLikes")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostLike {
 
     @Id
@@ -29,6 +27,7 @@ public class PostLike {
         this.post = post;
         this.username = username;
     }
+
     public void delete() {
         this.post = null;
     }
