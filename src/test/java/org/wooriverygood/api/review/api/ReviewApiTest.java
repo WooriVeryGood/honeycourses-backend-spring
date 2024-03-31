@@ -1,14 +1,13 @@
-package org.wooriverygood.api.review.controller;
+package org.wooriverygood.api.review.api;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
-import org.wooriverygood.api.advice.exception.ReviewAccessDeniedException;
+import org.wooriverygood.api.review.exception.ReviewAccessDeniedException;
 import org.wooriverygood.api.course.domain.Courses;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
@@ -19,12 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 public class ReviewApiTest extends ApiTest {
-    List<ReviewResponse> responses = new ArrayList<>();
 
-    Courses course= Courses.builder()
+    private List<ReviewResponse> responses = new ArrayList<>();
+
+    private Courses course = Courses.builder()
             .id(1L)
             .course_name("Gaoshu")
             .course_category("Zhuanye")
@@ -33,7 +35,7 @@ public class ReviewApiTest extends ApiTest {
             .kaikeYuanxi("Xinke")
             .build();
 
-    AuthInfo authInfo = AuthInfo.builder()
+    private AuthInfo authInfo = AuthInfo.builder()
             .sub("22222-34534-123")
             .username("22222-34534-123")
             .build();
@@ -59,9 +61,10 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("최근 작성한 리뷰가 6개월 미만이라면, 특정 강의의 리뷰 조회 요청을 받으면 리뷰들을 반환한다.")
     void findAllReviewsByCourseId_success() {
-        Mockito.when(reviewService.canAccessReviews(any(AuthInfo.class)))
-                .thenReturn(true);
-        Mockito.when(reviewService.findAllReviewsByCourseId(any(), any(AuthInfo.class)))
+        doNothing()
+                .when(reviewValidateAccessService)
+                .validateReviewAccess(any(AuthInfo.class));
+        when(reviewService.findAllReviewsByCourseId(anyLong(), any(AuthInfo.class)))
                 .thenReturn(responses);
 
         restDocs
@@ -76,8 +79,9 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("최근 작성한 리뷰가 6개월 이상이거나 없다면, 리뷰 요청에 대한 BadRequest 예외를 반환한다.")
     void findAllReviewsByCourseId_exception_accessDenied() {
-        Mockito.when(reviewService.canAccessReviews(any(AuthInfo.class)))
-                .thenThrow(new ReviewAccessDeniedException());
+        doThrow(new ReviewAccessDeniedException())
+                .when(reviewValidateAccessService)
+                .validateReviewAccess(any(AuthInfo.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -91,9 +95,10 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("유효하지 않은 수업의 리뷰를 조회하면 404를 반환한다.")
     void findReviews_exception_invalidId() {
-        Mockito.when(reviewService.canAccessReviews(any(AuthInfo.class)))
-                .thenReturn(true);
-        Mockito.when(reviewService.findAllReviewsByCourseId(any(Long.class), any(AuthInfo.class)))
+        doNothing()
+                .when(reviewValidateAccessService)
+                .validateReviewAccess(any(AuthInfo.class));
+        when(reviewService.findAllReviewsByCourseId(any(Long.class), any(AuthInfo.class)))
                 .thenThrow(new CourseNotFoundException());
 
         restDocs
@@ -127,7 +132,7 @@ public class ReviewApiTest extends ApiTest {
                 .grade("100")
                 .build();
 
-        Mockito.when(reviewService.addReview(any(AuthInfo.class), any(Long.class), any(NewReviewRequest.class)))
+        when(reviewService.addReview(any(AuthInfo.class), any(Long.class), any(NewReviewRequest.class)))
                 .thenReturn(response);
 
         restDocs
@@ -144,7 +149,7 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("특정 리뷰의 좋아요를 1 올리거나 내린다.")
     void likeReview() {
-        Mockito.when(reviewService.likeReview(any(Long.class), any(AuthInfo.class)))
+        when(reviewService.likeReview(any(Long.class), any(AuthInfo.class)))
                 .thenReturn(ReviewLikeResponse.builder()
                         .like_count(5)
                         .liked(false)
@@ -179,7 +184,7 @@ public class ReviewApiTest extends ApiTest {
                     .build());
         }
 
-        Mockito.when(reviewService.findMyReviews(any(AuthInfo.class)))
+        when(reviewService.findMyReviews(any(AuthInfo.class)))
                 .thenReturn(responses);
 
         restDocs
@@ -203,7 +208,7 @@ public class ReviewApiTest extends ApiTest {
                 .grade("100")
                 .build();
 
-        Mockito.when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
+        when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
                 .thenReturn(ReviewUpdateResponse.builder()
                         .review_id((long)1)
                         .build());
@@ -226,7 +231,7 @@ public class ReviewApiTest extends ApiTest {
                 .review_content("new content")
                 .build();
 
-        Mockito.when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
+        when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
                 .thenThrow(new AuthorizationException());
 
         restDocs
@@ -243,7 +248,7 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")
     void deleteReview() {
-        Mockito.when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
+        when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
                 .thenReturn(ReviewDeleteResponse.builder()
                         .review_id(8L)
                         .build());
@@ -260,7 +265,7 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 없는 리뷰를 삭제하면 403을 반환한다.")
     void deleteReview_noAuth() {
-        Mockito.when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
+        when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
                 .thenThrow(new AuthorizationException());
 
         restDocs
@@ -271,7 +276,5 @@ public class ReviewApiTest extends ApiTest {
                 .apply(document("reviews/delete/fail/noAuth"))
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
-
-
 
 }

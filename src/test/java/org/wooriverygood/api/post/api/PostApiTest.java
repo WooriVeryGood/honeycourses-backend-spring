@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.post.exception.PostNotFoundException;
 import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
@@ -50,8 +50,6 @@ class PostApiTest extends ApiTest {
                     .postId(i)
                     .postTitle("title_" + i)
                     .postCategory("자유")
-                    .postContent("content_" + i)
-                    .postAuthor("author")
                     .postComments((int) (Math.random() * 100))
                     .postLikes((int) (Math.random() * 100))
                     .postTime(LocalDateTime.now())
@@ -81,7 +79,17 @@ class PostApiTest extends ApiTest {
     @DisplayName("특정 게시글 조회 요청을 받으면 게시글을 반환한다.")
     void findPost() {
         when(postFindService.findPostById(anyLong(), any(AuthInfo.class)))
-                .thenReturn(ResponseFixture.postResponse(4L, testAuthInfo));
+                .thenReturn(PostDetailResponse.builder()
+                        .postId(1L)
+                        .postTitle("title_1")
+                        .postCategory("자유")
+                        .postComments((int) (Math.random() * 100))
+                        .postLikes((int) (Math.random() * 100))
+                        .postTime(LocalDateTime.now())
+                        .liked(false)
+                        .updated(false)
+                        .reported(false)
+                        .build());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

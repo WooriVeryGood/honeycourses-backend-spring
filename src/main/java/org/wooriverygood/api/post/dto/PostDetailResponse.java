@@ -10,13 +10,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PostResponse {
+public class PostDetailResponse {
 
     private final Long postId;
 
     private final String postTitle;
 
+    private final String postContent;
+
     private final String postCategory;
+
+    private final String postAuthor;
 
     private final int postComments;
 
@@ -34,10 +38,12 @@ public class PostResponse {
 
 
     @Builder
-    public PostResponse(Long postId, String postTitle, String postCategory, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount) {
+    public PostDetailResponse(Long postId, String postTitle, String postContent, String postCategory, String postAuthor, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount) {
         this.postId = postId;
         this.postTitle = postTitle;
+        this.postContent = postContent;
         this.postCategory = postCategory;
+        this.postAuthor = postAuthor;
         this.postComments = postComments;
         this.postLikes = postLikes;
         this.postTime = postTime;
@@ -47,11 +53,13 @@ public class PostResponse {
         this.viewCount = viewCount;
     }
 
-    public static PostResponse of(Post post, boolean liked) {
-        return PostResponse.builder()
+    public static PostDetailResponse of(Post post, boolean liked) {
+        return PostDetailResponse.builder()
                 .postId(post.getId())
                 .postTitle(post.getTitle())
+                .postContent(post.getContent())
                 .postCategory(post.getCategory().getValue())
+                .postAuthor(post.getAuthor())
                 .postComments(post.getCommentCount())
                 .postLikes(post.getLikeCount())
                 .postTime(post.getCreatedAt())

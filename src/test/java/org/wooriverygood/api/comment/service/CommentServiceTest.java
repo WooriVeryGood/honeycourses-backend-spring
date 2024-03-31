@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.domain.CommentLike;

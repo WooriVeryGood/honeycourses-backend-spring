@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.dto.PostUpdateRequest;
