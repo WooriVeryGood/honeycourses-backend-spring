@@ -86,7 +86,7 @@ class PostFindServiceTest extends MockTest {
         Mockito.when(postRepository.findAllByOrderByIdDesc(any(PageRequest.class)))
                 .thenReturn(page);
 
-        PostsResponse response = postFindService.findPosts(authInfo, pageable, null);
+        PostsResponse response = postFindService.findPosts(authInfo, pageable, "");
 
         assertThat(response.getPosts().size()).isEqualTo(10);
         assertThat(response.getTotalPageCount()).isEqualTo(3);

@@ -33,7 +33,7 @@ public class PostApi {
 
     @GetMapping
     public ResponseEntity<PostsResponse> findPosts(@Login AuthInfo authInfo,
-                                                   @PathVariable(required = false, value = "category") String category,
+                                                   @RequestParam(required = false, defaultValue = "", value = "category") String category,
                                                    @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, PAGE_SIZE);
         PostsResponse response = postFindService.findPosts(authInfo, pageable, category);
