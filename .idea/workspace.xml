@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[docs] adoc 변경 반영" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/application/ReviewFindService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/SampleApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/SampleApi.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,8 +48,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -106,6 +109,7 @@
     "Gradle.CommentServiceTest.updateComment_exception_noAuth.executor": "Run",
     "Gradle.CourseServiceTest.executor": "Debug",
     "Gradle.PostApiTest.executor": "Run",
+    "Gradle.PostApiTest.findPosts.executor": "Run",
     "Gradle.PostControllerTest.addPost.executor": "Run",
     "Gradle.PostControllerTest.addPost_exception_noTitle.executor": "Run",
     "Gradle.PostControllerTest.deletePost.executor": "Run",
@@ -122,6 +126,7 @@
     "Gradle.PostDeleteServiceTest.deletePost_exception_noAuth.executor": "Run",
     "Gradle.PostDeleteServiceTest.executor": "Run",
     "Gradle.PostFindMockTest.executor": "Run",
+    "Gradle.PostFindServiceTest.executor": "Run",
     "Gradle.PostLikeToggleServiceTest.executor": "Run",
     "Gradle.PostServiceTest.addPost_exception_invalid_category.executor": "Run",
     "Gradle.PostServiceTest.deletePost.executor": "Run",
@@ -141,11 +146,14 @@
     "Gradle.ReportServiceTest.reportPost.executor": "Run",
     "Gradle.ReportServiceTest.reportPost_exception_duplicated.executor": "Run",
     "Gradle.ReportServiceTest.reportPost_exception_invalidId.executor": "Run",
+    "Gradle.ReviewAccessCheckServiceTest.executor": "Run",
+    "Gradle.ReviewApiTest.executor": "Coverage",
     "Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied.executor": "Run",
     "Gradle.ReviewControllerTest.findAllReviewsByCourseId_success.executor": "Run",
     "Gradle.ReviewServiceTest.canAccessReviews_false_noReview.executor": "Run",
     "Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths.executor": "Run",
     "Gradle.ReviewServiceTest.canAccessReviews_true.executor": "Run",
+    "Gradle.ReviewValidateAccessServiceTest.executor": "Run",
     "Notification.DisplayName-DoNotAsk-Lombok plugin": "Lombok integration problem",
     "Notification.DoNotAsk-Lombok plugin": "true",
     "RequestMappingsPanelOrder0": "0",
@@ -195,13 +203,14 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.review.application" />
       <recent name="org.wooriverygood.api.post.application" />
       <recent name="org.wooriverygood.api.report.service" />
       <recent name="org.wooriverygood.api.comment.controller" />
       <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.PostApiTest">
+  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
     <configuration name="PostApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -226,7 +235,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostCreateServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="PostFindServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -239,7 +248,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostCreateServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.post.application.PostFindServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -250,7 +259,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostDeleteServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewAccessCheckServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -263,7 +272,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostDeleteServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.application.ReviewAccessCheckServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -274,7 +283,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostDeleteServiceTest.deletePost_exception_noAuth" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -287,7 +296,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostDeleteServiceTest.deletePost_exception_noAuth&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.api.ReviewApiTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -298,7 +307,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostLikeToggleServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewValidateAccessServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -311,7 +320,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostLikeToggleServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.application.ReviewValidateAccessServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -331,19 +340,19 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.PostApiTest" />
-      <item itemvalue="Gradle.PostCreateServiceTest" />
-      <item itemvalue="Gradle.PostDeleteServiceTest" />
-      <item itemvalue="Gradle.PostDeleteServiceTest.deletePost_exception_noAuth" />
-      <item itemvalue="Gradle.PostLikeToggleServiceTest" />
+      <item itemvalue="Gradle.PostFindServiceTest" />
+      <item itemvalue="Gradle.ReviewAccessCheckServiceTest" />
+      <item itemvalue="Gradle.ReviewApiTest" />
+      <item itemvalue="Gradle.ReviewValidateAccessServiceTest" />
       <item itemvalue="Spring Boot.HoneycoursesBackend" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ReviewValidateAccessServiceTest" />
+        <item itemvalue="Gradle.ReviewApiTest" />
+        <item itemvalue="Gradle.ReviewAccessCheckServiceTest" />
+        <item itemvalue="Gradle.PostFindServiceTest" />
         <item itemvalue="Gradle.PostApiTest" />
-        <item itemvalue="Gradle.PostLikeToggleServiceTest" />
-        <item itemvalue="Gradle.PostDeleteServiceTest" />
-        <item itemvalue="Gradle.PostDeleteServiceTest.deletePost_exception_noAuth" />
-        <item itemvalue="Gradle.PostCreateServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -375,7 +384,7 @@
       <workItem from="1710840155920" duration="1431000" />
       <workItem from="1711206789197" duration="198000" />
       <workItem from="1711212584044" duration="711000" />
-      <workItem from="1711861358419" duration="13659000" />
+      <workItem from="1711861358419" duration="23757000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -721,7 +730,23 @@
       <option name="project" value="LOCAL" />
       <updated>1711905100699</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="[fix] 게시글 불러오기 api 수정">
+      <option name="closed" value="true" />
+      <created>1711906202974</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1711906202974</updated>
+    </task>
+    <task id="LOCAL-00045" summary="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리">
+      <option name="closed" value="true" />
+      <created>1711913670243</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1711913670243</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -739,8 +764,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Spring Rest Docs 의존성 추가" />
-    <MESSAGE value="[HC-72] 특정 게시글의 댓글 작성 엔드 포인트 수정&#10;&#10;NewCommentRequest에 있는 유저 정보 필드를 삭제했습니다." />
     <MESSAGE value="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정." />
     <MESSAGE value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
     <MESSAGE value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
@@ -764,7 +787,9 @@
     <MESSAGE value="[docs] 커버리지 비활성 패키지 적용" />
     <MESSAGE value="[docs] adoc 엔드포인트 변경 반영" />
     <MESSAGE value="[docs] adoc 변경 반영" />
-    <option name="LAST_COMMIT_MESSAGE" value="[docs] adoc 변경 반영" />
+    <MESSAGE value="[fix] 게시글 불러오기 api 수정" />
+    <MESSAGE value="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리" />
+    <option name="LAST_COMMIT_MESSAGE" value="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -778,6 +803,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$Tests_in__honeycourses_backend_spring_test_.ic" NAME="Tests in 'honeycourses-backend-spring.test' Coverage Results" MODIFIED="1705668873722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/honeycourses_backend_spring$ReviewApiTest.ic" NAME="ReviewApiTest Coverage Results" MODIFIED="1711912834618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$HoneycoursesBackend.ic" NAME="HoneycoursesBackend Coverage Results" MODIFIED="1709279852010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

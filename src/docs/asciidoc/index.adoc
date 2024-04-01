@@ -29,8 +29,6 @@ operation::reviews/find/success[snippets='http-request,http-response']
 ==== 실패
 ===== 최근 작성한 리뷰가 6개월 이상이거나, 없을경우
 operation::reviews/find/fail/denied[snippets='http-request,http-response']
-===== 수업이 존재하지 않을 경우
-operation::reviews/find/fail/noCourse[snippets='http-request,http-response']
 
 === 특정 강의의 리뷰 작성하기 (POST /courses/{id}/reviews)
 ==== 성공

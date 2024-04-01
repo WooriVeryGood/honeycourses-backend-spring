@@ -2,7 +2,7 @@ package org.wooriverygood.api.course.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 
 @Getter
 public class CourseResponse {
@@ -25,7 +25,7 @@ public class CourseResponse {
         this.reviewCount = reviewCount;
     }
 
-    public static CourseResponse from(Courses course) {
+    public static CourseResponse from(Course course) {
         return CourseResponse.builder()
                 .course_id(course.getId())
                 .course_category(course.getCourse_category())

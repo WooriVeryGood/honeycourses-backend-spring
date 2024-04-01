@@ -9,23 +9,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.dto.CourseNameResponse;
 import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.course.dto.NewCourseRequest;
 import org.wooriverygood.api.course.dto.NewCourseResponse;
 import org.wooriverygood.api.course.repository.CourseRepository;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,14 +29,14 @@ public class CourseServiceTest {
     @InjectMocks
     private CourseService courseService;
 
-    private List<Courses> testCourses = new ArrayList<>();
+    private List<Course> testCourses = new ArrayList<>();
 
     private final int COURSES_COUNT = 10;
 
     @BeforeEach
     void setup() {
         for(int i = 1; i<=COURSES_COUNT; i++) {
-            testCourses.add(Courses.builder()
+            testCourses.add(Course.builder()
                     .id((long)i)
                     .course_name("Gaoshu" + i)
                     .course_category("Zhuanye")
@@ -54,7 +48,7 @@ public class CourseServiceTest {
         }
     }
 
-    Courses singleCourse = Courses.builder()
+    Course singleCourse = Course.builder()
             .id(3L)
             .course_name("Gaoshu Test")
             .course_category("Zhuanye")
@@ -88,8 +82,8 @@ public class CourseServiceTest {
                 .isYouguan(0)
                 .build();
 
-        Mockito.when(courseRepository.save(any(Courses.class)))
-                .thenReturn(Courses.builder()
+        Mockito.when(courseRepository.save(any(Course.class)))
+                .thenReturn(Course.builder()
                         .course_name(newCourseRequest.getCourse_name())
                         .course_category(newCourseRequest.getCourse_category())
                         .course_credit(newCourseRequest.getCourse_credit())

@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.review.exception.ReviewAccessDeniedException;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.util.ApiTest;
@@ -26,7 +26,7 @@ public class ReviewApiTest extends ApiTest {
 
     private List<ReviewResponse> responses = new ArrayList<>();
 
-    private Courses course = Courses.builder()
+    private Course course = Course.builder()
             .id(1L)
             .course_name("Gaoshu")
             .course_category("Zhuanye")
@@ -44,14 +44,14 @@ public class ReviewApiTest extends ApiTest {
     void setUp() {
         for(int i = 1; i <= 2; i++) {
             responses.add(ReviewResponse.builder()
-                    .review_id((long)i)
-                    .course_id(1L)
-                    .review_content("Test Review " + i)
-                    .review_title("Title" + i)
-                    .instructor_name("Jiaoshou")
-                    .taken_semyr("22-23")
+                    .reviewId((long)i)
+                    .courseId(1L)
+                    .reviewContent("Test Review " + i)
+                    .reviewTitle("Title" + i)
+                    .instructorName("Jiaoshou")
+                    .takenSemyr("22-23")
                     .grade("60")
-                    .review_time(LocalDateTime.now())
+                    .reviewTime(LocalDateTime.now())
                     .isMine(false)
                     .updated(false)
                     .build());
@@ -64,8 +64,8 @@ public class ReviewApiTest extends ApiTest {
         doNothing()
                 .when(reviewValidateAccessService)
                 .validateReviewAccess(any(AuthInfo.class));
-        when(reviewService.findAllReviewsByCourseId(anyLong(), any(AuthInfo.class)))
-                .thenReturn(responses);
+        when(reviewFindService.findAllReviewsByCourseId(anyLong(), any(AuthInfo.class)))
+                .thenReturn(new ReviewsResponse(responses));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -90,25 +90,6 @@ public class ReviewApiTest extends ApiTest {
                 .then().log().all()
                 .apply(document("reviews/find/fail/denied"))
                 .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-
-    @Test
-    @DisplayName("유효하지 않은 수업의 리뷰를 조회하면 404를 반환한다.")
-    void findReviews_exception_invalidId() {
-        doNothing()
-                .when(reviewValidateAccessService)
-                .validateReviewAccess(any(AuthInfo.class));
-        when(reviewService.findAllReviewsByCourseId(any(Long.class), any(AuthInfo.class)))
-                .thenThrow(new CourseNotFoundException());
-
-        restDocs
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/courses/1/reviews")
-                .then().log().all()
-                .assertThat()
-                .apply(document("reviews/find/fail/noCourse"))
-                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
@@ -158,7 +139,7 @@ public class ReviewApiTest extends ApiTest {
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().put("/courses/reviews/1/like")
+                .when().put("/reviews/1/like")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/like/success"))
@@ -171,14 +152,14 @@ public class ReviewApiTest extends ApiTest {
         List<ReviewResponse> responses = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             responses.add(ReviewResponse.builder()
-                    .review_id((long)i)
-                    .course_id(1L)
-                    .review_content("Test Review " + i)
-                    .review_title("Title" + i)
-                    .instructor_name("Jiaoshou")
-                    .taken_semyr("22-23")
+                    .reviewId((long)i)
+                    .courseId(1L)
+                    .reviewContent("Test Review " + i)
+                    .reviewTitle("Title" + i)
+                    .instructorName("Jiaoshou")
+                    .takenSemyr("22-23")
                     .grade("60")
-                    .review_time(LocalDateTime.now())
+                    .reviewTime(LocalDateTime.now())
                     .isMine(true)
                     .updated(false)
                     .build());
@@ -190,7 +171,7 @@ public class ReviewApiTest extends ApiTest {
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/courses/reviews/me")
+                .when().get("/reviews/me")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/find/me/success"))
@@ -216,7 +197,7 @@ public class ReviewApiTest extends ApiTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
                 .body(request)
-                .when().put("/courses/reviews/1")
+                .when().put("/reviews/1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/update/success"))
@@ -238,7 +219,7 @@ public class ReviewApiTest extends ApiTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
                 .body(request)
-                .when().put("/courses/reviews/1")
+                .when().put("/reviews/1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/update/fail/noAuth"))
@@ -255,7 +236,7 @@ public class ReviewApiTest extends ApiTest {
 
         restDocs
                 .header("Authorization", "any")
-                .when().delete("/courses/reviews/8")
+                .when().delete("/reviews/8")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/delete/success"))
@@ -270,7 +251,7 @@ public class ReviewApiTest extends ApiTest {
 
         restDocs
                 .header("Authorization", "any")
-                .when().delete("/courses/reviews/8")
+                .when().delete("/reviews/8")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/delete/fail/noAuth"))

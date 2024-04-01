@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.review.exception.ReviewNotFoundException;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
@@ -25,24 +25,24 @@ public class ReviewService {
     private final CourseRepository courseRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-    public List<ReviewResponse> findAllReviewsByCourseId(Long courseId, AuthInfo authInfo) {
-        Courses course = courseRepository.findById(courseId)
-                .orElseThrow(CourseNotFoundException::new);
-        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
-
-        if(authInfo.getUsername() == null) {
-            return reviews.stream()
-                    .map(review -> ReviewResponse.from(review, false, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
-                    .toList();
-        }
-        return reviews.stream()
-                .map(review -> ReviewResponse.from(review, review.isSameAuthor(authInfo.getUsername()), reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
-                .toList();
-    }
+//    public List<ReviewResponse> findAllReviewsByCourseId(Long courseId, AuthInfo authInfo) {
+//        Course course = courseRepository.findById(courseId)
+//                .orElseThrow(CourseNotFoundException::new);
+//        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
+//
+//        if(authInfo.getUsername() == null) {
+//            return reviews.stream()
+//                    .map(review -> ReviewResponse.of(review, false, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
+//                    .toList();
+//        }
+//        return reviews.stream()
+//                .map(review -> ReviewResponse.of(review, review.isSameAuthor(authInfo.getUsername()), reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
+//                .toList();
+//    }
 
     @Transactional
     public NewReviewResponse addReview(AuthInfo authInfo, Long courseId, NewReviewRequest newReviewRequest) {
-        Courses course = courseRepository.findById(courseId)
+        Course course = courseRepository.findById(courseId)
                 .orElseThrow(CourseNotFoundException::new);
         Review review = Review.builder()
                 .reviewTitle(newReviewRequest.getReview_title())
@@ -93,7 +93,7 @@ public class ReviewService {
 
     public List<ReviewResponse> findMyReviews(AuthInfo authInfo) {
         List<Review> reviews= reviewRepository.findByAuthorEmail(authInfo.getUsername());
-        return reviews.stream().map(review -> ReviewResponse.from(review, true, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername()))).toList();
+        return reviews.stream().map(review -> ReviewResponse.of(review, true, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername()))).toList();
     }
 
 

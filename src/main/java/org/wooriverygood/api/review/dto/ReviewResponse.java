@@ -1,5 +1,7 @@
 package org.wooriverygood.api.review.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import org.wooriverygood.api.review.domain.Review;
@@ -7,47 +9,48 @@ import org.wooriverygood.api.review.domain.Review;
 import java.time.LocalDateTime;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReviewResponse {
-    private final Long review_id;
-    private final Long course_id;
-    private final String review_content;
-    private final String review_title;
-    private final String instructor_name;
-    private final String taken_semyr;
+    private final Long reviewId;
+    private final Long courseId;
+    private final String reviewContent;
+    private final String reviewTitle;
+    private final String instructorName;
+    private final String takenSemyr;
     private final String grade;
-    private final int like_count;
-    private final LocalDateTime review_time;
+    private final int likeCount;
+    private final LocalDateTime reviewTime;
     private final boolean isMine;
     private final boolean liked;
     private final boolean updated;
 
     @Builder
-    public ReviewResponse(Long review_id, Long course_id, String review_content, String review_title, String instructor_name, String taken_semyr, String grade, int like_count, LocalDateTime review_time, boolean isMine, boolean liked, boolean updated) {
-        this.review_id = review_id;
-        this.course_id = course_id;
-        this.review_content = review_content;
-        this.review_title = review_title;
-        this.instructor_name = instructor_name;
-        this.taken_semyr = taken_semyr;
+    public ReviewResponse(Long reviewId, Long courseId, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, int likeCount, LocalDateTime reviewTime, boolean isMine, boolean liked, boolean updated) {
+        this.reviewId = reviewId;
+        this.courseId = courseId;
+        this.reviewContent = reviewContent;
+        this.reviewTitle = reviewTitle;
+        this.instructorName = instructorName;
+        this.takenSemyr = takenSemyr;
         this.grade = grade;
-        this.like_count = like_count;
-        this.review_time = review_time;
+        this.likeCount = likeCount;
+        this.reviewTime = reviewTime;
         this.isMine = isMine;
         this.liked = liked;
         this.updated = updated;
     }
 
-    public static ReviewResponse from(Review review, boolean isMine, boolean liked) {
+    public static ReviewResponse of(Review review, boolean isMine, boolean liked) {
         return ReviewResponse.builder()
-                .review_id(review.getId())
-                .course_id(review.getCourse().getId())
-                .review_content(review.getReviewContent())
-                .review_title(review.getReviewTitle())
-                .instructor_name(review.getInstructorName())
-                .taken_semyr(review.getTakenSemyr())
+                .reviewId(review.getId())
+                .courseId(review.getCourse().getId())
+                .reviewContent(review.getReviewContent())
+                .reviewTitle(review.getReviewTitle())
+                .instructorName(review.getInstructorName())
+                .takenSemyr(review.getTakenSemyr())
                 .grade(review.getGrade())
-                .like_count(review.getLikeCount())
-                .review_time(review.getCreatedAt())
+                .likeCount(review.getLikeCount())
+                .reviewTime(review.getCreatedAt())
                 .isMine(isMine)
                 .liked(liked)
                 .updated(review.isUpdated())

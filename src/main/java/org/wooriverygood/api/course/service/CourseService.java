@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.dto.CourseNameResponse;
 import org.wooriverygood.api.course.dto.CourseResponse;
 import org.wooriverygood.api.course.dto.NewCourseRequest;
@@ -25,13 +25,13 @@ public class CourseService {
 
     @Transactional
     public NewCourseResponse addCourse(NewCourseRequest newCourseRequest) {
-        Courses course = createCourse(newCourseRequest);
-        Courses saved = courseRepository.save(course);
+        Course course = createCourse(newCourseRequest);
+        Course saved = courseRepository.save(course);
         return createResponse(saved);
     }
 
     public CourseNameResponse getCourseName(Long courseId) {
-        Courses courses = courseRepository.findById(courseId)
+        Course courses = courseRepository.findById(courseId)
                 .orElseThrow(CourseNotFoundException::new);
 
         return CourseNameResponse.builder()
@@ -40,8 +40,8 @@ public class CourseService {
 
     }
 
-    private Courses createCourse(NewCourseRequest newCourseRequest) {
-        return Courses.builder()
+    private Course createCourse(NewCourseRequest newCourseRequest) {
+        return Course.builder()
                 .course_name(newCourseRequest.getCourse_name())
                 .course_category(newCourseRequest.getCourse_category())
                 .course_credit(newCourseRequest.getCourse_credit())
@@ -50,7 +50,7 @@ public class CourseService {
                 .build();
     }
 
-    private NewCourseResponse createResponse(Courses course) {
+    private NewCourseResponse createResponse(Course course) {
         return NewCourseResponse.builder()
                 .course_id(course.getId())
                 .course_name(course.getCourse_name())

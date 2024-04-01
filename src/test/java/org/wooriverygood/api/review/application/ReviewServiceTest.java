@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.advice.exception.CourseNotFoundException;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
@@ -44,7 +44,7 @@ public class ReviewServiceTest {
 
     List<Review> reviews = new ArrayList<>();
 
-    Courses singleCourse= Courses.builder()
+    Course singleCourse= Course.builder()
             .id(1L)
             .course_name("Gaoshu")
             .course_category("Zhuanye")
@@ -106,31 +106,6 @@ public class ReviewServiceTest {
             .build();
 
     @Test
-    @DisplayName("유효한 id를 통해 특정 수업의 리뷰들을 불러온다.")
-    void findAllReviewsByCourseId() {
-        Mockito.when(courseRepository.findById(any())).thenReturn(Optional.ofNullable(singleCourse));
-        Mockito.when(reviewRepository.findAllByCourseId(any()))
-                .thenReturn(reviews);
-
-        List<ReviewResponse> responses = reviewService.findAllReviewsByCourseId(1L, authInfo);
-
-        Assertions.assertThat(responses).hasSize(REVIEW_COUNT);
-        Assertions.assertThat(responses.get(0).getReview_title()).isEqualTo("review0");
-
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 강의의 리뷰는 불러올 수 없다.")
-    void findAllReviewsByCourseId_noCourse() {
-        Mockito.when(courseRepository.findById(any())).thenThrow(CourseNotFoundException.class);
-
-        Assertions.assertThatThrownBy(() -> reviewService.findAllReviewsByCourseId(99L, authInfo))
-                .isInstanceOf(CourseNotFoundException.class);
-
-    }
-
-
-    @Test
     @DisplayName("특정 강의의 리뷰를 작성한다.")
     void addReview() {
         NewReviewRequest newReviewRequest = NewReviewRequest.builder()
@@ -190,17 +165,6 @@ public class ReviewServiceTest {
 
         Assertions.assertThat(response.getLike_count()).isEqualTo(singleReview.getLikeCount() - 1);
         Assertions.assertThat(response.isLiked()).isEqualTo(false);
-    }
-
-    @Test
-    @DisplayName("사용자 본인이 작성한 리뷰들을 불러온다.")
-    void findMyReviews() {
-        Mockito.when(reviewRepository.findByAuthorEmail(any(String.class)))
-                .thenReturn(reviews);
-
-        List<ReviewResponse> responses = reviewService.findMyReviews(authInfo);
-
-        Assertions.assertThat(responses.get(0).isMine()).isEqualTo(true);
     }
 
     @Test

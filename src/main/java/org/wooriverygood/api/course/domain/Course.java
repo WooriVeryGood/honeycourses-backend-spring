@@ -10,7 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @NoArgsConstructor
 @Table(name = "courses")
-public class Courses {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -36,7 +36,7 @@ public class Courses {
     private int reviewCount;
 
     @Builder
-    public Courses(Long id, String course_name, String course_category, double course_credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
+    public Course(Long id, String course_name, String course_category, double course_credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
         this.id = id;
         this.course_name = course_name;
         this.course_category = course_category;
