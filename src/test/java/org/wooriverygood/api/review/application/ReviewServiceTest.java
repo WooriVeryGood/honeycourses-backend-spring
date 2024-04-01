@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
-import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.review.domain.Review;
@@ -91,49 +90,6 @@ public class ReviewServiceTest {
             .createdAt(LocalDateTime.of(2022, 6, 13, 12, 00))
             .build();
 
-    Review noAuthReview = Review.builder()
-            .id(1L)
-            .course(singleCourse)
-            .reviewContent("test review")
-            .reviewTitle("test review title")
-            .instructorName("jiaoshou")
-            .takenSemyr("22-23")
-            .grade("100")
-            .authorEmail("somerandom-username")
-            .reviewLikes(new ArrayList<>())
-            .updated(false)
-            .createdAt(LocalDateTime.of(2024, 1, 13, 12, 00))
-            .build();
-
-    @Test
-    @DisplayName("특정 강의의 리뷰를 작성한다.")
-    void addReview() {
-        NewReviewRequest newReviewRequest = NewReviewRequest.builder()
-                .review_title("Test Review from TestCode")
-                .instructor_name("Jiaoshou")
-                .taken_semyr("1stSem")
-                .review_content("Good!")
-                .grade("100")
-                .build();
-
-        Mockito.when(reviewRepository.save(any(Review.class)))
-                .thenReturn(Review.builder()
-                        .authorEmail(authInfo.getUsername())
-                        .reviewTitle(newReviewRequest.getReview_title())
-                        .instructorName(newReviewRequest.getInstructor_name())
-                        .takenSemyr(newReviewRequest.getTaken_semyr())
-                        .reviewContent(newReviewRequest.getReview_content())
-                        .grade(newReviewRequest.getGrade())
-                        .build());
-
-        Mockito.when(courseRepository.findById(any()))
-                .thenReturn(Optional.ofNullable(singleCourse));
-
-        NewReviewResponse response = reviewService.addReview(authInfo, 1L, newReviewRequest);
-
-        Assertions.assertThat(response.getAuthor_email()).isEqualTo(authInfo.getUsername());
-        Assertions.assertThat(response.getReview_content()).isEqualTo(newReviewRequest.getReview_content());
-    }
 
     @Test
     @DisplayName("특정 리뷰의 좋아요를 1 올린다.")
@@ -202,24 +158,4 @@ public class ReviewServiceTest {
 //                .isInstanceOf(AuthorizationException.class);
 //    }
 
-    @Test
-    @DisplayName("권한이 있는 리뷰를 삭제한다.")
-    void deleteReview() {
-        Mockito.when(reviewRepository.findById(any(Long.class)))
-                .thenReturn(Optional.ofNullable(singleReview));
-
-        ReviewDeleteResponse response = reviewService.deleteReview(singleReview.getId(), authInfo);
-        Assertions.assertThat(response.getReview_id()).isEqualTo(singleReview.getId());
     }
-
-    @Test
-    @DisplayName("권한이 없는 리뷰는 삭제가 불가능하다.")
-    void deleteReview_noAuth() {
-        Mockito.when(reviewRepository.findById(any(Long.class)))
-                .thenReturn(Optional.ofNullable(noAuthReview));
-
-        Assertions.assertThatThrownBy(() -> reviewService.deleteReview(noAuthReview.getId(), authInfo))
-                .isInstanceOf(AuthorizationException.class);
-    }
-
-}

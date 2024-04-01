@@ -25,38 +25,6 @@ public class ReviewService {
     private final CourseRepository courseRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
-//    public List<ReviewResponse> findAllReviewsByCourseId(Long courseId, AuthInfo authInfo) {
-//        Course course = courseRepository.findById(courseId)
-//                .orElseThrow(CourseNotFoundException::new);
-//        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
-//
-//        if(authInfo.getUsername() == null) {
-//            return reviews.stream()
-//                    .map(review -> ReviewResponse.of(review, false, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
-//                    .toList();
-//        }
-//        return reviews.stream()
-//                .map(review -> ReviewResponse.of(review, review.isSameAuthor(authInfo.getUsername()), reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername())))
-//                .toList();
-//    }
-
-    @Transactional
-    public NewReviewResponse addReview(AuthInfo authInfo, Long courseId, NewReviewRequest newReviewRequest) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(CourseNotFoundException::new);
-        Review review = Review.builder()
-                .reviewTitle(newReviewRequest.getReview_title())
-                .course(course)
-                .instructorName(newReviewRequest.getInstructor_name())
-                .takenSemyr(newReviewRequest.getTaken_semyr())
-                .reviewContent(newReviewRequest.getReview_content())
-                .grade(newReviewRequest.getGrade())
-                .authorEmail(authInfo.getUsername())
-                .build();
-        Review saved = reviewRepository.save(review);
-        reviewRepository.increaseReviewCount(review.getCourse().getId());
-        return createResponse(saved);
-    }
 
     @Transactional
     public ReviewLikeResponse likeReview(Long reviewId, AuthInfo authInfo) {
@@ -91,24 +59,6 @@ public class ReviewService {
         reviewRepository.decreaseLikeCount(review.getId());
     }
 
-    public List<ReviewResponse> findMyReviews(AuthInfo authInfo) {
-        List<Review> reviews= reviewRepository.findByAuthorEmail(authInfo.getUsername());
-        return reviews.stream().map(review -> ReviewResponse.of(review, true, reviewLikeRepository.existsByReviewAndUsername(review, authInfo.getUsername()))).toList();
-    }
-
-
-    private NewReviewResponse createResponse(Review review) {
-        return NewReviewResponse.builder()
-                .review_id(review.getId())
-                .review_title(review.getReviewTitle())
-                .instructor_name(review.getInstructorName())
-                .taken_semyr(review.getTakenSemyr())
-                .review_content(review.getReviewContent())
-                .grade(review.getGrade())
-                .author_email(review.getAuthorEmail())
-                .build();
-    }
-
     private ReviewLikeResponse createReviewLikeResponse(Review review, boolean liked) {
         int likeCount = review.getLikeCount() + (liked ? 1 : -1);
         return ReviewLikeResponse.builder()
@@ -131,19 +81,6 @@ public class ReviewService {
                 .build();
     }
 
-    @Transactional
-    public ReviewDeleteResponse deleteReview(Long reviewId, AuthInfo authInfo) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(ReviewNotFoundException::new);
-        review.validateAuthor(authInfo.getUsername());
 
-        reviewLikeRepository.deleteAllByReview(review);
-        reviewRepository.delete(review);
-        reviewRepository.decreaseReviewCount(review.getCourse().getId());
-
-        return ReviewDeleteResponse.builder()
-                .review_id(reviewId)
-                .build();
-    }
 
 }

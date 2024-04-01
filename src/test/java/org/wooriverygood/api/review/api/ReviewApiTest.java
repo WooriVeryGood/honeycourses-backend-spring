@@ -96,25 +96,16 @@ public class ReviewApiTest extends ApiTest {
     @DisplayName("특정 강의의 리뷰를 작성한다.")
     void addReview() {
         NewReviewRequest request = NewReviewRequest.builder()
-                .review_title("Test Review from TestCode")
-                .instructor_name("Jiaoshou")
-                .taken_semyr("1stSem")
-                .review_content("Good!")
+                .reviewTitle("Test Review from TestCode")
+                .instructorName("Jiaoshou")
+                .takenSemyr("1stSem")
+                .reviewContent("Good!")
                 .grade("100")
                 .build();
 
-        NewReviewResponse response = NewReviewResponse.builder()
-                .review_id(50L)
-                .author_email(authInfo.getUsername())
-                .review_title("Test Review from TestCode")
-                .instructor_name("Jiaoshou")
-                .taken_semyr("1stSem")
-                .review_content("Good!")
-                .grade("100")
-                .build();
-
-        when(reviewService.addReview(any(AuthInfo.class), any(Long.class), any(NewReviewRequest.class)))
-                .thenReturn(response);
+        doNothing()
+                .when(reviewCreateService)
+                .addReview(any(AuthInfo.class), anyLong(), any(NewReviewRequest.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -165,8 +156,8 @@ public class ReviewApiTest extends ApiTest {
                     .build());
         }
 
-        when(reviewService.findMyReviews(any(AuthInfo.class)))
-                .thenReturn(responses);
+        when(reviewFindService.findMyReviews(any(AuthInfo.class)))
+                .thenReturn(new ReviewsResponse(responses));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -229,10 +220,9 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")
     void deleteReview() {
-        when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
-                .thenReturn(ReviewDeleteResponse.builder()
-                        .review_id(8L)
-                        .build());
+        doNothing()
+                .when(reviewDeleteService)
+                .deleteReview(anyLong(), any(AuthInfo.class));
 
         restDocs
                 .header("Authorization", "any")
@@ -240,14 +230,15 @@ public class ReviewApiTest extends ApiTest {
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/delete/success"))
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
     @DisplayName("권한이 없는 리뷰를 삭제하면 403을 반환한다.")
     void deleteReview_noAuth() {
-        when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
-                .thenThrow(new AuthorizationException());
+        doThrow(new AuthorizationException())
+                .when(reviewDeleteService)
+                .deleteReview(anyLong(), any(AuthInfo.class));
 
         restDocs
                 .header("Authorization", "any")

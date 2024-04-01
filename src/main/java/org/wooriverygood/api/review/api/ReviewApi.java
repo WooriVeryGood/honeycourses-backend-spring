@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.wooriverygood.api.review.application.ReviewFindService;
-import org.wooriverygood.api.review.application.ReviewValidateAccessService;
+import org.wooriverygood.api.review.application.*;
 import org.wooriverygood.api.review.dto.*;
-import org.wooriverygood.api.review.application.ReviewService;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.Login;
 
@@ -19,6 +17,10 @@ import java.util.List;
 public class ReviewApi {
 
     private final ReviewService reviewService;
+
+    private final ReviewCreateService reviewCreateService;
+
+    private final ReviewDeleteService reviewDeleteService;
 
     private final ReviewFindService reviewFindService;
 
@@ -34,9 +36,9 @@ public class ReviewApi {
     }
 
     @PostMapping("/courses/{id}/reviews")
-    public ResponseEntity<NewReviewResponse> addReview(@PathVariable("id") Long courseId, @Login AuthInfo authInfo, @Valid @RequestBody NewReviewRequest newReviewRequest) {
-        NewReviewResponse response = reviewService.addReview(authInfo, courseId, newReviewRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<Void> addReview(@PathVariable("id") Long courseId, @Login AuthInfo authInfo, @Valid @RequestBody NewReviewRequest newReviewRequest) {
+        reviewCreateService.addReview(authInfo, courseId, newReviewRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/reviews/{rid}/like")
@@ -60,10 +62,10 @@ public class ReviewApi {
     }
 
     @DeleteMapping("/reviews/{rid}")
-    public ResponseEntity<ReviewDeleteResponse> deleteReview(@PathVariable("rid") Long reviewId,
+    public ResponseEntity<Void> deleteReview(@PathVariable("rid") Long reviewId,
                                                              @Login AuthInfo authInfo) {
-        ReviewDeleteResponse response = reviewService.deleteReview(reviewId, authInfo);
-        return ResponseEntity.ok(response);
+        reviewDeleteService.deleteReview(reviewId, authInfo);
+        return ResponseEntity.noContent().build();
     }
 
 }

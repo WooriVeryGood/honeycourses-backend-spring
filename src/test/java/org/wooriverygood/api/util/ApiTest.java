@@ -20,9 +20,7 @@ import org.wooriverygood.api.course.controller.CourseController;
 import org.wooriverygood.api.course.service.CourseService;
 import org.wooriverygood.api.post.api.PostApi;
 import org.wooriverygood.api.review.api.ReviewApi;
-import org.wooriverygood.api.review.application.ReviewFindService;
-import org.wooriverygood.api.review.application.ReviewValidateAccessService;
-import org.wooriverygood.api.review.application.ReviewService;
+import org.wooriverygood.api.review.application.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.AuthenticationPrincipalArgumentResolver;
 
@@ -54,6 +52,12 @@ public class ApiTest {
 
     @MockBean
     protected ReviewFindService reviewFindService;
+
+    @MockBean
+    protected ReviewCreateService reviewCreateService;
+
+    @MockBean
+    protected ReviewDeleteService reviewDeleteService;
 
     @MockBean
     protected ReviewValidateAccessService reviewValidateAccessService;
