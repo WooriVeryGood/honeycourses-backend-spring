@@ -10,19 +10,19 @@ import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.Login;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class ReviewApi {
 
-    private final ReviewService reviewService;
+    private final ReviewLikeToggleService reviewLikeToggleService;
 
     private final ReviewCreateService reviewCreateService;
 
     private final ReviewDeleteService reviewDeleteService;
 
     private final ReviewFindService reviewFindService;
+
+    private final ReviewUpdateService reviewUpdateService;
 
     private final ReviewValidateAccessService reviewValidateAccessService;
 
@@ -36,14 +36,16 @@ public class ReviewApi {
     }
 
     @PostMapping("/courses/{id}/reviews")
-    public ResponseEntity<Void> addReview(@PathVariable("id") Long courseId, @Login AuthInfo authInfo, @Valid @RequestBody NewReviewRequest newReviewRequest) {
-        reviewCreateService.addReview(authInfo, courseId, newReviewRequest);
+    public ResponseEntity<Void> addReview(@PathVariable("id") Long courseId, @Login AuthInfo authInfo,
+                                          @Valid @RequestBody NewReviewRequest request) {
+        reviewCreateService.addReview(authInfo, courseId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/reviews/{rid}/like")
-    public ResponseEntity<ReviewLikeResponse> likeReview(@PathVariable("rid") Long reviewId, @Login AuthInfo authInfo) {
-        ReviewLikeResponse response= reviewService.likeReview(reviewId, authInfo);
+    public ResponseEntity<ReviewLikeResponse> likeReview(@PathVariable("rid") Long reviewId,
+                                                         @Login AuthInfo authInfo) {
+        ReviewLikeResponse response= reviewLikeToggleService.toggleReviewLike(reviewId, authInfo);
         return ResponseEntity.ok(response);
     }
 
@@ -53,17 +55,17 @@ public class ReviewApi {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/reviews/{rid}")
-    public ResponseEntity<ReviewUpdateResponse> updateReview(@PathVariable("rid") Long reviewId,
-                                                             @Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
-                                                             @Login AuthInfo authInfo) {
-        ReviewUpdateResponse response = reviewService.updateReview(reviewId, reviewUpdateRequest, authInfo);
-        return ResponseEntity.ok(response);
+    @PutMapping("/reviews/{id}")
+    public ResponseEntity<Void> updateReview(@PathVariable("id") Long reviewId,
+                                             @Valid @RequestBody ReviewUpdateRequest request,
+                                             @Login AuthInfo authInfo) {
+        reviewUpdateService.updateReview(reviewId, request, authInfo);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/reviews/{rid}")
-    public ResponseEntity<Void> deleteReview(@PathVariable("rid") Long reviewId,
-                                                             @Login AuthInfo authInfo) {
+    @DeleteMapping("/reviews/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable("id") Long reviewId,
+                                             @Login AuthInfo authInfo) {
         reviewDeleteService.deleteReview(reviewId, authInfo);
         return ResponseEntity.noContent().build();
     }

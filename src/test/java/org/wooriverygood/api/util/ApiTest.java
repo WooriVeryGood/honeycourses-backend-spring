@@ -48,7 +48,7 @@ public class ApiTest {
     protected CourseService courseService;
 
     @MockBean
-    protected ReviewService reviewService;
+    protected ReviewLikeToggleService reviewLikeToggleService;
 
     @MockBean
     protected ReviewFindService reviewFindService;
@@ -58,6 +58,9 @@ public class ApiTest {
 
     @MockBean
     protected ReviewDeleteService reviewDeleteService;
+
+    @MockBean
+    protected ReviewUpdateService reviewUpdateService;
 
     @MockBean
     protected ReviewValidateAccessService reviewValidateAccessService;

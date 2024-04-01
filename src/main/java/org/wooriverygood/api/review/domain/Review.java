@@ -94,19 +94,34 @@ public class Review {
         reviewLike.delete();
     }
 
-    public void updateReview(String title, String instructorName, String takenSemyr, String content, String grade, String author) {
-        this.reviewTitle = title;
-        this.reviewContent = content;
-        this.instructorName = instructorName;
+    public void updateTitle(String title) {
+        reviewTitle = title;
+        updated = true;
+    }
+
+    public void updateContent(String content) {
+        reviewContent = content;
+        updated = true;
+    }
+
+    public void updateTakenSemyr(String takenSemyr) {
         this.takenSemyr = takenSemyr;
+        updated = true;
+    }
+
+    public void updateInstructorName(String instructorName) {
+        this.instructorName = instructorName;
+        updated = true;
+    }
+
+    public void updateGrade(String grade) {
         this.grade = grade;
         updated = true;
-        if (id <= 234) {
-            authorEmail = author;
-        }
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+    }
+
+    public void updateAuthor(String author) {
+        authorEmail = author;
+        updated = true;
     }
 
 }
