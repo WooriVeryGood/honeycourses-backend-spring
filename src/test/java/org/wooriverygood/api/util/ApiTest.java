@@ -11,17 +11,18 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.wooriverygood.api.comment.controller.CommentController;
-import org.wooriverygood.api.comment.service.CommentService;
+import org.wooriverygood.api.comment.api.CommentApi;
+import org.wooriverygood.api.comment.application.*;
+import org.wooriverygood.api.course.application.CourseFindService;
 import org.wooriverygood.api.post.application.*;
-import org.wooriverygood.api.report.controller.ReportController;
-import org.wooriverygood.api.report.service.ReportService;
-import org.wooriverygood.api.course.controller.CourseController;
-import org.wooriverygood.api.course.service.CourseService;
+import org.wooriverygood.api.report.api.ReportApi;
+import org.wooriverygood.api.report.application.CommentReportService;
+import org.wooriverygood.api.course.api.CourseApi;
+import org.wooriverygood.api.course.application.CourseCreateService;
 import org.wooriverygood.api.post.api.PostApi;
+import org.wooriverygood.api.report.application.PostReportService;
 import org.wooriverygood.api.review.api.ReviewApi;
-import org.wooriverygood.api.review.application.ReviewValidateAccessService;
-import org.wooriverygood.api.review.application.ReviewService;
+import org.wooriverygood.api.review.application.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.AuthenticationPrincipalArgumentResolver;
 
@@ -33,11 +34,11 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest({
-        CommentController.class,
+        CommentApi.class,
         PostApi.class,
-        CourseController.class,
+        CourseApi.class,
         ReviewApi.class,
-        ReportController.class
+        ReportApi.class
 })
 @WithMockUser
 @ExtendWith(RestDocumentationExtension.class)
@@ -46,16 +47,43 @@ public class ApiTest {
     protected MockMvcRequestSpecification restDocs;
 
     @MockBean
-    protected CourseService courseService;
+    protected CourseCreateService courseCreateService;
 
     @MockBean
-    protected ReviewService reviewService;
+    protected CourseFindService courseFindService;
+
+    @MockBean
+    protected ReviewLikeToggleService reviewLikeToggleService;
+
+    @MockBean
+    protected ReviewFindService reviewFindService;
+
+    @MockBean
+    protected ReviewCreateService reviewCreateService;
+
+    @MockBean
+    protected ReviewDeleteService reviewDeleteService;
+
+    @MockBean
+    protected ReviewUpdateService reviewUpdateService;
 
     @MockBean
     protected ReviewValidateAccessService reviewValidateAccessService;
 
     @MockBean
-    protected CommentService commentService;
+    protected CommentCreateService commentCreateService;
+
+    @MockBean
+    protected CommentDeleteService commentDeleteService;
+
+    @MockBean
+    protected CommentFindService commentFindService;
+
+    @MockBean
+    protected CommentUpdateService commentUpdateService;
+
+    @MockBean
+    protected CommentLikeToggleService commentLikeToggleService;
 
     @MockBean
     protected PostLikeToggleService postLikeToggleService;
@@ -73,7 +101,10 @@ public class ApiTest {
     protected PostDeleteService postDeleteService;
 
     @MockBean
-    protected ReportService reportService;
+    protected CommentReportService commentReportService;
+
+    @MockBean
+    protected PostReportService postReportService;
 
     @MockBean
     protected AuthenticationPrincipalArgumentResolver authenticationPrincipalArgumentResolver;

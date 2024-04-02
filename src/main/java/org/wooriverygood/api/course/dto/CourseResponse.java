@@ -1,39 +1,51 @@
 package org.wooriverygood.api.course.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CourseResponse {
-    private final Long course_id;
-    private final String course_category;
-    private final double course_credit;
-    private final String course_name;
+
+    private final Long courseId;
+
+    private final String courseCategory;
+
+    private final double courseCredit;
+
+    private final String courseName;
+
     private final int isYouguan;
+
     private final String kaikeYuanxi;
+
     private final int reviewCount;
 
+
     @Builder
-    public CourseResponse(Long course_id, String course_category, double course_credit, String course_name, int isYouguan, String kaikeYuanxi, int reviewCount) {
-        this.course_id = course_id;
-        this.course_category = course_category;
-        this.course_credit = course_credit;
-        this.course_name = course_name;
+    public CourseResponse(Long courseId, String courseCategory, double courseCredit, String courseName, int isYouguan, String kaikeYuanxi, int reviewCount) {
+        this.courseId = courseId;
+        this.courseCategory = courseCategory;
+        this.courseCredit = courseCredit;
+        this.courseName = courseName;
         this.isYouguan = isYouguan;
         this.kaikeYuanxi = kaikeYuanxi;
         this.reviewCount = reviewCount;
     }
 
-    public static CourseResponse from(Courses course) {
+    public static CourseResponse of(Course course) {
         return CourseResponse.builder()
-                .course_id(course.getId())
-                .course_category(course.getCourse_category())
-                .course_credit(course.getCourse_credit())
-                .course_name(course.getCourse_name())
+                .courseId(course.getId())
+                .courseCategory(course.getCategory())
+                .courseCredit(course.getCredit())
+                .courseName(course.getName())
                 .isYouguan(course.getIsYouguan())
                 .kaikeYuanxi(course.getKaikeYuanxi())
                 .reviewCount(course.getReviewCount())
                 .build();
     }
+
 }

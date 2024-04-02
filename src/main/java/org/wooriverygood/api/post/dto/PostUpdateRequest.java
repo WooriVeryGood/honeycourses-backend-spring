@@ -5,10 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostUpdateRequest {
 
@@ -17,9 +15,11 @@ public class PostUpdateRequest {
 
     private String postContent;
 
+
     @Builder
     public PostUpdateRequest(String postTitle, String postContent) {
         this.postTitle = postTitle;
         this.postContent = postContent;
     }
+
 }

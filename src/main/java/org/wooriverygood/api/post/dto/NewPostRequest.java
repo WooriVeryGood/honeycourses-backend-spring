@@ -12,8 +12,11 @@ public class NewPostRequest {
 
     @NotBlank(message = "제목을 비우면 안됩니다.")
     private final String postTitle;
+
     private final String postCategory;
+
     private final String postContent;
+
 
     @Builder
     public NewPostRequest(String postTitle, String postCategory, String postContent) {
@@ -21,4 +24,5 @@ public class NewPostRequest {
         this.postCategory = postCategory;
         this.postContent = postContent;
     }
+
 }

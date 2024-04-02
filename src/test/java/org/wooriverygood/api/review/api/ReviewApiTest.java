@@ -6,9 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
-import org.wooriverygood.api.advice.exception.CourseNotFoundException;
 import org.wooriverygood.api.review.exception.ReviewAccessDeniedException;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.util.ApiTest;
@@ -26,11 +25,11 @@ public class ReviewApiTest extends ApiTest {
 
     private List<ReviewResponse> responses = new ArrayList<>();
 
-    private Courses course = Courses.builder()
+    private Course course = Course.builder()
             .id(1L)
-            .course_name("Gaoshu")
-            .course_category("Zhuanye")
-            .course_credit(5)
+            .name("Gaoshu")
+            .category("Zhuanye")
+            .credit(5)
             .isYouguan(0)
             .kaikeYuanxi("Xinke")
             .build();
@@ -40,18 +39,19 @@ public class ReviewApiTest extends ApiTest {
             .username("22222-34534-123")
             .build();
 
+
     @BeforeEach
     void setUp() {
         for(int i = 1; i <= 2; i++) {
             responses.add(ReviewResponse.builder()
-                    .review_id((long)i)
-                    .course_id(1L)
-                    .review_content("Test Review " + i)
-                    .review_title("Title" + i)
-                    .instructor_name("Jiaoshou")
-                    .taken_semyr("22-23")
+                    .reviewId((long)i)
+                    .courseId(1L)
+                    .reviewContent("Test Review " + i)
+                    .reviewTitle("Title" + i)
+                    .instructorName("Jiaoshou")
+                    .takenSemyr("22-23")
                     .grade("60")
-                    .review_time(LocalDateTime.now())
+                    .reviewTime(LocalDateTime.now())
                     .isMine(false)
                     .updated(false)
                     .build());
@@ -64,8 +64,8 @@ public class ReviewApiTest extends ApiTest {
         doNothing()
                 .when(reviewValidateAccessService)
                 .validateReviewAccess(any(AuthInfo.class));
-        when(reviewService.findAllReviewsByCourseId(anyLong(), any(AuthInfo.class)))
-                .thenReturn(responses);
+        when(reviewFindService.findAllReviewsByCourseId(anyLong(), any(AuthInfo.class)))
+                .thenReturn(new ReviewsResponse(responses));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -93,47 +93,15 @@ public class ReviewApiTest extends ApiTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 수업의 리뷰를 조회하면 404를 반환한다.")
-    void findReviews_exception_invalidId() {
-        doNothing()
-                .when(reviewValidateAccessService)
-                .validateReviewAccess(any(AuthInfo.class));
-        when(reviewService.findAllReviewsByCourseId(any(Long.class), any(AuthInfo.class)))
-                .thenThrow(new CourseNotFoundException());
-
-        restDocs
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/courses/1/reviews")
-                .then().log().all()
-                .assertThat()
-                .apply(document("reviews/find/fail/noCourse"))
-                .statusCode(HttpStatus.NOT_FOUND.value());
-    }
-
-    @Test
     @DisplayName("특정 강의의 리뷰를 작성한다.")
     void addReview() {
         NewReviewRequest request = NewReviewRequest.builder()
-                .review_title("Test Review from TestCode")
-                .instructor_name("Jiaoshou")
-                .taken_semyr("1stSem")
-                .review_content("Good!")
+                .reviewTitle("Test Review from TestCode")
+                .instructorName("Jiaoshou")
+                .takenSemyr("1stSem")
+                .reviewContent("Good!")
                 .grade("100")
                 .build();
-
-        NewReviewResponse response = NewReviewResponse.builder()
-                .review_id(50L)
-                .author_email(authInfo.getUsername())
-                .review_title("Test Review from TestCode")
-                .instructor_name("Jiaoshou")
-                .taken_semyr("1stSem")
-                .review_content("Good!")
-                .grade("100")
-                .build();
-
-        when(reviewService.addReview(any(AuthInfo.class), any(Long.class), any(NewReviewRequest.class)))
-                .thenReturn(response);
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -149,16 +117,16 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("특정 리뷰의 좋아요를 1 올리거나 내린다.")
     void likeReview() {
-        when(reviewService.likeReview(any(Long.class), any(AuthInfo.class)))
+        when(reviewLikeToggleService.toggleReviewLike(any(Long.class), any(AuthInfo.class)))
                 .thenReturn(ReviewLikeResponse.builder()
-                        .like_count(5)
+                        .likeCount(5)
                         .liked(false)
                         .build());
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().put("/courses/reviews/1/like")
+                .when().put("/reviews/1/like")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/like/success"))
@@ -171,26 +139,26 @@ public class ReviewApiTest extends ApiTest {
         List<ReviewResponse> responses = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
             responses.add(ReviewResponse.builder()
-                    .review_id((long)i)
-                    .course_id(1L)
-                    .review_content("Test Review " + i)
-                    .review_title("Title" + i)
-                    .instructor_name("Jiaoshou")
-                    .taken_semyr("22-23")
+                    .reviewId((long)i)
+                    .courseId(1L)
+                    .reviewContent("Test Review " + i)
+                    .reviewTitle("Title" + i)
+                    .instructorName("Jiaoshou")
+                    .takenSemyr("22-23")
                     .grade("60")
-                    .review_time(LocalDateTime.now())
+                    .reviewTime(LocalDateTime.now())
                     .isMine(true)
                     .updated(false)
                     .build());
         }
 
-        when(reviewService.findMyReviews(any(AuthInfo.class)))
-                .thenReturn(responses);
+        when(reviewFindService.findMyReviews(any(AuthInfo.class)))
+                .thenReturn(new ReviewsResponse(responses));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/courses/reviews/me")
+                .when().get("/reviews/me")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/find/me/success"))
@@ -201,44 +169,41 @@ public class ReviewApiTest extends ApiTest {
     @DisplayName("권한이 있는 리뷰를 수정한다.")
     void updateReview() {
         ReviewUpdateRequest request = ReviewUpdateRequest.builder()
-                .review_title("new title")
-                .review_content("new content")
-                .instructor_name("jiaoshou")
-                .taken_semyr("18-19")
+                .reviewTitle("new title")
+                .reviewContent("new content")
+                .instructorName("jiaoshou")
+                .takenSemyr("18-19")
                 .grade("100")
                 .build();
 
-        when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
-                .thenReturn(ReviewUpdateResponse.builder()
-                        .review_id((long)1)
-                        .build());
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
                 .body(request)
-                .when().put("/courses/reviews/1")
+                .when().put("/reviews/1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/update/success"))
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
     @DisplayName("권한이 없는 리뷰를 수정하면 403을 반환한다.")
     void updateReview_noAuth() {
         ReviewUpdateRequest request = ReviewUpdateRequest.builder()
-                .review_title("new title")
-                .review_content("new content")
+                .reviewTitle("new title")
+                .reviewContent("new content")
                 .build();
 
-        when(reviewService.updateReview(any(Long.class), any(ReviewUpdateRequest.class), any(AuthInfo.class)))
-                .thenThrow(new AuthorizationException());
+        doThrow(new AuthorizationException())
+                .when(reviewUpdateService)
+                .updateReview(anyLong(), any(ReviewUpdateRequest.class), any(AuthInfo.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
                 .body(request)
-                .when().put("/courses/reviews/1")
+                .when().put("/reviews/1")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/update/fail/noAuth"))
@@ -248,29 +213,25 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")
     void deleteReview() {
-        when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
-                .thenReturn(ReviewDeleteResponse.builder()
-                        .review_id(8L)
-                        .build());
-
         restDocs
                 .header("Authorization", "any")
-                .when().delete("/courses/reviews/8")
+                .when().delete("/reviews/8")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/delete/success"))
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
     @DisplayName("권한이 없는 리뷰를 삭제하면 403을 반환한다.")
     void deleteReview_noAuth() {
-        when(reviewService.deleteReview(any(Long.class), any(AuthInfo.class)))
-                .thenThrow(new AuthorizationException());
+        doThrow(new AuthorizationException())
+                .when(reviewDeleteService)
+                .deleteReview(anyLong(), any(AuthInfo.class));
 
         restDocs
                 .header("Authorization", "any")
-                .when().delete("/courses/reviews/8")
+                .when().delete("/reviews/8")
                 .then().log().all()
                 .assertThat()
                 .apply(document("reviews/delete/fail/noAuth"))

@@ -143,4 +143,12 @@ public class Comment {
         return hasNoReply() && softRemoved;
     }
 
+    public boolean isReportedTooMuch() {
+        return reportCount >= 5;
+    }
+
+    public String getContent() {
+        return isReportedTooMuch() ? null : content;
+    }
+
 }

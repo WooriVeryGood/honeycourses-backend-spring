@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[docs] adoc 변경 반영" />
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[refactor] 리뷰 좋아요 서비스 리팩토링&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/application/CourseFindService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/CoursesResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/course/application/CourseFindServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/advice/exception/CourseNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/exception/CourseNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/controller/CourseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/api/CourseApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/domain/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/domain/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/CourseNameResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/CourseNameResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/CourseResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/CourseResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/NewCourseRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/NewCourseRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/dto/NewCourseResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/course/application/CourseCreateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/application/ReviewCreateService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/review/application/ReviewCreateService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/course/controller/CourseApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/course/api/CourseApiTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/course/service/CourseServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/course/application/CourseCreateServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/api/PostApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/post/api/PostApiTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/api/ReviewApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/api/ReviewApiTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/application/ReviewCreateServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/application/ReviewCreateServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/application/ReviewFindServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/review/application/ReviewFindServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/util/ApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/wooriverygood/api/util/ApiTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,8 +124,10 @@
     "Gradle.CommentServiceTest.likeComment_up.executor": "Run",
     "Gradle.CommentServiceTest.updateComment.executor": "Run",
     "Gradle.CommentServiceTest.updateComment_exception_noAuth.executor": "Run",
+    "Gradle.CourseCreateServiceTest.executor": "Run",
     "Gradle.CourseServiceTest.executor": "Debug",
     "Gradle.PostApiTest.executor": "Run",
+    "Gradle.PostApiTest.findPosts.executor": "Run",
     "Gradle.PostControllerTest.addPost.executor": "Run",
     "Gradle.PostControllerTest.addPost_exception_noTitle.executor": "Run",
     "Gradle.PostControllerTest.deletePost.executor": "Run",
@@ -122,6 +144,7 @@
     "Gradle.PostDeleteServiceTest.deletePost_exception_noAuth.executor": "Run",
     "Gradle.PostDeleteServiceTest.executor": "Run",
     "Gradle.PostFindMockTest.executor": "Run",
+    "Gradle.PostFindServiceTest.executor": "Run",
     "Gradle.PostLikeToggleServiceTest.executor": "Run",
     "Gradle.PostServiceTest.addPost_exception_invalid_category.executor": "Run",
     "Gradle.PostServiceTest.deletePost.executor": "Run",
@@ -141,11 +164,22 @@
     "Gradle.ReportServiceTest.reportPost.executor": "Run",
     "Gradle.ReportServiceTest.reportPost_exception_duplicated.executor": "Run",
     "Gradle.ReportServiceTest.reportPost_exception_invalidId.executor": "Run",
+    "Gradle.ReviewAccessCheckServiceTest.executor": "Run",
+    "Gradle.ReviewApiTest.addReview.executor": "Run",
+    "Gradle.ReviewApiTest.executor": "Run",
+    "Gradle.ReviewApiTest.updateReview.executor": "Run",
     "Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied.executor": "Run",
     "Gradle.ReviewControllerTest.findAllReviewsByCourseId_success.executor": "Run",
+    "Gradle.ReviewCreateServiceTest.executor": "Run",
+    "Gradle.ReviewDeleteServiceTest.executor": "Run",
+    "Gradle.ReviewFindServiceTest.executor": "Run",
+    "Gradle.ReviewLikeToggleServiceTest.executor": "Run",
     "Gradle.ReviewServiceTest.canAccessReviews_false_noReview.executor": "Run",
     "Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths.executor": "Run",
     "Gradle.ReviewServiceTest.canAccessReviews_true.executor": "Run",
+    "Gradle.ReviewUpdateServiceTest.executor": "Run",
+    "Gradle.ReviewUpdateServiceTest.updateReview.executor": "Run",
+    "Gradle.ReviewValidateAccessServiceTest.executor": "Run",
     "Notification.DisplayName-DoNotAsk-Lombok plugin": "Lombok integration problem",
     "Notification.DoNotAsk-Lombok plugin": "true",
     "RequestMappingsPanelOrder0": "0",
@@ -195,14 +229,15 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="org.wooriverygood.api.course.application" />
+      <recent name="org.wooriverygood.api.review.application" />
       <recent name="org.wooriverygood.api.post.application" />
       <recent name="org.wooriverygood.api.report.service" />
       <recent name="org.wooriverygood.api.comment.controller" />
-      <recent name="org.wooriverygood.api.post.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.PostApiTest">
-    <configuration name="PostApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.ReviewApiTest.addReview">
+    <configuration name="CourseCreateServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -215,7 +250,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.api.PostApiTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.course.application.CourseCreateServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -226,7 +261,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostCreateServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewApiTest.addReview" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -239,7 +274,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostCreateServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.api.ReviewApiTest.addReview&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -250,7 +285,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostDeleteServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewApiTest.updateReview" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -263,7 +298,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostDeleteServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.api.ReviewApiTest.updateReview&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -274,7 +309,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostDeleteServiceTest.deletePost_exception_noAuth" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewLikeToggleServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -287,7 +322,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostDeleteServiceTest.deletePost_exception_noAuth&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.application.ReviewLikeToggleServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -298,7 +333,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="PostLikeToggleServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="ReviewUpdateServiceTest.updateReview" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -311,7 +346,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.post.application.PostLikeToggleServiceTest&quot;" />
+            <option value="&quot;org.wooriverygood.api.review.application.ReviewUpdateServiceTest.updateReview&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -330,20 +365,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.PostApiTest" />
-      <item itemvalue="Gradle.PostCreateServiceTest" />
-      <item itemvalue="Gradle.PostDeleteServiceTest" />
-      <item itemvalue="Gradle.PostDeleteServiceTest.deletePost_exception_noAuth" />
-      <item itemvalue="Gradle.PostLikeToggleServiceTest" />
+      <item itemvalue="Gradle.CourseCreateServiceTest" />
+      <item itemvalue="Gradle.ReviewApiTest.addReview" />
+      <item itemvalue="Gradle.ReviewApiTest.updateReview" />
+      <item itemvalue="Gradle.ReviewLikeToggleServiceTest" />
+      <item itemvalue="Gradle.ReviewUpdateServiceTest.updateReview" />
       <item itemvalue="Spring Boot.HoneycoursesBackend" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.PostApiTest" />
-        <item itemvalue="Gradle.PostLikeToggleServiceTest" />
-        <item itemvalue="Gradle.PostDeleteServiceTest" />
-        <item itemvalue="Gradle.PostDeleteServiceTest.deletePost_exception_noAuth" />
-        <item itemvalue="Gradle.PostCreateServiceTest" />
+        <item itemvalue="Gradle.ReviewApiTest.addReview" />
+        <item itemvalue="Gradle.CourseCreateServiceTest" />
+        <item itemvalue="Gradle.ReviewApiTest.updateReview" />
+        <item itemvalue="Gradle.ReviewLikeToggleServiceTest" />
+        <item itemvalue="Gradle.ReviewUpdateServiceTest.updateReview" />
       </list>
     </recent_temporary>
   </component>
@@ -375,7 +410,8 @@
       <workItem from="1710840155920" duration="1431000" />
       <workItem from="1711206789197" duration="198000" />
       <workItem from="1711212584044" duration="711000" />
-      <workItem from="1711861358419" duration="13659000" />
+      <workItem from="1711861358419" duration="23757000" />
+      <workItem from="1711959264818" duration="9311000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -721,7 +757,47 @@
       <option name="project" value="LOCAL" />
       <updated>1711905100699</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="[fix] 게시글 불러오기 api 수정">
+      <option name="closed" value="true" />
+      <created>1711906202974</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1711906202974</updated>
+    </task>
+    <task id="LOCAL-00045" summary="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리">
+      <option name="closed" value="true" />
+      <created>1711913670243</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1711913670243</updated>
+    </task>
+    <task id="LOCAL-00046" summary="[refactor] 리뷰 조회 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경">
+      <option name="closed" value="true" />
+      <created>1711991704464</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1711991704465</updated>
+    </task>
+    <task id="LOCAL-00047" summary="[refactor] 리뷰 생성/삭제 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 및 Response Body 변경">
+      <option name="closed" value="true" />
+      <created>1711993477793</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1711993477793</updated>
+    </task>
+    <task id="LOCAL-00048" summary="[refactor] 리뷰 좋아요 서비스 리팩토링&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경">
+      <option name="closed" value="true" />
+      <created>1711995550289</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1711995550289</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -739,11 +815,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Spring Rest Docs 의존성 추가" />
-    <MESSAGE value="[HC-72] 특정 게시글의 댓글 작성 엔드 포인트 수정&#10;&#10;NewCommentRequest에 있는 유저 정보 필드를 삭제했습니다." />
-    <MESSAGE value="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정." />
-    <MESSAGE value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
-    <MESSAGE value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
     <MESSAGE value="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
     <MESSAGE value="[HC-86] 게시글 삭제 기능 구현&#10;&#10;### 테스트 코드 수정&#10;&#10;Mock.when 시, 패러미터로 any()를 할당 안해서 adoc 문서에 Response 객체가 안 나타나는 현상 해결했어요.&#10;&#10;### CourseNotFoundException 위치 이동&#10;&#10;advice/exception 폴더로 이동했어요." />
     <MESSAGE value="[HC-86] 테스트 코드 수정&#10;&#10;PostServiceTest의 deletePost 메서드에서 CommentRepository를 사용하기 때문에 추가했어요." />
@@ -764,7 +835,12 @@
     <MESSAGE value="[docs] 커버리지 비활성 패키지 적용" />
     <MESSAGE value="[docs] adoc 엔드포인트 변경 반영" />
     <MESSAGE value="[docs] adoc 변경 반영" />
-    <option name="LAST_COMMIT_MESSAGE" value="[docs] adoc 변경 반영" />
+    <MESSAGE value="[fix] 게시글 불러오기 api 수정" />
+    <MESSAGE value="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리" />
+    <MESSAGE value="[refactor] 리뷰 조회 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경" />
+    <MESSAGE value="[refactor] 리뷰 생성/삭제 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 및 Response Body 변경" />
+    <MESSAGE value="[refactor] 리뷰 좋아요 서비스 리팩토링&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경" />
+    <option name="LAST_COMMIT_MESSAGE" value="[refactor] 리뷰 좋아요 서비스 리팩토링&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -778,6 +854,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$Tests_in__honeycourses_backend_spring_test_.ic" NAME="Tests in 'honeycourses-backend-spring.test' Coverage Results" MODIFIED="1705668873722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/honeycourses_backend_spring$ReviewApiTest.ic" NAME="ReviewApiTest Coverage Results" MODIFIED="1711912834618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$HoneycoursesBackend.ic" NAME="HoneycoursesBackend Coverage Results" MODIFIED="1709279852010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

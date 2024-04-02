@@ -18,9 +18,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostLikeToggleService {
 
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
-    private PostLikeRepository postLikeRepository;
+    private final PostLikeRepository postLikeRepository;
+
 
     public PostLikeResponse togglePostLike(long postId, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
