@@ -70,19 +70,5 @@ public class ResponseFixture {
                 .build();
     }
 
-    public static PostsResponse postsResponse(int page, int totalCount, String category, AuthInfo authInfo) {
-        List<PostResponse> responses = new ArrayList<>();
-        int bound = Math.min(totalCount - page * 10 + 1, 10);
-        int start = page * 10 + 1;
-        for (int i = start; i < start + bound; i++) {
-            if (i % 5 == 0) responses.add(reportedPostResponse(i, authInfo));
-            else responses.add(postResponse(i, authInfo));
-        }
-        return PostsResponse.builder()
-                .posts(responses)
-                .totalPostCount(totalCount)
-                .totalPageCount((int) Math.ceil((double) totalCount / 10))
-                .build();
-    }
 }
 

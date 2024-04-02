@@ -15,11 +15,12 @@ import org.wooriverygood.api.comment.controller.CommentController;
 import org.wooriverygood.api.comment.service.CommentService;
 import org.wooriverygood.api.course.application.CourseFindService;
 import org.wooriverygood.api.post.application.*;
-import org.wooriverygood.api.report.controller.ReportController;
-import org.wooriverygood.api.report.service.ReportService;
+import org.wooriverygood.api.report.api.ReportApi;
+import org.wooriverygood.api.report.application.CommentReportService;
 import org.wooriverygood.api.course.api.CourseApi;
 import org.wooriverygood.api.course.application.CourseCreateService;
 import org.wooriverygood.api.post.api.PostApi;
+import org.wooriverygood.api.report.application.PostReportService;
 import org.wooriverygood.api.review.api.ReviewApi;
 import org.wooriverygood.api.review.application.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         PostApi.class,
         CourseApi.class,
         ReviewApi.class,
-        ReportController.class
+        ReportApi.class
 })
 @WithMockUser
 @ExtendWith(RestDocumentationExtension.class)
@@ -88,7 +89,10 @@ public class ApiTest {
     protected PostDeleteService postDeleteService;
 
     @MockBean
-    protected ReportService reportService;
+    protected CommentReportService commentReportService;
+
+    @MockBean
+    protected PostReportService postReportService;
 
     @MockBean
     protected AuthenticationPrincipalArgumentResolver authenticationPrincipalArgumentResolver;

@@ -1,15 +1,12 @@
-package org.wooriverygood.api.report.controller;
+package org.wooriverygood.api.report.api;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.report.dto.ReportRequest;
-import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.util.ApiTest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 public class ReportApiTest extends ApiTest {
@@ -17,12 +14,7 @@ public class ReportApiTest extends ApiTest {
     @Test
     @DisplayName("특정 게시글을 신고하면 201을 반환한다.")
     void reportPost() {
-        ReportRequest request = ReportRequest.builder()
-                .message("신고 내용")
-                .build();
-
-        doNothing().when(reportService)
-                .reportPost(any(Long.class), any(ReportRequest.class), any(AuthInfo.class));
+        ReportRequest request = new ReportRequest("신고 내용");
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -38,12 +30,7 @@ public class ReportApiTest extends ApiTest {
     @Test
     @DisplayName("특정 댓글을 신고하면 201을 반환한다.")
     void reportComment() {
-        ReportRequest request = ReportRequest.builder()
-                .message("신고 내용")
-                .build();
-
-        doNothing().when(reportService)
-                .reportComment(any(Long.class), any(ReportRequest.class), any(AuthInfo.class));
+        ReportRequest request = new ReportRequest("신고 내용");
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -55,5 +42,5 @@ public class ReportApiTest extends ApiTest {
                 .apply(document("comments/report/success"))
                 .statusCode(HttpStatus.CREATED.value());
     }
-}
 
+}

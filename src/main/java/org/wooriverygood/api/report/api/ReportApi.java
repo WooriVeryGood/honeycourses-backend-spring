@@ -1,33 +1,33 @@
-package org.wooriverygood.api.report.controller;
+package org.wooriverygood.api.report.api;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.wooriverygood.api.report.application.PostReportService;
 import org.wooriverygood.api.report.dto.ReportRequest;
-import org.wooriverygood.api.report.service.ReportService;
+import org.wooriverygood.api.report.application.CommentReportService;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.Login;
 
 @RestController
-public class ReportController {
+@RequiredArgsConstructor
+public class ReportApi {
 
-    private final ReportService reportService;
+    private final CommentReportService commentReportService;
 
-
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
+    private final PostReportService postReportService;
 
 
     @PostMapping("/posts/{id}/report")
     public ResponseEntity<Void> reportPost(@PathVariable("id") Long postId,
                                            @Valid @RequestBody ReportRequest request,
                                            @Login AuthInfo authInfo) {
-        reportService.reportPost(postId, request, authInfo);
+        postReportService.reportPost(postId, request, authInfo);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -35,7 +35,7 @@ public class ReportController {
     public ResponseEntity<Void> reportComment(@PathVariable("id") Long commentId,
                                               @Valid @RequestBody ReportRequest request,
                                               @Login AuthInfo authInfo) {
-        reportService.reportComment(commentId, request, authInfo);
+        commentReportService.reportComment(commentId, request, authInfo);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
