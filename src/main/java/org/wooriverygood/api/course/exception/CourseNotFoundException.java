@@ -1,4 +1,4 @@
-package org.wooriverygood.api.advice.exception;
+package org.wooriverygood.api.course.exception;
 
 import org.wooriverygood.api.global.error.exception.NotFoundException;
 

@@ -36,9 +36,9 @@ class ReviewCreateServiceTest extends MockTest {
 
     private Course course = Course.builder()
             .id(1L)
-            .course_name("Gaoshu")
-            .course_category("Zhuanye")
-            .course_credit(5)
+            .name("Gaoshu")
+            .category("Zhuanye")
+            .credit(5)
             .isYouguan(0)
             .kaikeYuanxi("Xinke")
             .build();

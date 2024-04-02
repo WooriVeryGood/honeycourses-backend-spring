@@ -3,7 +3,7 @@ package org.wooriverygood.api.review.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wooriverygood.api.advice.exception.CourseNotFoundException;
+import org.wooriverygood.api.course.exception.CourseNotFoundException;
 import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.global.auth.AuthInfo;

@@ -126,8 +126,6 @@ class PostApiTest extends ApiTest {
                 .postContent("content")
                 .build();
 
-        doNothing().when(postCreateService).addPost(any(AuthInfo.class), any(NewPostRequest.class));
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
@@ -201,10 +199,6 @@ class PostApiTest extends ApiTest {
                 .postContent("new content")
                 .build();
 
-        doNothing()
-                .when(postUpdateService)
-                .updatePost(anyLong(), any(PostUpdateRequest.class), any(AuthInfo.class));
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
@@ -260,8 +254,6 @@ class PostApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 있는 게시글을 삭제한다.")
     void deletePost() {
-        doNothing().when(postDeleteService).deletePost(any(AuthInfo.class), anyLong());
-
         restDocs
                 .header("Authorization", "any")
                 .when().delete("/posts/7")

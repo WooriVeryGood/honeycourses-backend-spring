@@ -13,11 +13,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.wooriverygood.api.comment.controller.CommentController;
 import org.wooriverygood.api.comment.service.CommentService;
+import org.wooriverygood.api.course.application.CourseFindService;
 import org.wooriverygood.api.post.application.*;
 import org.wooriverygood.api.report.controller.ReportController;
 import org.wooriverygood.api.report.service.ReportService;
-import org.wooriverygood.api.course.controller.CourseController;
-import org.wooriverygood.api.course.service.CourseService;
+import org.wooriverygood.api.course.api.CourseApi;
+import org.wooriverygood.api.course.application.CourseCreateService;
 import org.wooriverygood.api.post.api.PostApi;
 import org.wooriverygood.api.review.api.ReviewApi;
 import org.wooriverygood.api.review.application.*;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest({
         CommentController.class,
         PostApi.class,
-        CourseController.class,
+        CourseApi.class,
         ReviewApi.class,
         ReportController.class
 })
@@ -45,7 +46,10 @@ public class ApiTest {
     protected MockMvcRequestSpecification restDocs;
 
     @MockBean
-    protected CourseService courseService;
+    protected CourseCreateService courseCreateService;
+
+    @MockBean
+    protected CourseFindService courseFindService;
 
     @MockBean
     protected ReviewLikeToggleService reviewLikeToggleService;

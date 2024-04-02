@@ -27,9 +27,9 @@ public class ReviewApiTest extends ApiTest {
 
     private Course course = Course.builder()
             .id(1L)
-            .course_name("Gaoshu")
-            .course_category("Zhuanye")
-            .course_credit(5)
+            .name("Gaoshu")
+            .category("Zhuanye")
+            .credit(5)
             .isYouguan(0)
             .kaikeYuanxi("Xinke")
             .build();
@@ -102,10 +102,6 @@ public class ReviewApiTest extends ApiTest {
                 .reviewContent("Good!")
                 .grade("100")
                 .build();
-
-        doNothing()
-                .when(reviewCreateService)
-                .addReview(any(AuthInfo.class), anyLong(), any(NewReviewRequest.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -180,10 +176,6 @@ public class ReviewApiTest extends ApiTest {
                 .grade("100")
                 .build();
 
-        doNothing()
-                .when(reviewUpdateService)
-                .updateReview(anyLong(), any(ReviewUpdateRequest.class), any(AuthInfo.class));
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
@@ -221,10 +213,6 @@ public class ReviewApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")
     void deleteReview() {
-        doNothing()
-                .when(reviewDeleteService)
-                .deleteReview(anyLong(), any(AuthInfo.class));
-
         restDocs
                 .header("Authorization", "any")
                 .when().delete("/reviews/8")

@@ -11,19 +11,20 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Table(name = "courses")
 public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
     private Long id;
 
     @Column(name = "course_category", nullable = false)
-    private String course_category;
+    private String category;
 
     @Column(name = "course_credit", nullable = false)
-    private double course_credit;
+    private double credit;
 
     @Column(name = "course_name", nullable = false)
-    private String course_name;
+    private String name;
 
     @Column(name = "isYouguan", nullable = false)
     private int isYouguan;
@@ -36,16 +37,14 @@ public class Course {
     private int reviewCount;
 
     @Builder
-    public Course(Long id, String course_name, String course_category, double course_credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
+    public Course(Long id, String name, String category, double credit, int isYouguan, String kaikeYuanxi, int reviewCount) {
         this.id = id;
-        this.course_name = course_name;
-        this.course_category = course_category;
-        this.course_credit = course_credit;
+        this.name = name;
+        this.category = category;
+        this.credit = credit;
         this.isYouguan = isYouguan;
         this.kaikeYuanxi = kaikeYuanxi;
         this.reviewCount = reviewCount;
     }
-
-
 
 }
