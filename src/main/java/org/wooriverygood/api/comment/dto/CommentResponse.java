@@ -1,5 +1,7 @@
 package org.wooriverygood.api.comment.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import org.wooriverygood.api.comment.domain.Comment;
@@ -8,19 +10,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentResponse {
 
-    private final Long comment_id;
+    private final Long commentId;
 
-    private final String comment_content;
+    private final String commentContent;
 
-    private final String comment_author;
+    private final String commentAuthor;
 
-    private final Long post_id;
+    private final Long postId;
 
-    private final int comment_likes;
+    private final int commentLikeCount;
 
-    private final LocalDateTime comment_time;
+    private final LocalDateTime commentTime;
 
     private final boolean liked;
 
@@ -32,13 +35,13 @@ public class CommentResponse {
 
 
     @Builder
-    public CommentResponse(Long comment_id, String comment_content, String comment_author, Long post_id, int comment_likes, LocalDateTime comment_time, boolean liked, List<ReplyResponse> replies, boolean updated, boolean reported) {
-        this.comment_id = comment_id;
-        this.comment_content = comment_content;
-        this.comment_author = comment_author;
-        this.post_id = post_id;
-        this.comment_likes = comment_likes;
-        this.comment_time = comment_time;
+    public CommentResponse(Long commentId, String commentContent, String commentAuthor, Long postId, int commentLikeCount, LocalDateTime commentTime, boolean liked, List<ReplyResponse> replies, boolean updated, boolean reported) {
+        this.commentId = commentId;
+        this.commentContent = commentContent;
+        this.commentAuthor = commentAuthor;
+        this.postId = postId;
+        this.commentLikeCount = commentLikeCount;
+        this.commentTime = commentTime;
         this.liked = liked;
         this.replies = replies;
         this.updated = updated;
@@ -46,34 +49,33 @@ public class CommentResponse {
     }
 
 
-    public static CommentResponse from(Comment comment, List<ReplyResponse> replies, boolean liked) {
-        boolean reported = comment.getReportCount() >= 5;
+    public static CommentResponse of(Comment comment, List<ReplyResponse> replies, boolean liked) {
         return CommentResponse.builder()
-                .comment_id(comment.getId())
-                .comment_content(reported ? null : comment.getContent())
-                .comment_author(comment.getAuthor())
-                .post_id(comment.getPost().getId())
-                .comment_likes(comment.getLikeCount())
-                .comment_time(comment.getCreatedAt())
+                .commentId(comment.getId())
+                .commentContent(comment.getContent())
+                .commentAuthor(comment.getAuthor())
+                .postId(comment.getPost().getId())
+                .commentLikeCount(comment.getLikeCount())
+                .commentTime(comment.getCreatedAt())
                 .liked(liked)
                 .replies(replies)
                 .updated(comment.isUpdated())
-                .reported(reported)
+                .reported(comment.isReportedTooMuch())
                 .build();
     }
 
-    public static CommentResponse softRemovedFrom(Comment comment, List<ReplyResponse> replies) {
-        boolean reported = comment.getReportCount() >= 5;
+    public static CommentResponse softRemovedOf(Comment comment, List<ReplyResponse> replies) {
         return CommentResponse.builder()
-                .comment_id(comment.getId())
-                .comment_content(null)
-                .comment_author(comment.getAuthor())
-                .post_id(comment.getPost().getId())
-                .comment_likes(comment.getLikeCount())
-                .comment_time(comment.getCreatedAt())
+                .commentId(comment.getId())
+                .commentContent(null)
+                .commentAuthor(comment.getAuthor())
+                .postId(comment.getPost().getId())
+                .commentLikeCount(comment.getLikeCount())
+                .commentTime(comment.getCreatedAt())
                 .replies(replies)
                 .updated(comment.isUpdated())
-                .reported(reported)
+                .reported(comment.isReportedTooMuch())
                 .build();
     }
+
 }

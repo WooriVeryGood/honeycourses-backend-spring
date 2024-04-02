@@ -1,9 +1,8 @@
-package org.wooriverygood.api.comment.controller;
+package org.wooriverygood.api.comment.api;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
@@ -19,16 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 
 class CommentApiTest extends ApiTest {
 
-    List<CommentResponse> responses = new ArrayList<>();
+    private List<CommentResponse> responses = new ArrayList<>();
 
-    Post post = Post.builder()
+    private Post post = Post.builder()
             .id(1L)
             .category(PostCategory.OFFER)
             .title("title6")
@@ -40,14 +38,14 @@ class CommentApiTest extends ApiTest {
 
     @BeforeEach
     void setUp() {
-        for (int i = 1; i <= 4; i++) {
+        for (long i = 1; i <= 4; i++) {
             responses.add(CommentResponse.builder()
-                    .comment_id((long) i)
-                    .comment_content("content" + i)
-                    .comment_author("user-"+(i % 5))
-                    .post_id(post.getId())
-                    .comment_likes(i + 8)
-                    .comment_time(LocalDateTime.now())
+                    .commentId(i)
+                    .commentContent("content" + i)
+                    .commentAuthor("user-"+(i % 5))
+                    .postId(post.getId())
+                    .commentLikeCount((int) i + 8)
+                    .commentTime(LocalDateTime.now())
                     .liked(i % 3 == 0)
                     .replies(new ArrayList<>())
                     .updated(i % 2 == 0)
@@ -57,11 +55,11 @@ class CommentApiTest extends ApiTest {
         for (int i = 12; i <= 15; i++) {
             responses.get(2).getReplies()
                     .add(ReplyResponse.builder()
-                            .reply_id((long) i)
-                            .reply_content("reply content " + i)
-                            .reply_author("user-" + (i % 2))
-                            .reply_likes(i - 6)
-                            .reply_time(LocalDateTime.now())
+                            .replyId((long) i)
+                            .replyContent("reply content " + i)
+                            .replyAuthor("user-" + (i % 2))
+                            .replyLikeCount(i - 6)
+                            .replyTime(LocalDateTime.now())
                             .liked(false)
                             .updated(i % 2 == 0)
                             .reported(false)
@@ -72,13 +70,13 @@ class CommentApiTest extends ApiTest {
     @Test
     @DisplayName("특정 게시글의 댓글 조회 요청을 받으면 댓글들을 반환한다.")
     void findAllCommentsByPostId() {
-        Mockito.when(commentService.findAllComments(any(Long.class), any(AuthInfo.class)))
-                .thenReturn(responses);
+        when(commentFindService.findAllCommentsByPostId(anyLong(), any(AuthInfo.class)))
+                .thenReturn(new CommentsResponse(responses));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
-                .when().get("/community/1/comments")
+                .when().get("/posts/1/comments")
                 .then().log().all()
                 .assertThat()
                 .apply(document("comments/find/success"))
@@ -92,20 +90,11 @@ class CommentApiTest extends ApiTest {
                 .content("content51")
                 .build();
 
-        NewCommentResponse response = NewCommentResponse.builder()
-                .comment_id(51L)
-                .content("content51")
-                .author(testAuthInfo.getUsername())
-                .build();
-
-        Mockito.when(commentService.addComment(any(AuthInfo.class), any(Long.class), any(NewCommentRequest.class)))
-                .thenReturn(response);
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
                 .body(request)
-                .when().post("/community/51/comments")
+                .when().post("/posts/51/comments")
                 .then().log().all()
                 .assertThat()
                 .apply(document("comments/create/success"))
@@ -115,9 +104,9 @@ class CommentApiTest extends ApiTest {
     @Test
     @DisplayName("특정 댓글의 좋아요를 1 올리거나 내린다.")
     void likeComment() {
-        Mockito.when(commentService.likeComment(any(Long.class), any(AuthInfo.class)))
+        when(commentLikeToggleService.likeComment(any(Long.class), any(AuthInfo.class)))
                 .thenReturn(CommentLikeResponse.builder()
-                        .like_count(5)
+                        .likeCount(5)
                         .liked(false)
                         .build());
 
@@ -138,11 +127,6 @@ class CommentApiTest extends ApiTest {
                 .content("new comment content")
                 .build();
 
-        Mockito.when(commentService.updateComment(any(Long.class), any(CommentUpdateRequest.class), any(AuthInfo.class)))
-                .thenReturn(CommentUpdateResponse.builder()
-                        .comment_id(2L)
-                        .build());
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
@@ -151,7 +135,7 @@ class CommentApiTest extends ApiTest {
                 .then().log().all()
                 .assertThat()
                 .apply(document("comments/update/success"))
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
@@ -178,8 +162,9 @@ class CommentApiTest extends ApiTest {
                 .content("new comment content")
                 .build();
 
-        Mockito.when(commentService.updateComment(any(Long.class), any(CommentUpdateRequest.class), any(AuthInfo.class)))
-                .thenThrow(new AuthorizationException());
+        doThrow(new AuthorizationException())
+                .when(commentUpdateService)
+                .updateComment(anyLong(), any(CommentUpdateRequest.class), any(AuthInfo.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -195,11 +180,6 @@ class CommentApiTest extends ApiTest {
     @Test
     @DisplayName("권한이 있는 댓글을 삭제한다.")
     void deleteComment() {
-        Mockito.when(commentService.deleteComment(any(Long.class), any(AuthInfo.class)))
-                .thenReturn(CommentDeleteResponse.builder()
-                        .comment_id(3L)
-                        .build());
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
@@ -207,14 +187,15 @@ class CommentApiTest extends ApiTest {
                 .then().log().all()
                 .assertThat()
                 .apply(document("comments/delete/success"))
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
     @DisplayName("권한이 없는 댓글을 삭제하면 404를 반환한다.")
     void deleteComment_exception_noAuth() {
-        Mockito.when(commentService.deleteComment(any(Long.class), any(AuthInfo.class)))
-                .thenThrow(new AuthorizationException());
+        doThrow(new AuthorizationException())
+                .when(commentDeleteService)
+                .deleteComment(anyLong(), any(AuthInfo.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -233,9 +214,6 @@ class CommentApiTest extends ApiTest {
                 .content("reply content")
                 .build();
 
-        doNothing().when(commentService)
-                .addReply(any(Long.class), any(NewReplyRequest.class), any(AuthInfo.class));
-
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization", "Bearer aws-cognito-access-token")
@@ -248,14 +226,15 @@ class CommentApiTest extends ApiTest {
     }
 
     @Test
-    @DisplayName("특정 댓글의 대댓글을 작성한다.")
+    @DisplayName("특정 대댓글의 대댓글을 작성하려고 하면, 400 에러를 반환한다.")
     void addReply_exception_depth() {
         NewReplyRequest request = NewReplyRequest.builder()
                 .content("reply content")
                 .build();
 
-        doThrow(new ReplyDepthException()).when(commentService)
-                .addReply(any(Long.class), any(NewReplyRequest.class), any(AuthInfo.class));
+        doThrow(new ReplyDepthException())
+                .when(commentCreateService)
+                .addReply(anyLong(), any(NewReplyRequest.class), any(AuthInfo.class));
 
         restDocs
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

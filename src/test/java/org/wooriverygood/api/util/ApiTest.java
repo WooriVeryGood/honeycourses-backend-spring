@@ -11,8 +11,8 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.wooriverygood.api.comment.controller.CommentController;
-import org.wooriverygood.api.comment.service.CommentService;
+import org.wooriverygood.api.comment.api.CommentApi;
+import org.wooriverygood.api.comment.application.*;
 import org.wooriverygood.api.course.application.CourseFindService;
 import org.wooriverygood.api.post.application.*;
 import org.wooriverygood.api.report.api.ReportApi;
@@ -34,7 +34,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest({
-        CommentController.class,
+        CommentApi.class,
         PostApi.class,
         CourseApi.class,
         ReviewApi.class,
@@ -71,7 +71,19 @@ public class ApiTest {
     protected ReviewValidateAccessService reviewValidateAccessService;
 
     @MockBean
-    protected CommentService commentService;
+    protected CommentCreateService commentCreateService;
+
+    @MockBean
+    protected CommentDeleteService commentDeleteService;
+
+    @MockBean
+    protected CommentFindService commentFindService;
+
+    @MockBean
+    protected CommentUpdateService commentUpdateService;
+
+    @MockBean
+    protected CommentLikeToggleService commentLikeToggleService;
 
     @MockBean
     protected PostLikeToggleService postLikeToggleService;
