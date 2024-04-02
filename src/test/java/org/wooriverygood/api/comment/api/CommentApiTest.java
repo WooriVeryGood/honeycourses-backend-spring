@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
-import org.wooriverygood.api.advice.exception.ReplyDepthException;
+import org.wooriverygood.api.comment.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;

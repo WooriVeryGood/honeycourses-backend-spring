@@ -3,7 +3,7 @@ package org.wooriverygood.api.comment.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wooriverygood.api.advice.exception.CommentNotFoundException;
+import org.wooriverygood.api.comment.exception.CommentNotFoundException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.dto.CommentUpdateRequest;
 import org.wooriverygood.api.comment.repository.CommentRepository;

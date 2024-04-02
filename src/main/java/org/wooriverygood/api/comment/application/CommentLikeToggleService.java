@@ -8,7 +8,7 @@ import org.wooriverygood.api.comment.domain.CommentLike;
 import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
-import org.wooriverygood.api.advice.exception.CommentNotFoundException;
+import org.wooriverygood.api.comment.exception.CommentNotFoundException;
 import org.wooriverygood.api.global.auth.AuthInfo;
 
 import java.util.Optional;
@@ -17,7 +17,6 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class CommentLikeToggleService {
-
 
     private final CommentRepository commentRepository;
 

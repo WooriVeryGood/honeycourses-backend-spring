@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.wooriverygood.api.advice.exception.CommentNotFoundException;
+import org.wooriverygood.api.comment.exception.CommentNotFoundException;
 import org.wooriverygood.api.report.domain.CommentReport;
 import org.wooriverygood.api.report.exception.DuplicatedCommentReportException;
 import org.wooriverygood.api.comment.domain.Comment;

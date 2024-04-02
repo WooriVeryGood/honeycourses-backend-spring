@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.wooriverygood.api.advice.exception.ReplyDepthException;
+import org.wooriverygood.api.comment.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewReplyRequest;
