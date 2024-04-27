@@ -50,3 +50,4 @@
 ## Requirements
 
 - JDK 17
+- Courage
