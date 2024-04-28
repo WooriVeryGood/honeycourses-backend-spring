@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.course.domain.Course;
+import org.wooriverygood.api.member.domain.Member;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +47,9 @@ public class Review {
     @Column(name = "author_email", length = 300)
     private String authorEmail;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
     @Column(name = "like_count")
     @ColumnDefault("0")
     private int likeCount;
@@ -61,7 +65,9 @@ public class Review {
     private boolean updated;
 
     @Builder
-    public Review(Long id, Course course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail, LocalDateTime createdAt, List<ReviewLike> reviewLikes, boolean updated) {
+    public Review(Long id, Course course, String reviewContent, String reviewTitle, String instructorName,
+                  String takenSemyr, String grade, String authorEmail, LocalDateTime createdAt, Member member,
+                  List<ReviewLike> reviewLikes, boolean updated) {
         this.id = id;
         this.course = course;
         this.reviewContent = reviewContent;
@@ -73,16 +79,15 @@ public class Review {
         this.createdAt = createdAt;
         this.reviewLikes = reviewLikes;
         this.updated = updated;
+        this.member = member;
     }
 
-    public boolean isSameAuthor(String author) {
-        return this.authorEmail.equals(author);
+    public boolean isSameAuthor(Member member) {
+        return this.member.isSame(member);
     }
 
-    public void validateAuthor(String author) {
-        if (!this.authorEmail.equals(author)) {
-            throw new AuthorizationException();
-        }
+    public void validateAuthor(Member member) {
+        this.member.verify(member);
     }
 
     public void addReviewLike(ReviewLike reviewLike) {
@@ -119,9 +124,9 @@ public class Review {
         updated = true;
     }
 
-    public void updateAuthor(String author) {
-        authorEmail = author;
-        updated = true;
-    }
+//    public void updateAuthor(String author) {
+//        authorEmail = author;
+//        updated = true;
+//    }
 
 }

@@ -65,7 +65,7 @@ class CommentDeleteServiceTest extends MockTest {
 
         verify(reply).validateAuthor(authInfo.getUsername());
         verify(commentLikeRepository).deleteAllByComment(reply);
-        verify(comment).deleteChild(reply);
+        verify(comment).deleteReply(reply);
         verify(commentRepository).delete(reply);
     }
 
@@ -111,7 +111,7 @@ class CommentDeleteServiceTest extends MockTest {
 
         commentDeleteService.deleteComment(reply.getId(), authInfo);
 
-        verify(comment).deleteChild(reply);
+        verify(comment).deleteReply(reply);
         verify(commentRepository).delete(reply);
         verify(commentRepository).delete(comment);
     }

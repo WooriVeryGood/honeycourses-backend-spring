@@ -19,7 +19,6 @@ public class CommentLike {
     @JoinColumn(name = "comment_id", referencedColumnName = "comment_id")
     private Comment comment;
 
-    @Column
     private String username;
 
 

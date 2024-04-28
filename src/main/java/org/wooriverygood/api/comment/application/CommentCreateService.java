@@ -50,7 +50,7 @@ public class CommentCreateService {
                 .post(parent.getPost())
                 .parent(parent)
                 .build();
-        parent.addChildren(child);
+        parent.addReply(child);
 
         commentRepository.save(child);
     }

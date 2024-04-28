@@ -134,7 +134,7 @@ class CommentFindServiceTest extends MockTest {
                 .parent(comment)
                 .build();
         comments.add(reply);
-        comment.addChildren(reply);
+        comment.addReply(reply);
         when(commentRepository.findAllByPostId(anyLong()))
                 .thenReturn(comments);
 

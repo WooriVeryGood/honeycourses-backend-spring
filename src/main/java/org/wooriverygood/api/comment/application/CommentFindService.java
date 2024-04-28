@@ -44,7 +44,7 @@ public class CommentFindService {
     }
 
     private List<ReplyResponse> convertToReplyResponses(Comment parent, AuthInfo authInfo) {
-        return parent.getChildren()
+        return parent.getReplies()
                 .stream()
                 .map(reply -> {
                     boolean liked = commentLikeRepository.existsByCommentAndUsername(reply, authInfo.getUsername());

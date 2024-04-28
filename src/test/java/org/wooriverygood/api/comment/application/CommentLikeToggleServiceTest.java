@@ -67,7 +67,7 @@ class CommentLikeToggleServiceTest extends MockTest {
 
     @BeforeEach
     void setUpPosts() {
-        comment.getChildren().add(reply);
+        comment.getReplies().add(reply);
 
         for (int i = 0; i < COMMENT_COUNT; i++) {
             Comment comment = Comment.builder()

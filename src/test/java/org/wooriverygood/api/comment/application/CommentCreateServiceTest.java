@@ -10,6 +10,7 @@ import org.wooriverygood.api.comment.domain.Comment;
 import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewReplyRequest;
 import org.wooriverygood.api.comment.repository.CommentRepository;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.repository.PostRepository;
@@ -35,6 +36,9 @@ class CommentCreateServiceTest extends MockTest {
 
     @Mock
     private CommentRepository commentRepository;
+
+    @Mock
+    private MemberRepository memberRepository;
 
     private Post post = Post.builder()
             .id(6L)
@@ -93,7 +97,7 @@ class CommentCreateServiceTest extends MockTest {
                 .thenReturn(Optional.ofNullable(comment));
 
         commentCreateService.addReply(1L, request, authInfo);
-        Comment reply = comment.getChildren().get(0);
+        Comment reply = comment.getReplies().get(0);
 
         assertThat(reply.getContent()).isEqualTo(request.getContent());
         assertThat(reply.getParent()).isEqualTo(comment);

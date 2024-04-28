@@ -8,6 +8,8 @@ import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.exception.ReviewNotFoundException;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
@@ -17,6 +19,7 @@ import org.wooriverygood.api.util.MockTest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -35,42 +38,46 @@ class ReviewDeleteServiceTest extends MockTest {
     @Mock
     private ReviewLikeRepository reviewLikeRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
     private Course course = Course.builder()
             .id(1L)
             .build();
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
+    private Review review = Review.builder()
+            .member(member)
+            .course(course)
             .build();
-
-    @Mock
-    private Review review;
 
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")
     void deleteReview() {
         when(reviewRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(review));
-        when(review.getCourse())
-                .thenReturn(course);
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         reviewDeleteService.deleteReview(1L, authInfo);
 
-        verify(review).validateAuthor(authInfo.getUsername());
-        verify(reviewLikeRepository).deleteAllByReview(review);
-        verify(reviewRepository).delete(review);
-        verify(courseRepository).decreaseReviewCount(course.getId());
+        assertAll(
+                () -> verify(reviewLikeRepository).deleteAllByReview(review),
+                () -> verify(reviewRepository).delete(review),
+                () -> verify(courseRepository).decreaseReviewCount(course.getId())
+        );
     }
 
     @Test
     @DisplayName("권한이 없는 리뷰는 삭제가 불가능하다.")
     void deleteReview_exception_noAuth() {
+        Review review = Review.builder()
+                .id(2L)
+                .member(new Member(5L, "noAuth"))
+                .build();
         when(reviewRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(review));
-        doThrow(new AuthorizationException())
-                .when(review)
-                .validateAuthor(anyString());
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         assertThatThrownBy(() -> reviewDeleteService.deleteReview(1L, authInfo))
                 .isInstanceOf(AuthorizationException.class);

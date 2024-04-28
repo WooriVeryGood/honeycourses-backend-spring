@@ -47,7 +47,7 @@ public class CommentDeleteService {
 
     private void deleteChild(Comment reply) {
         Comment parent = reply.getParent();
-        parent.deleteChild(reply);
+        parent.deleteReply(reply);
         commentRepository.delete(reply);
 
         if (parent.canDelete())

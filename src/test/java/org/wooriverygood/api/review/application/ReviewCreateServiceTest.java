@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
 import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.dto.NewReviewRequest;
 import org.wooriverygood.api.review.repository.ReviewRepository;
@@ -14,6 +15,7 @@ import org.wooriverygood.api.util.MockTest;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -29,10 +31,8 @@ class ReviewCreateServiceTest extends MockTest {
     @Mock
     private ReviewRepository reviewRepository;
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
-            .build();
+    @Mock
+    private MemberRepository memberRepository;
 
     private Course course = Course.builder()
             .id(1L)
@@ -57,11 +57,15 @@ class ReviewCreateServiceTest extends MockTest {
 
         when(courseRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(course));
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         reviewCreateService.addReview(authInfo, 1L, request);
 
-        verify(reviewRepository).save(any(Review.class));
-        verify(courseRepository).increaseReviewCount(course.getId());
+        assertAll(
+                () -> verify(reviewRepository).save(any(Review.class)),
+                () -> verify(courseRepository).increaseReviewCount(course.getId())
+        );
     }
 
 }
