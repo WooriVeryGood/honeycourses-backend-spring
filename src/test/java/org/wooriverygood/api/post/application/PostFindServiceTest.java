@@ -154,7 +154,7 @@ class PostFindServiceTest extends PostServiceTest {
         int end = Math.min(start + pageable.getPageSize(), this.myPosts.size());
         List<Post> posts = this.myPosts.subList(start, end);
         PageImpl<Post> page = new PageImpl<>(posts, pageable, this.myPosts.size());
-        when(postRepository.findByAuthorOrderByIdDesc(any(String.class), any(PageRequest.class)))
+        when(postRepository.findByMemberOrderByIdDesc(any(Member.class), any(PageRequest.class)))
                 .thenReturn(page);
         when(memberRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(member));

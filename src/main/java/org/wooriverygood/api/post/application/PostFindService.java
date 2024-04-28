@@ -59,9 +59,9 @@ public class PostFindService {
     }
 
     public PostsResponse findMyPosts(AuthInfo authInfo, Pageable pageable) {
-        Page<Post> page = postRepository.findByAuthorOrderByIdDesc(authInfo.getUsername(), pageable);
         Member member = memberRepository.findById(authInfo.getMemberId())
                 .orElseThrow(MemberNotFoundException::new);
+        Page<Post> page = postRepository.findByMemberOrderByIdDesc(member, pageable);
         return convertToPostsResponse(member, page);
     }
 
