@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class CommentCreateServiceTest extends MockTest {
+class CommentCreateServiceTest extends CommentServiceTest {
 
     @InjectMocks
     private CommentCreateService commentCreateService;
@@ -39,16 +39,6 @@ class CommentCreateServiceTest extends MockTest {
 
     @Mock
     private MemberRepository memberRepository;
-
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author("author6")
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
 
     private Comment comment;
 

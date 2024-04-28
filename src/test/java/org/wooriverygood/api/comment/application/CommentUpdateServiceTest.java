@@ -22,23 +22,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-class CommentUpdateServiceTest extends MockTest {
+class CommentUpdateServiceTest extends CommentServiceTest {
 
     @InjectMocks
     private CommentUpdateService commentUpdateService;
 
     @Mock
     private CommentRepository commentRepository;
-
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author("author6")
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
 
     private Comment comment;
 

@@ -34,7 +34,6 @@ public class ReviewUpdateService {
         review.updateTakenSemyr(request.getTakenSemyr());
         review.updateContent(request.getReviewContent());
         review.updateGrade(request.getGrade());
-//        review.updateAuthor(authInfo.getUsername());
     }
 
 }

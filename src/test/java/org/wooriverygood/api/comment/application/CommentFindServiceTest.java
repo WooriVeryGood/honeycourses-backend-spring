@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-class CommentFindServiceTest extends MockTest {
+class CommentFindServiceTest extends CommentServiceTest {
 
     @InjectMocks
     private CommentFindService commentFindService;
@@ -34,16 +34,6 @@ class CommentFindServiceTest extends MockTest {
     private final int COMMENT_COUNT = 10;
 
     private List<Comment> comments = new ArrayList<>();
-
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author("author6")
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
 
     @BeforeEach
     void setUp() {

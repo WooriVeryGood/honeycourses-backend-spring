@@ -20,7 +20,9 @@ public class PostDetailResponse {
 
     private final String postCategory;
 
-    private final String postAuthor;
+    private final long memberId;
+
+    private final boolean isMine;
 
     private final int postComments;
 
@@ -38,12 +40,16 @@ public class PostDetailResponse {
 
 
     @Builder
-    public PostDetailResponse(Long postId, String postTitle, String postContent, String postCategory, String postAuthor, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount) {
+    public PostDetailResponse(Long postId, String postTitle, String postContent,
+                              String postCategory, long memberId, int postComments,
+                              int postLikes, LocalDateTime postTime, boolean liked,
+                              boolean isMine, boolean updated, boolean reported, int viewCount) {
         this.postId = postId;
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.postCategory = postCategory;
-        this.postAuthor = postAuthor;
+        this.memberId = memberId;
+        this.isMine = isMine;
         this.postComments = postComments;
         this.postLikes = postLikes;
         this.postTime = postTime;
@@ -53,13 +59,14 @@ public class PostDetailResponse {
         this.viewCount = viewCount;
     }
 
-    public static PostDetailResponse of(Post post, boolean liked) {
+    public static PostDetailResponse of(Post post, long memberId, boolean liked, boolean isMine) {
         return PostDetailResponse.builder()
                 .postId(post.getId())
                 .postTitle(post.getTitle())
                 .postContent(post.getContent())
                 .postCategory(post.getCategory().getValue())
-                .postAuthor(post.getAuthor())
+                .isMine(isMine)
+                .memberId(memberId)
                 .postComments(post.getCommentCount())
                 .postLikes(post.getLikeCount())
                 .postTime(post.getCreatedAt())

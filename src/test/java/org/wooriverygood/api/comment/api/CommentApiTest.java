@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.comment.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.dto.*;
+import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.global.auth.AuthInfo;
@@ -31,7 +32,7 @@ class CommentApiTest extends ApiTest {
             .category(PostCategory.OFFER)
             .title("title6")
             .content("content6")
-            .author("user-3333")
+            .member(new Member(1L, "username"))
             .comments(new ArrayList<>())
             .postLikes(new ArrayList<>())
             .build();

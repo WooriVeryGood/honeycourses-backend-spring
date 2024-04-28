@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.post.domain.Post;
 
 @Entity
@@ -20,22 +21,22 @@ public class PostReport {
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
-    @Column
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
     private String message;
 
 
     @Builder
-    public PostReport(Long id, Post post, String username, String message) {
+    public PostReport(Long id, Post post, Member member, String message) {
         this.id = id;
         this.post = post;
-        this.username = username;
+        this.member = member;
         this.message = message;
     }
 
-    public boolean isOwner(String username) {
-        return this.username.equals(username);
+    public boolean isOwner(Member member) {
+        return this.member.equals(member);
     }
 
 }

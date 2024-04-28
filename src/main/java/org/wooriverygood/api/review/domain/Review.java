@@ -17,8 +17,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "reviews")
+@EntityListeners(AuditingEntityListener.class)
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -123,10 +123,5 @@ public class Review {
         this.grade = grade;
         updated = true;
     }
-
-//    public void updateAuthor(String author) {
-//        authorEmail = author;
-//        updated = true;
-//    }
 
 }

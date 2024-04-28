@@ -1,20 +1,24 @@
 package org.wooriverygood.api.post.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.dto.NewPostRequest;
 import org.wooriverygood.api.post.exception.InvalidPostCategoryException;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.util.MockTest;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PostCreateServiceTest extends MockTest {
 
@@ -24,15 +28,9 @@ class PostCreateServiceTest extends MockTest {
     @Mock
     private PostRepository postRepository;
 
-    private AuthInfo authInfo;
+    @Mock
+    private MemberRepository memberRepository;
 
-    @BeforeEach
-    void setUp() {
-        authInfo = AuthInfo.builder()
-                .sub("22222-34534-123")
-                .username("22222-34534-123")
-                .build();
-    }
 
     @Test
     @DisplayName("새로운 게시글을 작성한다.")
@@ -42,6 +40,8 @@ class PostCreateServiceTest extends MockTest {
                 .postCategory("자유")
                 .postContent("content")
                 .build();
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         postCreateService.addPost(authInfo, request);
 
@@ -56,6 +56,9 @@ class PostCreateServiceTest extends MockTest {
                 .postCategory("자유유")
                 .postContent("content")
                 .build();
+
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         assertThatThrownBy(() -> postCreateService.addPost(authInfo, newPostRequest))
                 .isInstanceOf(InvalidPostCategoryException.class);

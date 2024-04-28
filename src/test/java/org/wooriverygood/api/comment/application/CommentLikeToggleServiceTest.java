@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-class CommentLikeToggleServiceTest extends MockTest {
+class CommentLikeToggleServiceTest extends CommentServiceTest {
 
     @InjectMocks
     private CommentLikeToggleService commentLikeToggleService;
@@ -36,16 +36,6 @@ class CommentLikeToggleServiceTest extends MockTest {
     private final int COMMENT_COUNT = 10;
 
     List<Comment> comments = new ArrayList<>();
-
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author("author6")
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
 
     private Comment comment = Comment.builder()
             .id(2L)

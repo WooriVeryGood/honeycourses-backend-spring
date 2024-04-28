@@ -3,6 +3,9 @@ package org.wooriverygood.api.post.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.exception.MemberNotFoundException;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostLike;
 import org.wooriverygood.api.post.dto.PostLikeResponse;
@@ -22,12 +25,16 @@ public class PostLikeToggleService {
 
     private final PostLikeRepository postLikeRepository;
 
+    private final MemberRepository memberRepository;
+
 
     public PostLikeResponse togglePostLike(long postId, AuthInfo authInfo) {
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        Optional<PostLike> postLike = postLikeRepository.findByPostAndUsername(post, authInfo.getUsername());
+        Optional<PostLike> postLike = postLikeRepository.findByPostAndMember(post, member);
 
         if (postLike.isEmpty()) {
             addPostLike(post, authInfo.getUsername());

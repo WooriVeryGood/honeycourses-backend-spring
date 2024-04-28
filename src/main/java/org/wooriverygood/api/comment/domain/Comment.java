@@ -101,9 +101,9 @@ public class Comment {
         reports.add(report);
     }
 
-    public boolean hasReportByUser(String username) {
+    public boolean hasReportByMember(Member member) {
         for (CommentReport report: reports)
-            if (report.isOwner(username))
+            if (report.isOwner(member))
                 return true;
         return false;
     }

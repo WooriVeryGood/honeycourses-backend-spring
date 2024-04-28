@@ -1,28 +1,26 @@
 package org.wooriverygood.api.post.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.comment.repository.CommentRepository;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
-import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.repository.PostLikeRepository;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
-import org.wooriverygood.api.util.MockTest;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-class PostDeleteServiceTest extends MockTest {
+class PostDeleteServiceTest extends PostServiceTest {
 
     @InjectMocks
     private PostDeleteService postDeleteService;
@@ -36,57 +34,42 @@ class PostDeleteServiceTest extends MockTest {
     @Mock
     private PostLikeRepository postLikeRepository;
 
-    private Post singlePost;
+    @Mock
+    private MemberRepository memberRepository;
 
-    private AuthInfo authInfo;
-
-    @BeforeEach
-    void setUp() {
-        authInfo = AuthInfo.builder()
-                .sub("22222-34534-123")
-                .username("22222-34534-123")
-                .build();
-
-        singlePost = Post.builder()
-                .id(6L)
-                .category(PostCategory.OFFER)
-                .title("title6")
-                .content("content6")
-                .author(authInfo.getUsername())
-                .comments(new ArrayList<>())
-                .postLikes(new ArrayList<>())
-                .build();
-    }
 
     @Test
     @DisplayName("권한이 있는 게시글을 삭제한다.")
     void deletePost() {
-        Mockito.when(postRepository.findById(any(Long.class)))
-                .thenReturn(Optional.ofNullable(singlePost));
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(postRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(post));
 
-        postDeleteService.deletePost(authInfo, singlePost.getId());
+        postDeleteService.deletePost(authInfo, post.getId());
 
-        verify(commentRepository).deleteAllByPost(singlePost);
-        verify(postLikeRepository).deleteAllByPost(singlePost);
+        assertAll(
+                () -> verify(commentRepository).deleteAllByPost(post),
+                () -> verify(postLikeRepository).deleteAllByPost(post)
+        );
     }
 
     @Test
-    @DisplayName("권한이 없는 게시글을 삭제한다.")
+    @DisplayName("권한이 없는 게시글을 삭제하면 예외가 발생한다.")
     void deletePost_exception_noAuth() {
         Post noAuthPost = Post.builder()
-                .id(99L)
-                .category(PostCategory.OFFER)
-                .title("title99")
-                .content("content99")
-                .author("43434-45654-234")
-                .comments(new ArrayList<>())
-                .postLikes(new ArrayList<>())
+                .id(9L)
+                .title("title")
+                .content("content")
+                .member(new Member(5L, "username"))
                 .build();
 
-        Mockito.when(postRepository.findById(any(Long.class)))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(noAuthPost));
 
-        assertThatThrownBy(() -> postDeleteService.deletePost(authInfo, singlePost.getId()))
+        assertThatThrownBy(() -> postDeleteService.deletePost(authInfo, post.getId()))
                 .isInstanceOf(AuthorizationException.class);
     }
 

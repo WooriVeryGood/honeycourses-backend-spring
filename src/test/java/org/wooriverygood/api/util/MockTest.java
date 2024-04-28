@@ -1,5 +1,6 @@
 package org.wooriverygood.api.util;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.global.auth.AuthInfo;
@@ -14,6 +15,12 @@ public class MockTest {
             .username("22222-34534-123")
             .build();
 
-    protected Member member = new Member(1L, authInfo.getUsername());
+    protected Member member;
+
+
+    @BeforeEach
+    void mockData() {
+        member = new Member(1L, authInfo.getUsername());
+    }
 
 }

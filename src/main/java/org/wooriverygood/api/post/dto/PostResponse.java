@@ -32,9 +32,13 @@ public class PostResponse {
 
     private final int viewCount;
 
+    private final boolean isMine;
+
+    private final long memberId;
+
 
     @Builder
-    public PostResponse(Long postId, String postTitle, String postCategory, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount) {
+    public PostResponse(Long postId, String postTitle, String postCategory, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount, boolean isMine, long memberId) {
         this.postId = postId;
         this.postTitle = postTitle;
         this.postCategory = postCategory;
@@ -45,9 +49,11 @@ public class PostResponse {
         this.updated = updated;
         this.reported = reported;
         this.viewCount = viewCount;
+        this.isMine = isMine;
+        this.memberId = memberId;
     }
 
-    public static PostResponse of(Post post, boolean liked) {
+    public static PostResponse of(Post post, boolean liked, boolean isMine) {
         return PostResponse.builder()
                 .postId(post.getId())
                 .postTitle(post.getTitle())
@@ -59,6 +65,8 @@ public class PostResponse {
                 .updated(post.isUpdated())
                 .reported(post.isReportedTooMuch())
                 .viewCount(post.getViewCount())
+                .memberId(post.getMember().getId())
+                .isMine(isMine)
                 .build();
     }
 

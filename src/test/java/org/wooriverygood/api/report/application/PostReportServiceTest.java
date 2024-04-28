@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.post.application.PostServiceTest;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.exception.PostNotFoundException;
 import org.wooriverygood.api.post.repository.PostRepository;
@@ -21,7 +23,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class PostReportServiceTest extends MockTest {
+class PostReportServiceTest extends PostServiceTest {
 
     @InjectMocks
     private PostReportService postReportService;
@@ -32,11 +34,6 @@ class PostReportServiceTest extends MockTest {
     @Mock
     private PostReportRepository postReportRepository;
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("22432-12312-3531")
-            .username("22432-12312-3531")
-            .build();
-
     @Mock
     private Post post;
 
@@ -45,14 +42,14 @@ class PostReportServiceTest extends MockTest {
     @DisplayName("유효한 id를 통해 특정 게시글을 신고한다.")
     void reportPost() {
         ReportRequest request = new ReportRequest("report message");
-        when(post.hasReportByUser(anyString()))
+        when(post.hasReportByMember(any(Member.class)))
                 .thenReturn(false);
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(post));
 
         postReportService.reportPost(1L, request, authInfo);
 
-        verify(post).hasReportByUser(authInfo.getUsername());
+        verify(post).hasReportByMember(member);
         verify(post).addReport(any(PostReport.class));
         verify(postRepository).increaseReportCount(anyLong());
         verify(postReportRepository).save(any(PostReport.class));
@@ -74,7 +71,7 @@ class PostReportServiceTest extends MockTest {
     @DisplayName("동일한 게시글을 한 번 이상 신고하면 예외를 발생한다.")
     void reportPost_exception_duplicated() {
         ReportRequest request = new ReportRequest("report message");
-        when(post.hasReportByUser(anyString()))
+        when(post.hasReportByMember(any(Member.class)))
                 .thenReturn(true);
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(post));
