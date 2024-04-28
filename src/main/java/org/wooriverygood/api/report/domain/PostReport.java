@@ -10,6 +10,7 @@ import org.wooriverygood.api.post.domain.Post;
 
 @Entity
 @Getter
+@Table(name = "post_reports")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostReport {
 

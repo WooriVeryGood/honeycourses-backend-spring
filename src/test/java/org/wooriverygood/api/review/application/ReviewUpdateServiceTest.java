@@ -1,10 +1,10 @@
 package org.wooriverygood.api.review.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.member.repository.MemberRepository;
@@ -18,7 +18,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class ReviewUpdateServiceTest extends MockTest {
@@ -32,10 +31,15 @@ class ReviewUpdateServiceTest extends MockTest {
     @Mock
     private MemberRepository memberRepository;
 
-    private Review review = Review.builder()
-            .id(1L)
-            .member(member)
-            .build();
+    private Review review;
+
+    @BeforeEach
+    void setUp() {
+        review = Review.builder()
+                .id(1L)
+                .member(member)
+                .build();
+    }
 
     @Test
     @DisplayName("권한이 있는 리뷰를 수정한다.")
@@ -47,13 +51,12 @@ class ReviewUpdateServiceTest extends MockTest {
                 .takenSemyr("18-19")
                 .grade("100")
                 .build();
-
         when(reviewRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(review));
         when(memberRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(member));
 
-        reviewUpdateService.updateReview(1L, request, authInfo);
+        reviewUpdateService.updateReview(review.getId(), request, authInfo);
 
         assertAll(
                 () -> assertThat(review.getReviewTitle()).isEqualTo(request.getReviewTitle()),

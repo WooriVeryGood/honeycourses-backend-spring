@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "posts")
 @Getter
+@Table(name = "posts")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {

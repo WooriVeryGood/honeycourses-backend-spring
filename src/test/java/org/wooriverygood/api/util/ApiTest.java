@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.wooriverygood.api.comment.api.CommentApi;
 import org.wooriverygood.api.comment.application.*;
 import org.wooriverygood.api.course.application.CourseFindService;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.application.*;
 import org.wooriverygood.api.report.api.ReportApi;
 import org.wooriverygood.api.report.application.CommentReportService;
@@ -45,6 +46,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class ApiTest {
 
     protected MockMvcRequestSpecification restDocs;
+
+    @MockBean
+    protected MemberRepository memberRepository;
 
     @MockBean
     protected CourseCreateService courseCreateService;

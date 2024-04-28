@@ -31,14 +31,14 @@ public class ReviewCreateService {
                 .orElseThrow(CourseNotFoundException::new);
         Member member = memberRepository.findById(authInfo.getMemberId())
                 .orElseThrow(MemberNotFoundException::new);
-        Review review = createReview(course, authInfo, request, member);
+        Review review = createReview(course, request, member);
         member.addReview(review);
 
         reviewRepository.save(review);
         courseRepository.increaseReviewCount(review.getCourse().getId());
     }
 
-    private Review createReview(Course course, AuthInfo authInfo, NewReviewRequest request, Member member) {
+    private Review createReview(Course course, NewReviewRequest request, Member member) {
         return Review.builder()
                 .reviewTitle(request.getReviewTitle())
                 .course(course)
@@ -47,7 +47,6 @@ public class ReviewCreateService {
                 .takenSemyr(request.getTakenSemyr())
                 .reviewContent(request.getReviewContent())
                 .grade(request.getGrade())
-                .authorEmail(authInfo.getUsername())
                 .build();
     }
 

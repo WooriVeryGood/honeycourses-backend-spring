@@ -1,6 +1,7 @@
 package org.wooriverygood.api.review.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "reviews")
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,9 +45,6 @@ public class Review {
     @Column(name = "grade", length = 45, nullable = false)
     private String grade;
 
-    @Column(name = "author_email", length = 300)
-    private String authorEmail;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
@@ -66,7 +64,7 @@ public class Review {
 
     @Builder
     public Review(Long id, Course course, String reviewContent, String reviewTitle, String instructorName,
-                  String takenSemyr, String grade, String authorEmail, LocalDateTime createdAt, Member member,
+                  String takenSemyr, String grade, LocalDateTime createdAt, Member member,
                   List<ReviewLike> reviewLikes, boolean updated) {
         this.id = id;
         this.course = course;
@@ -75,7 +73,6 @@ public class Review {
         this.instructorName = instructorName;
         this.takenSemyr = takenSemyr;
         this.grade = grade;
-        this.authorEmail = authorEmail;
         this.createdAt = createdAt;
         this.reviewLikes = reviewLikes;
         this.updated = updated;

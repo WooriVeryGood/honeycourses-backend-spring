@@ -37,7 +37,7 @@ public class PostLikeToggleService {
         Optional<PostLike> postLike = postLikeRepository.findByPostAndMember(post, member);
 
         if (postLike.isEmpty()) {
-            addPostLike(post, authInfo.getUsername());
+            addPostLike(post, member);
             return createPostLikeResponse(post, true);
         }
 
@@ -45,10 +45,10 @@ public class PostLikeToggleService {
         return createPostLikeResponse(post, false);
     }
 
-    private void addPostLike(Post post, String username) {
+    private void addPostLike(Post post, Member member) {
         PostLike newPostLike = PostLike.builder()
                 .post(post)
-                .username(username)
+                .member(member)
                 .build();
 
         post.addPostLike(newPostLike);

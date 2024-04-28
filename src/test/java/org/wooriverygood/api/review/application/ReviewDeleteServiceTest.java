@@ -1,12 +1,12 @@
 package org.wooriverygood.api.review.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.course.repository.CourseRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.member.repository.MemberRepository;
@@ -21,7 +21,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class ReviewDeleteServiceTest extends MockTest {
@@ -41,14 +40,20 @@ class ReviewDeleteServiceTest extends MockTest {
     @Mock
     private MemberRepository memberRepository;
 
-    private Course course = Course.builder()
-            .id(1L)
-            .build();
+    private Course course;
 
-    private Review review = Review.builder()
-            .member(member)
-            .course(course)
-            .build();
+    private Review review;
+
+    @BeforeEach
+    void setUp() {
+        course = Course.builder()
+                .id(1L)
+                .build();
+        review = Review.builder()
+                .member(member)
+                .course(course)
+                .build();
+    }
 
     @Test
     @DisplayName("권한이 있는 리뷰를 삭제한다.")

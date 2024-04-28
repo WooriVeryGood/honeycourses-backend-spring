@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.wooriverygood.api.comment.application.CommentServiceTest;
 import org.wooriverygood.api.comment.exception.CommentNotFoundException;
 import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
@@ -28,7 +29,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class CommentReportServiceTest extends MockTest {
+class CommentReportServiceTest extends CommentServiceTest {
 
     @InjectMocks
     private CommentReportService commentReportService;
@@ -43,8 +44,6 @@ class CommentReportServiceTest extends MockTest {
     private MemberRepository memberRepository;
 
     private Post post;
-
-    private Comment comment;
 
 
     @BeforeEach

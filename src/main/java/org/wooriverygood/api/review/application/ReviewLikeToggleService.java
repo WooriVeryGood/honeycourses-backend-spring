@@ -37,7 +37,7 @@ public class ReviewLikeToggleService {
         Optional<ReviewLike> reviewLike = reviewLikeRepository.findByReviewAndMember(review, member);
 
         if (reviewLike.isEmpty()) {
-            addReviewLike(review, authInfo.getUsername());
+            addReviewLike(review, member);
             return createReviewLikeResponse(review, true);
         }
 
@@ -46,10 +46,10 @@ public class ReviewLikeToggleService {
 
     }
 
-    private void addReviewLike(Review review, String username) {
+    private void addReviewLike(Review review, Member member) {
         ReviewLike reviewLike = ReviewLike.builder()
                 .review(review)
-                .username(username)
+                .member(member)
                 .build();
 
         review.addReviewLike(reviewLike);

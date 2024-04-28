@@ -2,10 +2,8 @@ package org.wooriverygood.api.review.application;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.domain.Review;
@@ -13,7 +11,6 @@ import org.wooriverygood.api.review.domain.ReviewLike;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.util.MockTest;
 
 import java.time.LocalDateTime;
@@ -75,7 +72,7 @@ public class ReviewLikeToggleServiceTest extends MockTest {
         ReviewLike reviewLike = ReviewLike.builder()
                 .id(3L)
                 .review(review)
-                .username(authInfo.getUsername())
+                .member(member)
                 .build();
 
         when(reviewRepository.findById(anyLong()))

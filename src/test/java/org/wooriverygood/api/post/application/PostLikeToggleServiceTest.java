@@ -58,7 +58,7 @@ class PostLikeToggleServiceTest extends PostServiceTest {
         PostLike postLike = PostLike.builder()
                 .id(1L)
                 .post(post)
-                .username(authInfo.getUsername())
+                .member(member)
                 .build();
         when(memberRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(member));

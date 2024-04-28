@@ -21,6 +21,7 @@ public class PostServiceTest extends MockTest {
                 .member(member)
                 .comments(new ArrayList<>())
                 .postLikes(new ArrayList<>())
+                .reports(new ArrayList<>())
                 .build();
     }
 

@@ -62,7 +62,6 @@ class ReviewFindServiceTest extends MockTest {
                     .instructorName("jiaoshou")
                     .takenSemyr("22-23")
                     .grade("60")
-                    .authorEmail("author" + i)
                     .reviewLikes(new ArrayList<>())
                     .updated(false)
                     .build();

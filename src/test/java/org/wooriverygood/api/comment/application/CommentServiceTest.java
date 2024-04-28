@@ -36,6 +36,7 @@ public class CommentServiceTest extends MockTest {
                 .post(post)
                 .member(member)
                 .commentLikes(new ArrayList<>())
+                .reports(new ArrayList<>())
                 .build();
         reply = Comment.builder()
                 .id(2L)
