@@ -1,13 +1,12 @@
 package org.wooriverygood.api.comment.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
+import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.report.domain.CommentReport;
 
@@ -17,10 +16,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "comments")
 @Getter
+@Table(name = "comments")
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
 
     @Id
@@ -33,27 +32,27 @@ public class Comment {
     private Comment parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<Comment> children = new ArrayList<>();
+    private List<Comment> replies = new ArrayList<>();
 
     @Column(name = "comment_content", length = 200, nullable = false)
     private String content;
 
-    @Column(name = "comment_author", length = 1000)
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentLike> commentLikes;
+    private List<CommentLike> commentLikes = new ArrayList<>();
 
     @Column(name = "like_count")
     @ColumnDefault("0")
     private int likeCount;
 
     @OneToMany(mappedBy = "comment")
-    private List<CommentReport> reports;
+    private List<CommentReport> reports = new ArrayList<>();
 
     @Column(name = "report_count")
     @ColumnDefault("0")
@@ -71,16 +70,18 @@ public class Comment {
     private boolean updated;
 
     @Builder
-    public Comment(Long id, String content, String author, Post post, Comment parent, List<CommentLike> commentLikes, List<CommentReport> reports, boolean softRemoved, boolean updated) {
+    public Comment(Long id, String content, Post post, Member member,
+                   Comment parent, List<CommentLike> commentLikes,
+                   List<CommentReport> reports, boolean softRemoved, boolean updated) {
         this.id = id;
         this.content = content;
-        this.author = author;
         this.post = post;
         this.parent = parent;
         this.commentLikes = commentLikes;
         this.reports = reports;
         this.softRemoved = softRemoved;
         this.updated = updated;
+        this.member = member;
     }
 
     public void addCommentLike(CommentLike commentLike) {
@@ -96,15 +97,19 @@ public class Comment {
         reports.add(report);
     }
 
-    public boolean hasReportByUser(String username) {
+    public boolean hasReportByMember(Member member) {
         for (CommentReport report: reports)
-            if (report.isOwner(username))
+            if (report.isOwner(member))
                 return true;
         return false;
     }
 
-    public void validateAuthor(String author) {
-        if (!this.author.equals(author)) throw new AuthorizationException();
+    public boolean sameAuthor(Member member) {
+        return this.member.equals(member);
+    }
+
+    public void validateAuthor(Member member) {
+        if (!sameAuthor(member)) throw new AuthorizationException();
     }
 
     public void updateContent(String content) {
@@ -112,12 +117,12 @@ public class Comment {
         updated = true;
     }
 
-    public void addChildren(Comment reply) {
-        children.add(reply);
+    public void addReply(Comment reply) {
+        replies.add(reply);
     }
 
-    public void deleteChild(Comment reply) {
-        children.remove(reply);
+    public void deleteReply(Comment reply) {
+        replies.remove(reply);
         reply.delete();
     }
 
@@ -134,7 +139,7 @@ public class Comment {
     }
 
     public boolean hasNoReply() {
-        return children.isEmpty();
+        return replies.isEmpty();
     }
 
     public void willBeDeleted() {
@@ -143,6 +148,14 @@ public class Comment {
 
     public boolean canDelete() {
         return hasNoReply() && softRemoved;
+    }
+
+    public boolean isReportedTooMuch() {
+        return reportCount >= 5;
+    }
+
+    public String getContent() {
+        return isReportedTooMuch() ? null : content;
     }
 
 }

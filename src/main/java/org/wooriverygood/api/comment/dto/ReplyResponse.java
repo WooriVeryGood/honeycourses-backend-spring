@@ -1,5 +1,7 @@
 package org.wooriverygood.api.comment.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import org.wooriverygood.api.comment.domain.Comment;
@@ -7,16 +9,16 @@ import org.wooriverygood.api.comment.domain.Comment;
 import java.time.LocalDateTime;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ReplyResponse {
 
-    private final Long reply_id;
-    private final String reply_content;
+    private final Long replyId;
 
-    private final String reply_author;
+    private final String replyContent;
 
-    private final int reply_likes;
+    private final int replyLikeCount;
 
-    private final LocalDateTime reply_time;
+    private final LocalDateTime replyTime;
 
     private final boolean liked;
 
@@ -24,31 +26,39 @@ public class ReplyResponse {
 
     private final boolean reported;
 
+    private final boolean isMine;
+
+    private final long memberId;
+
 
     @Builder
-
-    public ReplyResponse(Long reply_id, String reply_content, String reply_author, int reply_likes, LocalDateTime reply_time, boolean liked, boolean updated, boolean reported) {
-        this.reply_id = reply_id;
-        this.reply_content = reply_content;
-        this.reply_author = reply_author;
-        this.reply_likes = reply_likes;
-        this.reply_time = reply_time;
+    public ReplyResponse(
+            Long replyId, String replyContent, int replyLikeCount,
+            LocalDateTime replyTime, boolean liked, boolean updated,
+            boolean reported, boolean isMine, long memberId
+    ) {
+        this.replyId = replyId;
+        this.replyContent = replyContent;
+        this.isMine = isMine;
+        this.memberId = memberId;
+        this.replyLikeCount = replyLikeCount;
+        this.replyTime = replyTime;
         this.liked = liked;
         this.updated = updated;
         this.reported = reported;
     }
 
-    public static ReplyResponse from(Comment reply, boolean liked) {
-        boolean reported = reply.getReportCount() >= 5;
+    public static ReplyResponse of(Comment reply, boolean liked, boolean isMine) {
         return ReplyResponse.builder()
-                .reply_id(reply.getId())
-                .reply_content(reported ? null : reply.getContent())
-                .reply_author(reply.getAuthor())
-                .reply_likes(reply.getLikeCount())
-                .reply_time(reply.getCreatedAt())
+                .replyId(reply.getId())
+                .replyContent(reply.getContent())
+                .memberId(reply.getMember().getId())
+                .replyLikeCount(reply.getLikeCount())
+                .replyTime(reply.getCreatedAt())
                 .liked(liked)
                 .updated(reply.isUpdated())
-                .reported(reported)
+                .reported(reply.isReportedTooMuch())
+                .isMine(isMine)
                 .build();
     }
 

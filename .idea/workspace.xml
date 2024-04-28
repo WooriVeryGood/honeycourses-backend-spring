@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요.">
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[docs] 댓글 관련 예외 클래스 패키지 이동">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/CommentLike.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/CommentLike.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,9 +47,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="JUnit5 Test Class" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -62,14 +62,12 @@
     &quot;assignee&quot;: &quot;timingsniper&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="c6ec6abc-3053-4215-b6cb-49cbd706e9ff" />
-        <option name="url" value="https://github.com/WooriVeryGood/honeycourses-backend-spring.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/WooriVeryGood/honeycourses-backend-spring.git&quot;,
+    &quot;accountId&quot;: &quot;fa668461-63a5-431a-b8af-cda0dcb3c718&quot;
+  }
+}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
@@ -87,99 +85,136 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build honeycourses-backend-spring.executor": "Run",
-    "Gradle.CommentControllerTest.addComment.executor": "Run",
-    "Gradle.CommentControllerTest.addReply.executor": "Run",
-    "Gradle.CommentControllerTest.deleteComment.executor": "Run",
-    "Gradle.CommentControllerTest.executor": "Run",
-    "Gradle.CommentControllerTest.findAllCommentsByPostId.executor": "Run",
-    "Gradle.CommentControllerTest.updateComment.executor": "Run",
-    "Gradle.CommentControllerTest.updateComment_exception_noAuth.executor": "Run",
-    "Gradle.CommentControllerTest.updateComment_exception_noContent.executor": "Run",
-    "Gradle.CommentServiceTest.addReply.executor": "Run",
-    "Gradle.CommentServiceTest.addReply_exception_depth.executor": "Run",
-    "Gradle.CommentServiceTest.deletePrentAndReply.executor": "Run",
-    "Gradle.CommentServiceTest.deleteReply.executor": "Run",
-    "Gradle.CommentServiceTest.deleteReply_keep_parent.executor": "Run",
-    "Gradle.CommentServiceTest.executor": "Run",
-    "Gradle.CommentServiceTest.likeComment_up.executor": "Run",
-    "Gradle.CommentServiceTest.updateComment.executor": "Run",
-    "Gradle.CommentServiceTest.updateComment_exception_noAuth.executor": "Run",
-    "Gradle.CourseServiceTest.executor": "Debug",
-    "Gradle.PostControllerTest.addPost.executor": "Run",
-    "Gradle.PostControllerTest.addPost_exception_noTitle.executor": "Run",
-    "Gradle.PostControllerTest.deletePost.executor": "Run",
-    "Gradle.PostControllerTest.executor": "Run",
-    "Gradle.PostControllerTest.findAllPosts.executor": "Run",
-    "Gradle.PostControllerTest.findMyPosts.executor": "Run",
-    "Gradle.PostControllerTest.findPost.executor": "Run",
-    "Gradle.PostControllerTest.findPost_exception_invalidId.executor": "Run",
-    "Gradle.PostControllerTest.findPosts.executor": "Run",
-    "Gradle.PostControllerTest.findPostsByCategory.executor": "Run",
-    "Gradle.PostControllerTest.likePost_up.executor": "Run",
-    "Gradle.PostControllerTest.updatePost.executor": "Run",
-    "Gradle.PostServiceTest.addPost_exception_invalid_category.executor": "Run",
-    "Gradle.PostServiceTest.deletePost.executor": "Run",
-    "Gradle.PostServiceTest.executor": "Run",
-    "Gradle.PostServiceTest.findAllPosts_login.executor": "Run",
-    "Gradle.PostServiceTest.findMyPosts.executor": "Run",
-    "Gradle.PostServiceTest.findPosts_category_free.executor": "Run",
-    "Gradle.PostServiceTest.likePost.executor": "Run",
-    "Gradle.PostServiceTest.likePost_down.executor": "Run",
-    "Gradle.PostServiceTest.likePost_up.executor": "Debug",
-    "Gradle.PostServiceTest.updatePost.executor": "Run",
-    "Gradle.ReportControllerTest.reportComment.executor": "Run",
-    "Gradle.ReportControllerTest.reportPost (1).executor": "Run",
-    "Gradle.ReportControllerTest.reportPost.executor": "Run",
-    "Gradle.ReportServiceTest.reportComment.executor": "Run",
-    "Gradle.ReportServiceTest.reportComment_exception_duplicated.executor": "Run",
-    "Gradle.ReportServiceTest.reportPost.executor": "Run",
-    "Gradle.ReportServiceTest.reportPost_exception_duplicated.executor": "Run",
-    "Gradle.ReportServiceTest.reportPost_exception_invalidId.executor": "Run",
-    "Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied.executor": "Run",
-    "Gradle.ReviewControllerTest.findAllReviewsByCourseId_success.executor": "Run",
-    "Gradle.ReviewServiceTest.canAccessReviews_false_noReview.executor": "Run",
-    "Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths.executor": "Run",
-    "Gradle.ReviewServiceTest.canAccessReviews_true.executor": "Run",
-    "Notification.DisplayName-DoNotAsk-Lombok plugin": "Lombok integration problem",
-    "Notification.DoNotAsk-Lombok plugin": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Shell Script.gradlew.executor": "Run",
-    "Spring Boot.HoneycoursesBackend.executor": "Coverage",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "create.test.in.the.same.root": "true",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "HC-203-test-coverage",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build honeycourses-backend-spring.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentApiTest.addComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.addComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.addReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.deleteComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.findAllCommentsByPostId.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.updateComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.updateComment_exception_noAuth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentControllerTest.updateComment_exception_noContent.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentCreateServiceTest.addComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentCreateServiceTest.addReply_exception_depth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentCreateServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentDeleteServiceTest.deleteComment_keepChildren.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentDeleteServiceTest.deleteReply_exception_noAuth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentDeleteServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentFindServiceTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;Gradle.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentFindServiceTest.findAllCommentsByPostId_softRemoved.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentLikeToggleServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentReportServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentReportServiceTest.reportComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.addReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.addReply_exception_depth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.deletePrentAndReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.deleteReply.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.deleteReply_keep_parent.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.likeComment_up.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.updateComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentServiceTest.updateComment_exception_noAuth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentUpdateServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CommentUpdateServiceTest.updateComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CourseCreateServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.CourseServiceTest.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.PostApiTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostApiTest.findPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.addPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.addPost_exception_noTitle.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.deletePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findAllPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findMyPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPost_exception_invalidId.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.findPostsByCategory.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.likePost_up.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostControllerTest.updatePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostCreateServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostDeleteServiceTest.deletePost_exception_noAuth.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostDeleteServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostFindMockTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostFindServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostLikeToggleServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostReportServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.addPost_exception_invalid_category.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.deletePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.findAllPosts_login.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.findMyPosts.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.findPosts_category_free.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.likePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.likePost_down.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.PostServiceTest.likePost_up.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.PostServiceTest.updatePost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportApiTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportControllerTest.reportComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportControllerTest.reportPost (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportControllerTest.reportPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportComment.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportComment_exception_duplicated.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportPost.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportPost_exception_duplicated.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReportServiceTest.reportPost_exception_invalidId.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewAccessCheckServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewApiTest.addReview.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewApiTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewApiTest.updateReview.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewControllerTest.findAllReviewsByCourseId_success.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewCreateServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewDeleteServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewFindServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewLikeToggleServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewServiceTest.canAccessReviews_false_noReview.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewServiceTest.canAccessReviews_true.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewUpdateServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewUpdateServiceTest.updateReview.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ReviewValidateAccessServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-Lombok plugin&quot;: &quot;Lombok integration problem&quot;,
+    &quot;Notification.DoNotAsk-Lombok plugin&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Shell Script.gradlew.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.HoneycoursesBackend.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;HC-204-refactoring&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.wooriverygood.api.advice.exception" />
@@ -192,13 +227,15 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="org.wooriverygood.api.report.service" />
-      <recent name="org.wooriverygood.api.comment.controller" />
-      <recent name="org.wooriverygood.api.post.controller" />
+      <recent name="org.wooriverygood.api.comment.application" />
+      <recent name="org.wooriverygood.api.report.application" />
+      <recent name="org.wooriverygood.api.course.application" />
+      <recent name="org.wooriverygood.api.review.application" />
+      <recent name="org.wooriverygood.api.post.application" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
-    <configuration name="ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.CommentFindServiceTest">
+    <configuration name="CommentApiTest.addComment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -211,7 +248,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.review.controller.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.api.CommentApiTest.addComment&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -222,7 +259,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="ReviewControllerTest.findAllReviewsByCourseId_success" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentFindServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -235,34 +272,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.review.controller.ReviewControllerTest.findAllReviewsByCourseId_success&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
-        <extension name="coverage" runner="jacoco" />
-      </EXTENSION>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="ReviewServiceTest.canAccessReviews_false_noReview" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.review.service.ReviewServiceTest.canAccessReviews_false_noReview&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.application.CommentFindServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -273,7 +283,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="ReviewServiceTest.canAccessReviews_false_sixMonths" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -286,7 +296,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.review.service.ReviewServiceTest.canAccessReviews_false_sixMonths&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.application.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -297,7 +307,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="ReviewServiceTest.canAccessReviews_true" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="CommentFindServiceTest.findAllCommentsByPostId_softRemoved" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -310,7 +320,31 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.wooriverygood.api.review.service.ReviewServiceTest.canAccessReviews_true&quot;" />
+            <option value="&quot;org.wooriverygood.api.comment.application.CommentFindServiceTest.findAllCommentsByPostId_softRemoved&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="CommentLikeToggleServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.wooriverygood.api.comment.application.CommentLikeToggleServiceTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -329,27 +363,28 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied" />
-      <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_success" />
-      <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_false_noReview" />
-      <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths" />
-      <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_true" />
+      <item itemvalue="Gradle.CommentApiTest.addComment" />
+      <item itemvalue="Gradle.CommentFindServiceTest" />
+      <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply" />
+      <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_softRemoved" />
+      <item itemvalue="Gradle.CommentLikeToggleServiceTest" />
       <item itemvalue="Spring Boot.HoneycoursesBackend" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_success" />
-        <item itemvalue="Gradle.ReviewControllerTest.findAllReviewsByCourseId_exception_accessDenied" />
-        <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_false_noReview" />
-        <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_true" />
-        <item itemvalue="Gradle.ReviewServiceTest.canAccessReviews_false_sixMonths" />
+        <item itemvalue="Gradle.CommentFindServiceTest" />
+        <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply" />
+        <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_softRemoved" />
+        <item itemvalue="Gradle.CommentApiTest.addComment" />
+        <item itemvalue="Gradle.CommentLikeToggleServiceTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-3183f394aec4-5f3ff201" />
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
       </set>
     </attachedChunks>
   </component>
@@ -367,30 +402,24 @@
       <workItem from="1705301106038" duration="464000" />
       <workItem from="1705302176845" duration="9723000" />
       <workItem from="1706178673625" duration="8490000" />
-    </task>
-    <task id="LOCAL-00001" summary="project init">
-      <option name="closed" value="true" />
-      <created>1701334341640</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1701334341640</updated>
-    </task>
-    <task id="LOCAL-00002" summary="commit test">
-      <option name="closed" value="true" />
-      <created>1701334816668</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1701334816668</updated>
-    </task>
-    <task id="LOCAL-00003" summary="feat. /api/courses get 기능">
-      <option name="closed" value="true" />
-      <created>1701338098358</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1701338098358</updated>
+      <workItem from="1709456222138" duration="35181000" />
+      <workItem from="1710220773073" duration="12992000" />
+      <workItem from="1710523632668" duration="12399000" />
+      <workItem from="1710688247926" duration="603000" />
+      <workItem from="1710840155920" duration="1431000" />
+      <workItem from="1711206789197" duration="198000" />
+      <workItem from="1711212584044" duration="711000" />
+      <workItem from="1711861358419" duration="23757000" />
+      <workItem from="1711959264818" duration="19049000" />
+      <workItem from="1712215418769" duration="3000" />
+      <workItem from="1712240341647" duration="52000" />
+      <workItem from="1712252823361" duration="714000" />
+      <workItem from="1712388847485" duration="3328000" />
+      <workItem from="1712584601082" duration="838000" />
+      <workItem from="1712693252917" duration="1344000" />
+      <workItem from="1713861088426" duration="694000" />
+      <workItem from="1714056832462" duration="1256000" />
+      <workItem from="1714237006022" duration="1954000" />
     </task>
     <task id="LOCAL-00004" summary="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정">
       <option name="closed" value="true" />
@@ -632,7 +661,159 @@
       <option name="project" value="LOCAL" />
       <updated>1709229463130</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="feat: 테스트 커버리지 75프로 미만 시, 빌드 실패">
+      <option name="closed" value="true" />
+      <created>1709282198941</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1709282198941</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Update gradle.yml">
+      <option name="closed" value="true" />
+      <created>1709282452134</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1709282452134</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Update gradle.yml">
+      <option name="closed" value="true" />
+      <created>1709282649153</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1709282649153</updated>
+    </task>
+    <task id="LOCAL-00037" summary="[hotfix] 리뷰 작성자 확인 로직 주석 처리">
+      <option name="closed" value="true" />
+      <created>1709299257142</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1709299257142</updated>
+    </task>
+    <task id="LOCAL-00038" summary="[hotfix] 리뷰 작성자 확인 로직 주석 처리">
+      <option name="closed" value="true" />
+      <created>1709299454208</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1709299454208</updated>
+    </task>
+    <task id="LOCAL-00039" summary="[hotfix] 리뷰 갱신 시, 작성자 정보 및 작성 날짜 갱신">
+      <option name="closed" value="true" />
+      <created>1709300482047</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1709300482047</updated>
+    </task>
+    <task id="LOCAL-00040" summary="[refactor] 프로젝트 구조를 도메인형 디렉토리 구조로 변경&#10;&#10;## 게시글 api 엔드포인트 변경&#10;&#10;1. `community` 에서 `posts` 로 변경&#10;2. 특정 카테고리 게시글 페이징 요청 시, `/posts?category=free?page=1`로 요청 &#10;&#10;## ResponseBody 변경&#10;&#10;게시글 생성/변경/삭제 시, 응답 객체의 body 값이 더이상 존재하지 않아요.&#10;&#10;## 추가 기능&#10;&#10;게시글 정보에 조회수 추가">
+      <option name="closed" value="true" />
+      <created>1711903625412</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1711903625412</updated>
+    </task>
+    <task id="LOCAL-00041" summary="[docs] 커버리지 비활성 패키지 적용">
+      <option name="closed" value="true" />
+      <created>1711903922175</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1711903922175</updated>
+    </task>
+    <task id="LOCAL-00042" summary="[docs] adoc 엔드포인트 변경 반영">
+      <option name="closed" value="true" />
+      <created>1711904740106</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1711904740106</updated>
+    </task>
+    <task id="LOCAL-00043" summary="[docs] adoc 변경 반영">
+      <option name="closed" value="true" />
+      <created>1711905100699</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1711905100699</updated>
+    </task>
+    <task id="LOCAL-00044" summary="[fix] 게시글 불러오기 api 수정">
+      <option name="closed" value="true" />
+      <created>1711906202974</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1711906202974</updated>
+    </task>
+    <task id="LOCAL-00045" summary="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리">
+      <option name="closed" value="true" />
+      <created>1711913670243</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1711913670243</updated>
+    </task>
+    <task id="LOCAL-00046" summary="[refactor] 리뷰 조회 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경">
+      <option name="closed" value="true" />
+      <created>1711991704464</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1711991704465</updated>
+    </task>
+    <task id="LOCAL-00047" summary="[refactor] 리뷰 생성/삭제 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 및 Response Body 변경">
+      <option name="closed" value="true" />
+      <created>1711993477793</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1711993477793</updated>
+    </task>
+    <task id="LOCAL-00048" summary="[refactor] 리뷰 좋아요 서비스 리팩토링&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경">
+      <option name="closed" value="true" />
+      <created>1711995550289</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1711995550289</updated>
+    </task>
+    <task id="LOCAL-00049" summary="[refactor] 강의 관련 리팩토링&#10;&#10;## 추가&#10;&#10;- 강의 관련 api Response Body 변경">
+      <option name="closed" value="true" />
+      <created>1712045023435</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1712045023435</updated>
+    </task>
+    <task id="LOCAL-00050" summary="[refactor] 신고 관련 리팩토링">
+      <option name="closed" value="true" />
+      <created>1712047231893</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1712047231893</updated>
+    </task>
+    <task id="LOCAL-00051" summary="[refactor] 댓글 관련 리팩토링">
+      <option name="closed" value="true" />
+      <created>1712069194844</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1712069194844</updated>
+    </task>
+    <task id="LOCAL-00052" summary="[docs] 댓글 관련 예외 클래스 패키지 이동">
+      <option name="closed" value="true" />
+      <created>1712069384199</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1712069384199</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -650,23 +831,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[HC-68] 게시글 조회 응답 객체에 댓글 개수 추가" />
-    <MESSAGE value="[HC-68] 게시글 및 댓글에 작성자 필드 추가" />
-    <MESSAGE value="[HC-92] PostResponse에서 작성자 필드(post_author) 삭제" />
-    <MESSAGE value="[HC-69] 게시글 생성 기능 구현" />
-    <MESSAGE value="[HC-72] 댓글 생성 기능 구현&#10;&#10;- PostService 및 CommentService 에 있는 글 및 댓글 생성 메서드 관련 테스트 코드 추가" />
-    <MESSAGE value="[HC-72] 댓글 생성 엔드포인트 경로 수정" />
-    <MESSAGE value="[HC-93] Spring Security 활용 유저 로그인 정보 추출&#10;&#10; Spring Security 를 활용해서 요청 헤더에 토큰으로 요청마다 인증 처리를 진행합니다.&#10; &#10; 유효한 access token 이라면, AuthenticationPrincipalArgumentResolver 에서 인증된 유저의 Authentication 을 가져와 필요한 유저 로그인 정보(AuthInfo)로 변환합니다.&#10; &#10; 컨트롤러는 메서드의 패러미터로 `@Login AuthInfo authInfo` 로 정보를 받을 수 있습니다.&#10; &#10; 예시:&#10; &#10; ```java&#10; @GetMapping&#10; public void testMethod(@Login AuthInfo authInfo) {&#10;     String sub = authInfo.sub;&#10;     String username = authInfo.username&#10; }&#10; ```&#10; &#10; sub와 username은 모두 같은 값을 가지고 있지만, 일단 둘 다 값을 가지도록 하였습니다." />
-    <MESSAGE value="[HC-69] 게시글 생성 엔드 포인트 RequestBody 수정&#10;&#10;기존 RequestBody에서는 post_author로 유저의 정보를 가져왔지만, 이제 AuthInfo로 가져온 유저의 메일로 게시글의 작성자를 설정합니다.&#10;&#10;PostService 테스트 코드도 수정했습니다." />
-    <MESSAGE value="Spring Rest Docs 의존성 추가" />
-    <MESSAGE value="[HC-72] 특정 게시글의 댓글 작성 엔드 포인트 수정&#10;&#10;NewCommentRequest에 있는 유저 정보 필드를 삭제했습니다." />
-    <MESSAGE value="[HC-85] 내 정보 글 조회 기능 구현&#10;&#10;#### 사용자가 작성한 게시글 판별&#10;&#10;PostResponse.isMine 추가 : 게시글 정보 반환 시, 해당 게시글이 본인이 작성한 지 판별하는 값.&#10;&#10;#### 로그인 정보 없을 시&#10;&#10;로그인 정보 없이 해당 api에 요청하면, AuthInfo의 2개의 필드 값 모두 null로 설정되며, 반환하는 PostResponse.isMine 값은 false로 자동 설정." />
-    <MESSAGE value="[HC-74] 게시글 좋아요 기능 구현&#10;&#10;#### 서비스 테스트 코드&#10;&#10;현재 서비스 테스트 코드는 `@SpringBootTest`으로 인해 스프링 컨테이너를 띄우고 실행한다. 단위 테스트만 작성하기 때문에 비효율적이므로, `@ExtendWith(MockitoExtension.class)`으로 테스트 관련 객체들만 mock하여 테스트 속도를 더욱 빠르게 할 수 있음." />
-    <MESSAGE value="[HC-75] 댓글 컨틀로러, 서비스 테스트 코드 수정" />
-    <MESSAGE value="[HC-104] 게시글 카테고리 유효 검증 추가 및 에러 처리 로직 추가&#10;&#10;### 유효성 검증&#10;&#10;유효한 카테고리는 다음과 같아요.&#10;&#10;자유, 질문, 중고거래, 구인&#10;&#10;상위 4개를 제외한 다른 문자열이 카테고리에 값으로 요청이 오면, 게시글을 생성하지 않아요.&#10;&#10;### 에러 처리&#10;&#10;문제점: 게시글을 찾을 수 없거나, 작성한 게시글의 카테고리가 유효하지 않으면 런타임 에러를 발생하지만 프론트에서는 500번대 에러만 받아요. ControllerAdvice를 통해, 특정 에러가 발생하면 이를 처리하는 로직을 두어 프론트에게 정보를 전달하게 변경했어요." />
-    <MESSAGE value="[HC-86] 게시글 삭제 기능 구현&#10;&#10;### 테스트 코드 수정&#10;&#10;Mock.when 시, 패러미터로 any()를 할당 안해서 adoc 문서에 Response 객체가 안 나타나는 현상 해결했어요.&#10;&#10;### CourseNotFoundException 위치 이동&#10;&#10;advice/exception 폴더로 이동했어요." />
-    <MESSAGE value="[HC-86] 테스트 코드 수정&#10;&#10;PostServiceTest의 deletePost 메서드에서 CommentRepository를 사용하기 때문에 추가했어요." />
-    <MESSAGE value="[HC-86] 댓글 삭제 기능 구현&#10;&#10;### 댓글 좋아요 엔드 포인트 경로 변경&#10;&#10;기존의 /community/comments/{id}/like 에서 /comments/{id}/like 으로 변경했어요." />
     <MESSAGE value="[HC-129] 지연 로딩 적용" />
     <MESSAGE value="[HC-129] 대댓글 작성 기능 구현&#10;&#10;댓글과 대댓글 모두 Comment 객체로 처리했어요.&#10;&#10;- Comment 클래스에 parent, children 필드 추가&#10;&#10;일반 댓글은 parent 필드 값이 null 이며, childrent 필드에는 대댓글 객체들이 들어가요.&#10;&#10;따라서 대댓글은 모두 같은 부모 댓글을 바라보며, 대댓글의 대댓글은 불가능해요." />
     <MESSAGE value="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요." />
@@ -674,8 +838,25 @@
     <MESSAGE value="[HC-137] 댓글 및 답글 수정 여부 반환 &#10;&#10;댓글 및 답글 조회 응답 객체에 수정 여부(updated)도 같이 반환해요.&#10;&#10;만약 수정한 적이 있다면 updated의 값은 true에요." />
     <MESSAGE value="[HC-140] 게시글 페이지네이션 기능 구현 &#10;&#10;## api에 요청 시, 응답 객체 변경 (프론트에서 반영해줘야 함!!!)&#10;&#10;/community?page={pageNo} 에 요청 시, 다음과 같은 응답 객체 반환해요.&#10;&#10;{&#10;  &quot;posts&quot;: [기존 게시글 응답 객체],  // 기본 값으로 10개이며, 해당 페이지의 게시글 개수가 10개 미만이면, 해당하는 개수만큼 들어있어요.&#10;  &quot;totalPageCount&quot;: 3,  // 총 페이지 개수 &#10;  &quot;totalPostCount&quot;: 23  // 총 게시글 개수&#10;}&#10;&#10;- pageNo의 기본값은 0이에요. 만약 최신 게시글 10개만 불러오려면, /community 경로로 요청하면 돼요. 즉, 이 경우에는 물음표 뒤 생략이 가능해요.&#10;&#10;## 예제&#10;&#10;총 23개의 게시글이 존재하면, 총 3개의 페이지로 구분할 수 있어요.&#10;&#10;- 1번째부터 10번째 게시글&#10;- 11번째부터 20번째 게시글&#10;- 21번째부터 23번째 게시글&#10;&#10;따라서, 만약 11번째부터 20번째 게시글을 불러오고 싶으면, api 경로의 pageNo에 1를 넣어줘요. (/community?page=1)" />
     <MESSAGE value="[HC-157] 게시글 신고 기능 구현&#10;&#10;게시글을 신고하기 위해 ReportRequest RequestBody를 담아 `/posts/{id}/report`로 Post 요청을 해야해요.&#10;&#10;요청이 성공하면, 상태값이 201인 응답을 반환해요.&#10;&#10;#### 동일한 게시글 다수 신고 불가&#10;&#10;동일한 게시글을 신고하면 에러를 반환해요.&#10;&#10;#### 게시글 응답 객체&#10;&#10;만약 신고 개수가 5개가 넘어가면, 해당 게시글은 신고 처리가 되어 게시글의 제목이랑 내용은 null로 전달해요." />
+    <MESSAGE value="feat: 테스트 커버리지 75프로 미만 시, 빌드 실패" />
     <MESSAGE value="Update gradle.yml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update gradle.yml" />
+    <MESSAGE value="[hotfix] 리뷰 작성자 확인 로직 주석 처리" />
+    <MESSAGE value="[hotfix] 리뷰 갱신 시, 작성자 정보 및 작성 날짜 갱신" />
+    <MESSAGE value="[refactor] 프로젝트 구조를 도메인형 디렉토리 구조로 변경&#10;&#10;## 게시글 api 엔드포인트 변경&#10;&#10;`community` 에서 `posts` 로 변경&#10;&#10;## ResponseBody 변경&#10;&#10;게시글 생성/변경/삭제 시, 응답 객체의 body 값이 더이상 존재하지 않아요." />
+    <MESSAGE value="[refactor] 프로젝트 구조를 도메인형 디렉토리 구조로 변경&#10;&#10;## 게시글 api 엔드포인트 변경&#10;&#10;1. `community` 에서 `posts` 로 변경&#10;2. 특정 카테고리 게시글 페이징 요청 시, `/posts?category=free?page=1`로 요청 &#10;&#10;## ResponseBody 변경&#10;&#10;게시글 생성/변경/삭제 시, 응답 객체의 body 값이 더이상 존재하지 않아요.&#10;&#10;## 추가 기능&#10;&#10;게시글 정보에 조회수 추가" />
+    <MESSAGE value="[docs] 커버리지 비활성 패키지 적용" />
+    <MESSAGE value="[docs] adoc 엔드포인트 변경 반영" />
+    <MESSAGE value="[docs] adoc 변경 반영" />
+    <MESSAGE value="[fix] 게시글 불러오기 api 수정" />
+    <MESSAGE value="[feat] 게시글 목록/상세 내용 요청 분리&#10;&#10;## 추가&#10;&#10;Review 접근 검증 서비스 분리" />
+    <MESSAGE value="[refactor] 리뷰 조회 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경" />
+    <MESSAGE value="[refactor] 리뷰 생성/삭제 서비스 분리&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 및 Response Body 변경" />
+    <MESSAGE value="[refactor] 리뷰 좋아요 서비스 리팩토링&#10;&#10;## 추가&#10;&#10;- 리뷰 관련 api 엔드포인트 변경" />
+    <MESSAGE value="[refactor] 강의 관련 리팩토링&#10;&#10;## 추가&#10;&#10;- 강의 관련 api Response Body 변경" />
+    <MESSAGE value="[refactor] 신고 관련 리팩토링" />
+    <MESSAGE value="[refactor] 댓글 관련 리팩토링" />
+    <MESSAGE value="[docs] 댓글 관련 예외 클래스 패키지 이동" />
+    <option name="LAST_COMMIT_MESSAGE" value="[docs] 댓글 관련 예외 클래스 패키지 이동" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -689,6 +870,8 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$Tests_in__honeycourses_backend_spring_test_.ic" NAME="Tests in 'honeycourses-backend-spring.test' Coverage Results" MODIFIED="1705668873722" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/honeycourses_backend_spring$CommentFindServiceTest.ic" NAME="CommentFindServiceTest Coverage Results" MODIFIED="1712069107420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/honeycourses_backend_spring$ReviewApiTest.ic" NAME="ReviewApiTest Coverage Results" MODIFIED="1711912834618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/honeycourses_backend_spring$HoneycoursesBackend.ic" NAME="HoneycoursesBackend Coverage Results" MODIFIED="1709279852010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

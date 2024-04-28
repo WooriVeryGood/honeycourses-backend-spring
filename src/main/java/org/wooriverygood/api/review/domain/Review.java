@@ -1,23 +1,25 @@
 package org.wooriverygood.api.review.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.wooriverygood.api.advice.exception.AuthorizationException;
-import org.wooriverygood.api.course.domain.Courses;
+import org.wooriverygood.api.global.error.exception.AuthorizationException;
+import org.wooriverygood.api.course.domain.Course;
+import org.wooriverygood.api.member.domain.Member;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "reviews")
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +28,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
-    private Courses course;
+    private Course course;
 
     @Column(name = "review_content", length = 1000)
     private String reviewContent;
@@ -43,8 +45,8 @@ public class Review {
     @Column(name = "grade", length = 45, nullable = false)
     private String grade;
 
-    @Column(name = "author_email", length = 300)
-    private String authorEmail;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
     @Column(name = "like_count")
     @ColumnDefault("0")
@@ -61,7 +63,9 @@ public class Review {
     private boolean updated;
 
     @Builder
-    public Review(Long id, Courses course, String reviewContent, String reviewTitle, String instructorName, String takenSemyr, String grade, String authorEmail, LocalDateTime createdAt, List<ReviewLike> reviewLikes, boolean updated) {
+    public Review(Long id, Course course, String reviewContent, String reviewTitle, String instructorName,
+                  String takenSemyr, String grade, LocalDateTime createdAt, Member member,
+                  List<ReviewLike> reviewLikes, boolean updated) {
         this.id = id;
         this.course = course;
         this.reviewContent = reviewContent;
@@ -69,20 +73,18 @@ public class Review {
         this.instructorName = instructorName;
         this.takenSemyr = takenSemyr;
         this.grade = grade;
-        this.authorEmail = authorEmail;
         this.createdAt = createdAt;
         this.reviewLikes = reviewLikes;
         this.updated = updated;
+        this.member = member;
     }
 
-    public boolean isSameAuthor(String author) {
-        return this.authorEmail.equals(author);
+    public boolean isSameAuthor(Member member) {
+        return this.member.isSame(member);
     }
 
-    public void validateAuthor(String author) {
-        if (!this.authorEmail.equals(author)) {
-            throw new AuthorizationException();
-        }
+    public void validateAuthor(Member member) {
+        this.member.verify(member);
     }
 
     public void addReviewLike(ReviewLike reviewLike) {
@@ -94,19 +96,29 @@ public class Review {
         reviewLike.delete();
     }
 
-    public void updateReview(String title, String instructorName, String takenSemyr, String content, String grade, String author) {
-        this.reviewTitle = title;
-        this.reviewContent = content;
-        this.instructorName = instructorName;
+    public void updateTitle(String title) {
+        reviewTitle = title;
+        updated = true;
+    }
+
+    public void updateContent(String content) {
+        reviewContent = content;
+        updated = true;
+    }
+
+    public void updateTakenSemyr(String takenSemyr) {
         this.takenSemyr = takenSemyr;
+        updated = true;
+    }
+
+    public void updateInstructorName(String instructorName) {
+        this.instructorName = instructorName;
+        updated = true;
+    }
+
+    public void updateGrade(String grade) {
         this.grade = grade;
         updated = true;
-        if (id <= 234) {
-            authorEmail = author;
-        }
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
     }
 
 }

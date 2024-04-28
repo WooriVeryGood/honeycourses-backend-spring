@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.wooriverygood.api.member.domain.Member;
 
 @Entity
-@Table(name = "commentLikes")
+@Table(name = "comment_likes")
 @Getter
 @NoArgsConstructor
 public class CommentLike {
@@ -19,15 +20,15 @@ public class CommentLike {
     @JoinColumn(name = "comment_id", referencedColumnName = "comment_id")
     private Comment comment;
 
-    @Column
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
 
     @Builder
-    public CommentLike(Long id, Comment comment, String username) {
+    public CommentLike(Long id, Comment comment, Member member) {
         this.id = id;
         this.comment = comment;
-        this.username = username;
+        this.member = member;
     }
 
     public void delete() {

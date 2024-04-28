@@ -1,5 +1,7 @@
 package org.wooriverygood.api.post.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 import org.wooriverygood.api.post.domain.Post;
@@ -7,23 +9,20 @@ import org.wooriverygood.api.post.domain.Post;
 import java.time.LocalDateTime;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostResponse {
 
-    private final Long post_id;
+    private final Long postId;
 
-    private final String post_title;
+    private final String postTitle;
 
-    private final String post_content;
+    private final String postCategory;
 
-    private final String post_category;
+    private final int postComments;
 
-    private final String post_author;
+    private final int postLikes;
 
-    private final int post_comments;
-
-    private final int post_likes;
-
-    private final LocalDateTime post_time;
+    private final LocalDateTime postTime;
 
     private final boolean liked;
 
@@ -31,36 +30,43 @@ public class PostResponse {
 
     private final boolean reported;
 
+    private final int viewCount;
+
+    private final boolean isMine;
+
+    private final long memberId;
+
 
     @Builder
-    public PostResponse(Long post_id, String post_title, String post_content, String post_category, String post_author, int post_comments, int post_likes, LocalDateTime post_time, boolean liked, boolean updated, boolean reported) {
-        this.post_id = post_id;
-        this.post_title = post_title;
-        this.post_content = post_content;
-        this.post_category = post_category;
-        this.post_author = post_author;
-        this.post_comments = post_comments;
-        this.post_likes = post_likes;
-        this.post_time = post_time;
+    public PostResponse(Long postId, String postTitle, String postCategory, int postComments, int postLikes, LocalDateTime postTime, boolean liked, boolean updated, boolean reported, int viewCount, boolean isMine, long memberId) {
+        this.postId = postId;
+        this.postTitle = postTitle;
+        this.postCategory = postCategory;
+        this.postComments = postComments;
+        this.postLikes = postLikes;
+        this.postTime = postTime;
         this.liked = liked;
         this.updated = updated;
         this.reported = reported;
+        this.viewCount = viewCount;
+        this.isMine = isMine;
+        this.memberId = memberId;
     }
 
-    public static PostResponse from(Post post, boolean liked) {
-        boolean reported = post.getReportCount() >= 5;
+    public static PostResponse of(Post post, boolean liked, boolean isMine) {
         return PostResponse.builder()
-                .post_id(post.getId())
-                .post_title(reported ? null : post.getTitle())
-                .post_content(reported ? null : post.getContent())
-                .post_category(post.getCategory().getValue())
-                .post_author(post.getAuthor())
-                .post_comments(post.getCommentCount())
-                .post_likes(post.getLikeCount())
-                .post_time(post.getCreatedAt())
+                .postId(post.getId())
+                .postTitle(post.getTitle())
+                .postCategory(post.getCategory().getValue())
+                .postComments(post.getCommentCount())
+                .postLikes(post.getLikeCount())
+                .postTime(post.getCreatedAt())
                 .liked(liked)
                 .updated(post.isUpdated())
-                .reported(reported)
+                .reported(post.isReportedTooMuch())
+                .viewCount(post.getViewCount())
+                .memberId(post.getMember().getId())
+                .isMine(isMine)
                 .build();
     }
 

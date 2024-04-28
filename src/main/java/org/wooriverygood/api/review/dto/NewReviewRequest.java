@@ -1,22 +1,35 @@
 package org.wooriverygood.api.review.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class NewReviewRequest {
-    private final String review_title;
-    private final String instructor_name;
-    private final String taken_semyr;
-    private final String review_content;
+
+    @NotBlank(message = "제목이 없습니다.")
+    private final String reviewTitle;
+
+    private final String instructorName;
+
+    private final String takenSemyr;
+
+    private final String reviewContent;
+
     private final String grade;
 
+
     @Builder
-    public NewReviewRequest(String review_title, String instructor_name, String taken_semyr, String review_content, String grade) {
-        this.review_title = review_title;
-        this.instructor_name = instructor_name;
-        this.taken_semyr = taken_semyr;
-        this.review_content = review_content;
+    public NewReviewRequest(String reviewTitle, String instructorName, String takenSemyr,
+                            String reviewContent, String grade) {
+        this.reviewTitle = reviewTitle;
+        this.instructorName = instructorName;
+        this.takenSemyr = takenSemyr;
+        this.reviewContent = reviewContent;
         this.grade = grade;
     }
+
 }

@@ -29,22 +29,20 @@ operation::reviews/find/success[snippets='http-request,http-response']
 ==== 실패
 ===== 최근 작성한 리뷰가 6개월 이상이거나, 없을경우
 operation::reviews/find/fail/denied[snippets='http-request,http-response']
-===== 수업이 존재하지 않을 경우
-operation::reviews/find/fail/noCourse[snippets='http-request,http-response']
 
 === 특정 강의의 리뷰 작성하기 (POST /courses/{id}/reviews)
 ==== 성공
 operation::reviews/create/success[snippets='http-request,http-response']
 
-=== 리뷰 좋아요 (PUT /courses/reviews/{rid})
+=== 리뷰 좋아요 (PUT /reviews/{id}/like)
 ==== 성공
 operation::reviews/like/success[snippets='http-request,http-response']
 
-=== 내 리뷰 보기 (GET /courses/reviews/me)
+=== 내 리뷰 보기 (GET /reviews/me)
 ==== 성공
 operation::reviews/find/me/success[snippets='http-request,http-response']
 
-=== 리뷰 수정 (PUT /courses/reviews/{rid})
+=== 리뷰 수정 (PUT /reviews/{id})
 ==== 성공
 operation::reviews/update/success[snippets='http-request,http-response']
 
@@ -52,7 +50,7 @@ operation::reviews/update/success[snippets='http-request,http-response']
 ===== 권한이 없는 경우
 operation::reviews/update/fail/noAuth[snippets='http-request,http-response']
 
-=== 리뷰 삭제 (DELETE /courses/reviews/{rid})
+=== 리뷰 삭제 (DELETE /reviews/{id})
 ==== 성공
 operation::reviews/delete/success[snippets='http-request,http-response']
 
@@ -62,36 +60,36 @@ operation::reviews/delete/fail/noAuth[snippets='http-request,http-response']
 
 == 게시글 관리
 
-=== 모든 게시글 보기 (GET /community)
+=== 모든 게시글 보기 (GET /posts)
 ==== 성공
 operation::post/find/all/success[snippets='http-request,http-response']
 
-=== 특정 카테고리 게시글 보기 (GET /community/category/{category})
-유효한 category 값: free(자유), question(질문), trade(중고거래), offer(구인)
+=== 특정 카테고리 게시글 보기 (GET /posts?page=1&category=free)
+유효한 category 값: free(자유), question(질문), trade(중고거래), offer(구인), notice(공지)
 
 ==== 성공
 operation::post/find/category/success[snippets='http-request,http-response']
 
-=== 특정 게시글 보기 (GET /community/{id})
+=== 특정 게시글 보기 (GET /posts/{id})
 ==== 성공
 operation::post/find/one/success[snippets='http-request,http-response']
 
-=== 게시글 작성하기 (POST /community)
+=== 게시글 작성하기 (POST /posts)
 ==== 성공
 operation::post/create/success[snippets='http-request,http-response']
 ==== 실패
 ===== 제목에 내용이 없는 경우
 operation::post/create/fail/noTitle[snippets='http-request,http-response']
 
-=== 내 게시글 보기 (GET /community/me)
+=== 내 게시글 보기 (GET /posts/me)
 ==== 성공
 operation::post/find/me/success[snippets='http-request,http-response']
 
-=== 게시글 좋아요 (PUT /community/{id}/like)
+=== 게시글 좋아요 (PUT /posts/{id}/like)
 ==== 성공
 operation::post/like/success[snippets='http-request,http-response']
 
-=== 게시글 수정 (PUT /community/{id})
+=== 게시글 수정 (PUT /posts/{id})
 ==== 성공
 operation::post/update/success[snippets='http-request,http-response']
 ==== 실패
@@ -100,7 +98,7 @@ operation::post/update/fail/noAuth[snippets='http-request,http-response']
 ===== 제목에 내용이 없는 경우
 operation::post/update/fail/noTitle[snippets='http-request,http-response']
 
-=== 게시글 삭제 (DELETE /community/{id})
+=== 게시글 삭제 (DELETE /posts/{id})
 ==== 성공
 operation::post/delete/success[snippets='http-request,http-response']
 ==== 실패

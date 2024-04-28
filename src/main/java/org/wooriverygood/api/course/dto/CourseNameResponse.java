@@ -1,14 +1,17 @@
 package org.wooriverygood.api.course.dto;
 
-import lombok.Builder;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CourseNameResponse {
-    private final String course_name;
 
-    @Builder
-    public CourseNameResponse(String course_name) {
-        this.course_name = course_name;
+    private final String courseName;
+
+    public CourseNameResponse(String courseName) {
+        this.courseName = courseName;
     }
+
 }
