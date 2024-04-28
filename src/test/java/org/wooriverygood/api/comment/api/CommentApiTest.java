@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
-
 class CommentApiTest extends ApiTest {
 
     private List<CommentResponse> responses = new ArrayList<>();
@@ -43,7 +42,6 @@ class CommentApiTest extends ApiTest {
             responses.add(CommentResponse.builder()
                     .commentId(i)
                     .commentContent("content" + i)
-                    .commentAuthor("user-"+(i % 5))
                     .postId(post.getId())
                     .commentLikeCount((int) i + 8)
                     .commentTime(LocalDateTime.now())
@@ -51,6 +49,8 @@ class CommentApiTest extends ApiTest {
                     .replies(new ArrayList<>())
                     .updated(i % 2 == 0)
                     .reported(false)
+                    .memberId(1L)
+                    .isMine(true)
                     .build());
         }
         for (int i = 12; i <= 15; i++) {
@@ -58,7 +58,8 @@ class CommentApiTest extends ApiTest {
                     .add(ReplyResponse.builder()
                             .replyId((long) i)
                             .replyContent("reply content " + i)
-                            .replyAuthor("user-" + (i % 2))
+                            .memberId(1L)
+                            .isMine(true)
                             .replyLikeCount(i - 6)
                             .replyTime(LocalDateTime.now())
                             .liked(false)

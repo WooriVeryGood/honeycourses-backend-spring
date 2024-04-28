@@ -1,6 +1,5 @@
 package org.wooriverygood.api.comment.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,16 +10,13 @@ import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewReplyRequest;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.member.repository.MemberRepository;
-import org.wooriverygood.api.post.domain.Post;
-import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.util.MockTest;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -40,38 +36,19 @@ class CommentCreateServiceTest extends CommentServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
-    private Comment comment;
-
-    private Comment reply;
-
-
-    @BeforeEach
-    void setUp() {
-        comment = Comment.builder()
-                .post(post)
-                .build();
-        reply = Comment.builder()
-                .parent(comment)
-                .build();
-    }
 
     @Test
     @DisplayName("특정 게시글의 댓글을 작성한다.")
     void addComment() {
-        NewCommentRequest newCommentRequest = NewCommentRequest.builder()
+        NewCommentRequest request = NewCommentRequest.builder()
                 .content("comment content")
                 .build();
-
-        when(commentRepository.save(any(Comment.class)))
-                .thenReturn(Comment.builder()
-                        .author(authInfo.getUsername())
-                        .content(newCommentRequest.getContent())
-                        .build());
-
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(post));
 
-        commentCreateService.addComment(authInfo, 1L, newCommentRequest);
+        commentCreateService.addComment(authInfo, post.getId(), request);
 
         verify(commentRepository).save(any(Comment.class));
     }
@@ -82,15 +59,18 @@ class CommentCreateServiceTest extends CommentServiceTest {
         NewReplyRequest request = NewReplyRequest.builder()
                 .content("reply content")
                 .build();
-
         when(commentRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(comment));
+                .thenReturn(Optional.ofNullable(commentWithoutReply));
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
-        commentCreateService.addReply(1L, request, authInfo);
-        Comment reply = comment.getReplies().get(0);
+        commentCreateService.addReply(commentWithoutReply.getId(), request, authInfo);
 
-        assertThat(reply.getContent()).isEqualTo(request.getContent());
-        assertThat(reply.getParent()).isEqualTo(comment);
+        assertAll(
+                () -> assertThat(commentWithoutReply.getReplies().size()).isEqualTo(1),
+                () -> assertThat(commentWithoutReply.getReplies().get(0).getContent()).isEqualTo(request.getContent()),
+                () -> assertThat(commentWithoutReply.getReplies().get(0).getParent()).isEqualTo(commentWithoutReply)
+        );
     }
 
     @Test
@@ -99,11 +79,10 @@ class CommentCreateServiceTest extends CommentServiceTest {
         NewReplyRequest request = NewReplyRequest.builder()
                 .content("reply content")
                 .build();
-
         when(commentRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(reply));
 
-        assertThatThrownBy(() -> commentCreateService.addReply(1L, request, authInfo))
+        assertThatThrownBy(() -> commentCreateService.addReply(reply.getId(), request, authInfo))
                 .isInstanceOf(ReplyDepthException.class);
     }
 

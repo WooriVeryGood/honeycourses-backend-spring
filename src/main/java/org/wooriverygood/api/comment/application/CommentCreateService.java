@@ -10,6 +10,9 @@ import org.wooriverygood.api.comment.dto.NewCommentRequest;
 import org.wooriverygood.api.comment.dto.NewReplyRequest;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.exception.MemberNotFoundException;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.exception.PostNotFoundException;
 import org.wooriverygood.api.post.repository.PostRepository;
@@ -23,15 +26,19 @@ public class CommentCreateService {
 
     private final CommentRepository commentRepository;
 
+    private final MemberRepository memberRepository;
+
 
     public void addComment(AuthInfo authInfo, Long postId, NewCommentRequest request) {
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
         Comment comment = Comment.builder()
                 .content(request.getContent())
-                .author(authInfo.getUsername())
                 .post(post)
+                .member(member)
                 .build();
 
         commentRepository.save(comment);
@@ -44,11 +51,14 @@ public class CommentCreateService {
         if (!parent.isParent())
             throw new ReplyDepthException();
 
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
+
         Comment child = Comment.builder()
                 .content(request.getContent())
-                .author(authInfo.getUsername())
                 .post(parent.getPost())
                 .parent(parent)
+                .member(member)
                 .build();
         parent.addReply(child);
 

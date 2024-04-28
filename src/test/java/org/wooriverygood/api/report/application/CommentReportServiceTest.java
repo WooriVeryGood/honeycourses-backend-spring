@@ -58,14 +58,6 @@ class CommentReportServiceTest extends MockTest {
                 .comments(new ArrayList<>())
                 .postLikes(new ArrayList<>())
                 .build();
-        comment = Comment.builder()
-                .id(1L)
-                .content("Parent")
-                .author("author1")
-                .post(post)
-                .member(member)
-                .reports(new ArrayList<>())
-                .build();
     }
 
     @Test

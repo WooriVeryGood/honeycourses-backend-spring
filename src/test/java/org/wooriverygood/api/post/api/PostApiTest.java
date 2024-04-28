@@ -56,6 +56,8 @@ class PostApiTest extends ApiTest {
                     .liked(i % 6 == 0)
                     .updated(i % 9 == 0)
                     .reported(false)
+                    .memberId(1L)
+                    .isMine(false)
                     .build());
 
         when(postFindService.findPosts(any(AuthInfo.class), any(Pageable.class), anyString()))
@@ -89,6 +91,8 @@ class PostApiTest extends ApiTest {
                         .liked(false)
                         .updated(false)
                         .reported(false)
+                        .memberId(1L)
+                        .isMine(false)
                         .build());
 
         restDocs

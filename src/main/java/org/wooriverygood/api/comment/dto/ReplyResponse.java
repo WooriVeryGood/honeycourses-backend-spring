@@ -16,8 +16,6 @@ public class ReplyResponse {
 
     private final String replyContent;
 
-    private final String replyAuthor;
-
     private final int replyLikeCount;
 
     private final LocalDateTime replyTime;
@@ -28,13 +26,21 @@ public class ReplyResponse {
 
     private final boolean reported;
 
+    private final boolean isMine;
+
+    private final long memberId;
+
 
     @Builder
-
-    public ReplyResponse(Long replyId, String replyContent, String replyAuthor, int replyLikeCount, LocalDateTime replyTime, boolean liked, boolean updated, boolean reported) {
+    public ReplyResponse(
+            Long replyId, String replyContent, int replyLikeCount,
+            LocalDateTime replyTime, boolean liked, boolean updated,
+            boolean reported, boolean isMine, long memberId
+    ) {
         this.replyId = replyId;
         this.replyContent = replyContent;
-        this.replyAuthor = replyAuthor;
+        this.isMine = isMine;
+        this.memberId = memberId;
         this.replyLikeCount = replyLikeCount;
         this.replyTime = replyTime;
         this.liked = liked;
@@ -42,16 +48,17 @@ public class ReplyResponse {
         this.reported = reported;
     }
 
-    public static ReplyResponse from(Comment reply, boolean liked) {
+    public static ReplyResponse of(Comment reply, boolean liked, boolean isMine) {
         return ReplyResponse.builder()
                 .replyId(reply.getId())
                 .replyContent(reply.getContent())
-                .replyAuthor(reply.getAuthor())
+                .memberId(reply.getMember().getId())
                 .replyLikeCount(reply.getLikeCount())
                 .replyTime(reply.getCreatedAt())
                 .liked(liked)
                 .updated(reply.isUpdated())
                 .reported(reply.isReportedTooMuch())
+                .isMine(isMine)
                 .build();
     }
 

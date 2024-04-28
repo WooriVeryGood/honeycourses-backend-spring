@@ -30,6 +30,8 @@ public class ResponseFixture {
                 .liked(id % 6 == 0)
                 .updated(id % 9 == 0)
                 .reported(false)
+                .memberId(1L)
+                .isMine(false)
                 .build();
     }
 
@@ -52,6 +54,8 @@ public class ResponseFixture {
                 .liked(id % 6 == 0)
                 .updated(id % 9 == 0)
                 .reported(true)
+                .memberId(1L)
+                .isMine(false)
                 .build();
     }
 

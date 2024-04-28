@@ -37,9 +37,6 @@ public class Comment {
     @Column(name = "comment_content", length = 200, nullable = false)
     private String content;
 
-    @Column(name = "comment_author", length = 1000)
-    private String author;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
@@ -73,12 +70,11 @@ public class Comment {
     private boolean updated;
 
     @Builder
-    public Comment(Long id, String content, String author, Post post,
-                   Member member, Comment parent, List<CommentLike> commentLikes,
+    public Comment(Long id, String content, Post post, Member member,
+                   Comment parent, List<CommentLike> commentLikes,
                    List<CommentReport> reports, boolean softRemoved, boolean updated) {
         this.id = id;
         this.content = content;
-        this.author = author;
         this.post = post;
         this.parent = parent;
         this.commentLikes = commentLikes;
@@ -108,8 +104,12 @@ public class Comment {
         return false;
     }
 
-    public void validateAuthor(String author) {
-        if (!this.author.equals(author)) throw new AuthorizationException();
+    public boolean sameAuthor(Member member) {
+        return this.member.equals(member);
+    }
+
+    public void validateAuthor(Member member) {
+        if (!sameAuthor(member)) throw new AuthorizationException();
     }
 
     public void updateContent(String content) {
