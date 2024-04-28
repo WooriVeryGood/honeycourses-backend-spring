@@ -3,6 +3,9 @@ package org.wooriverygood.api.review.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.exception.MemberNotFoundException;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.exception.ReviewNotFoundException;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
@@ -22,15 +25,19 @@ public class ReviewLikeToggleService {
 
     private final ReviewLikeRepository reviewLikeRepository;
 
+    private final MemberRepository memberRepository;
+
 
     public ReviewLikeResponse toggleReviewLike(Long reviewId, AuthInfo authInfo) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
 
-        Optional<ReviewLike> reviewLike = reviewLikeRepository.findByReviewAndUsername(review, authInfo.getUsername());
+        Optional<ReviewLike> reviewLike = reviewLikeRepository.findByReviewAndMember(review, member);
 
         if (reviewLike.isEmpty()) {
-            addReviewLike(review, authInfo.getUsername());
+            addReviewLike(review, member);
             return createReviewLikeResponse(review, true);
         }
 
@@ -39,10 +46,10 @@ public class ReviewLikeToggleService {
 
     }
 
-    private void addReviewLike(Review review, String username) {
+    private void addReviewLike(Review review, Member member) {
         ReviewLike reviewLike = ReviewLike.builder()
                 .review(review)
-                .username(username)
+                .member(member)
                 .build();
 
         review.addReviewLike(reviewLike);

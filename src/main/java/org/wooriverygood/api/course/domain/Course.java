@@ -1,6 +1,7 @@
 package org.wooriverygood.api.course.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "courses")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Course {
 
     @Id
@@ -35,6 +36,7 @@ public class Course {
     @Column(name = "review_count", nullable = false)
     @ColumnDefault("0")
     private int reviewCount;
+
 
     @Builder
     public Course(Long id, String name, String category, double credit, int isYouguan, String kaikeYuanxi, int reviewCount) {

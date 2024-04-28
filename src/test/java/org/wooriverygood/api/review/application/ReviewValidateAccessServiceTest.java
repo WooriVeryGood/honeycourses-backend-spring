@@ -4,6 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.wooriverygood.api.course.domain.Course;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.exception.ReviewAccessDeniedException;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.review.domain.Review;
@@ -11,10 +14,12 @@ import org.wooriverygood.api.review.repository.ReviewRepository;
 import org.wooriverygood.api.util.MockTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class ReviewValidateAccessServiceTest extends MockTest {
@@ -25,10 +30,8 @@ class ReviewValidateAccessServiceTest extends MockTest {
     @Mock
     private ReviewRepository reviewRepository;
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
-            .build();
+    @Mock
+    private MemberRepository memberRepository;
 
 
     @Test
@@ -38,7 +41,9 @@ class ReviewValidateAccessServiceTest extends MockTest {
                 .createdAt(LocalDateTime.now().minusMonths(6))
                 .build();
 
-        when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(reviewRepository.findTopByMemberOrderByCreatedAtDesc(any(Member.class)))
                 .thenReturn(Optional.ofNullable(review));
 
         reviewValidateAccessService.validateReviewAccess(authInfo);
@@ -47,7 +52,9 @@ class ReviewValidateAccessServiceTest extends MockTest {
     @Test
     @DisplayName("리뷰를 작성하지 않았다면, 예외를 발생시킨다.")
     void canAccessReviews_false_noReview() {
-        when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(reviewRepository.findTopByMemberOrderByCreatedAtDesc(any(Member.class)))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> reviewValidateAccessService.validateReviewAccess(authInfo))
@@ -61,7 +68,9 @@ class ReviewValidateAccessServiceTest extends MockTest {
                 .createdAt(LocalDateTime.of(2022, 6, 13, 12, 00))
                 .build();
 
-        when(reviewRepository.findTopByAuthorEmailOrderByCreatedAtDesc(any(String.class)))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(reviewRepository.findTopByMemberOrderByCreatedAtDesc(any(Member.class)))
                 .thenReturn(Optional.ofNullable(review));
 
         assertThatThrownBy(() -> reviewValidateAccessService.validateReviewAccess(authInfo))

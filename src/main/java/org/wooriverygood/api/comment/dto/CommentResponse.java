@@ -17,8 +17,6 @@ public class CommentResponse {
 
     private final String commentContent;
 
-    private final String commentAuthor;
-
     private final Long postId;
 
     private final int commentLikeCount;
@@ -33,12 +31,20 @@ public class CommentResponse {
 
     private final boolean reported;
 
+    private final boolean isMine;
+
+    private final long memberId;
+
 
     @Builder
-    public CommentResponse(Long commentId, String commentContent, String commentAuthor, Long postId, int commentLikeCount, LocalDateTime commentTime, boolean liked, List<ReplyResponse> replies, boolean updated, boolean reported) {
+    public CommentResponse(
+            Long commentId, String commentContent, Long postId,
+           int commentLikeCount, LocalDateTime commentTime, boolean liked,
+           List<ReplyResponse> replies, boolean updated, boolean reported,
+           boolean isMine, long memberId
+    ) {
         this.commentId = commentId;
         this.commentContent = commentContent;
-        this.commentAuthor = commentAuthor;
         this.postId = postId;
         this.commentLikeCount = commentLikeCount;
         this.commentTime = commentTime;
@@ -46,14 +52,16 @@ public class CommentResponse {
         this.replies = replies;
         this.updated = updated;
         this.reported = reported;
+        this.isMine = isMine;
+        this.memberId = memberId;
     }
 
 
-    public static CommentResponse of(Comment comment, List<ReplyResponse> replies, boolean liked) {
+    public static CommentResponse of(Comment comment, List<ReplyResponse> replies, boolean liked, boolean isMine) {
         return CommentResponse.builder()
                 .commentId(comment.getId())
                 .commentContent(comment.getContent())
-                .commentAuthor(comment.getAuthor())
+                .memberId(comment.getMember().getId())
                 .postId(comment.getPost().getId())
                 .commentLikeCount(comment.getLikeCount())
                 .commentTime(comment.getCreatedAt())
@@ -61,20 +69,22 @@ public class CommentResponse {
                 .replies(replies)
                 .updated(comment.isUpdated())
                 .reported(comment.isReportedTooMuch())
+                .isMine(isMine)
                 .build();
     }
 
-    public static CommentResponse softRemovedOf(Comment comment, List<ReplyResponse> replies) {
+    public static CommentResponse softRemovedOf(Comment comment, List<ReplyResponse> replies, boolean isMine) {
         return CommentResponse.builder()
                 .commentId(comment.getId())
                 .commentContent(null)
-                .commentAuthor(comment.getAuthor())
+                .memberId(comment.getMember().getId())
                 .postId(comment.getPost().getId())
                 .commentLikeCount(comment.getLikeCount())
                 .commentTime(comment.getCreatedAt())
                 .replies(replies)
                 .updated(comment.isUpdated())
                 .reported(comment.isReportedTooMuch())
+                .isMine(isMine)
                 .build();
     }
 

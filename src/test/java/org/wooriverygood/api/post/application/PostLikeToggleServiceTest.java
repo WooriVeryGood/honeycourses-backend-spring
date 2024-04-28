@@ -1,26 +1,25 @@
 package org.wooriverygood.api.post.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
-import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.domain.PostLike;
 import org.wooriverygood.api.post.dto.PostLikeResponse;
 import org.wooriverygood.api.post.repository.PostLikeRepository;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
-import org.wooriverygood.api.util.MockTest;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-class PostLikeToggleServiceTest extends MockTest {
+class PostLikeToggleServiceTest extends PostServiceTest {
 
     @InjectMocks
     private PostLikeToggleService postLikeToggleService;
@@ -31,31 +30,26 @@ class PostLikeToggleServiceTest extends MockTest {
     @Mock
     private PostLikeRepository postLikeRepository;
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("")
-            .username("22222-34534-123")
-            .build();
+    @Mock
+    private MemberRepository memberRepository;
 
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author(authInfo.getUsername())
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
 
     @Test
     @DisplayName("특정 게시글에 좋아요를 1 올린다.")
     void likePost_up() {
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(post));
+        when(postLikeRepository.findByPostAndMember(any(Post.class), any(Member.class)))
+                .thenReturn(Optional.empty());
 
         PostLikeResponse response = postLikeToggleService.togglePostLike(post.getId(), authInfo);
 
-        Assertions.assertThat(response.getLikeCount()).isEqualTo(post.getLikeCount() + 1);
-        Assertions.assertThat(response.isLiked()).isEqualTo(true);
+        assertAll(
+                () -> assertThat(response.getLikeCount()).isEqualTo(post.getLikeCount() + 1),
+                () -> assertThat(response.isLiked()).isEqualTo(true)
+        );
     }
 
     @Test
@@ -64,17 +58,21 @@ class PostLikeToggleServiceTest extends MockTest {
         PostLike postLike = PostLike.builder()
                 .id(1L)
                 .post(post)
-                .username(authInfo.getUsername())
+                .member(member)
                 .build();
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
         when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(post));
-        when(postLikeRepository.findByPostAndUsername(any(Post.class), anyString()))
+        when(postLikeRepository.findByPostAndMember(any(Post.class), any(Member.class)))
                 .thenReturn(Optional.ofNullable(postLike));
 
         PostLikeResponse response = postLikeToggleService.togglePostLike(postLike.getId(), authInfo);
 
-        Assertions.assertThat(response.getLikeCount()).isEqualTo(post.getLikeCount() - 1);
-        Assertions.assertThat(response.isLiked()).isEqualTo(false);
+        assertAll(
+                () -> assertThat(response.getLikeCount()).isEqualTo(post.getLikeCount() - 1),
+                () -> assertThat(response.isLiked()).isEqualTo(false)
+        );
     }
 
 }

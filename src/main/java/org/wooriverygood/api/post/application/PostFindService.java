@@ -5,6 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.exception.MemberNotFoundException;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.dto.PostDetailResponse;
@@ -18,18 +21,22 @@ import org.wooriverygood.api.global.auth.AuthInfo;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostFindService {
 
     private final PostRepository postRepository;
 
     private final PostLikeRepository postLikeRepository;
 
+    private final MemberRepository memberRepository;
+
 
     public PostsResponse findPosts(AuthInfo authInfo, Pageable pageable, String postCategory) {
         Page<Post> page = findPostsPage(pageable, postCategory);
-        return convertToPostsResponse(authInfo, page);
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
+        return convertToPostsResponse(member, page);
     }
 
     private Page<Post> findPostsPage(Pageable pageable, String postCategory) {
@@ -43,21 +50,26 @@ public class PostFindService {
     public PostDetailResponse findPostById(long postId, AuthInfo authInfo) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
+        boolean liked = postLikeRepository.existsByPostAndMember(post, member);
+        boolean isMine = post.getMember().equals(member);
         postRepository.increaseViewCount(postId);
-        return PostDetailResponse.of(post, liked);
+        return PostDetailResponse.of(post, member.getId(), liked, isMine);
     }
 
     public PostsResponse findMyPosts(AuthInfo authInfo, Pageable pageable) {
-        Page<Post> page = postRepository.findByAuthorOrderByIdDesc(authInfo.getUsername(), pageable);
-        return convertToPostsResponse(authInfo, page);
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
+        Page<Post> page = postRepository.findByMemberOrderByIdDesc(member, pageable);
+        return convertToPostsResponse(member, page);
     }
 
-    private PostsResponse convertToPostsResponse(AuthInfo authInfo, Page<Post> page) {
+    private PostsResponse convertToPostsResponse(Member member, Page<Post> page) {
         List<PostResponse> posts = page.getContent().stream()
                 .map(post -> {
-                    boolean liked = postLikeRepository.existsByPostAndUsername(post, authInfo.getUsername());
-                    return PostResponse.of(post, liked);
+                    boolean liked = postLikeRepository.existsByPostAndMember(post, member);
+                    return PostResponse.of(post, liked, post.getMember().equals(member));
                 })
                 .toList();
 

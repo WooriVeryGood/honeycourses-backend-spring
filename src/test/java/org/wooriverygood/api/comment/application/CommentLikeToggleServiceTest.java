@@ -1,7 +1,5 @@
 package org.wooriverygood.api.comment.application;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,18 +9,17 @@ import org.wooriverygood.api.comment.domain.CommentLike;
 import org.wooriverygood.api.comment.dto.*;
 import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
-import org.wooriverygood.api.post.domain.Post;
-import org.wooriverygood.api.post.domain.PostCategory;
-import org.wooriverygood.api.util.MockTest;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-class CommentLikeToggleServiceTest extends MockTest {
+class CommentLikeToggleServiceTest extends CommentServiceTest {
 
     @InjectMocks
     private CommentLikeToggleService commentLikeToggleService;
@@ -33,82 +30,49 @@ class CommentLikeToggleServiceTest extends MockTest {
     @Mock
     private CommentLikeRepository commentLikeRepository;
 
-    private final int COMMENT_COUNT = 10;
+    @Mock
+    private MemberRepository memberRepository;
 
-    List<Comment> comments = new ArrayList<>();
-
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author("author6")
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
-
-    private Comment comment = Comment.builder()
-            .id(2L)
-            .post(post)
-            .content("comment content")
-            .author(authInfo.getUsername())
-            .commentLikes(new ArrayList<>())
-            .build();
-
-    private Comment reply = Comment.builder()
-            .id(3L)
-            .post(post)
-            .content("reply content")
-            .author(authInfo.getUsername())
-            .commentLikes(new ArrayList<>())
-            .parent(comment)
-            .build();
-
-
-    @BeforeEach
-    void setUpPosts() {
-        comment.getChildren().add(reply);
-
-        for (int i = 0; i < COMMENT_COUNT; i++) {
-            Comment comment = Comment.builder()
-                    .id((long) i)
-                    .content("comment" + i)
-                    .author("author" + i)
-                    .post(post)
-                    .build();
-            comments.add(comment);
-        }
-    }
 
     @Test
     @DisplayName("특정 댓글의 좋아요를 1 올린다.")
     void likeComment_up() {
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
         when(commentRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(comment));
+        when(commentLikeRepository.findByCommentAndMember(any(Comment.class), any(Member.class)))
+                .thenReturn(Optional.empty());
 
         CommentLikeResponse response = commentLikeToggleService.likeComment(comment.getId(), authInfo);
 
-        Assertions.assertThat(response.getLikeCount()).isEqualTo(comment.getLikeCount() + 1);
-        Assertions.assertThat(response.isLiked()).isEqualTo(true);
+        assertAll(
+                () -> assertThat(response.getLikeCount()).isEqualTo(comment.getLikeCount() + 1),
+                () -> assertThat(response.isLiked()).isEqualTo(true)
+        );
     }
 
     @Test
     @DisplayName("특정 댓글의 좋아요를 1 내린다.")
     void likeComment_down() {
         CommentLike commentLike = CommentLike.builder()
-                .id(2L)
+                .id(1L)
                 .comment(comment)
-                .username(authInfo.getUsername())
+                .member(member)
                 .build();
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
         when(commentRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(comment));
-        when(commentLikeRepository.findByCommentAndUsername(any(Comment.class), anyString()))
+        when(commentLikeRepository.findByCommentAndMember(any(Comment.class), any(Member.class)))
                 .thenReturn(Optional.ofNullable(commentLike));
 
         CommentLikeResponse response = commentLikeToggleService.likeComment(comment.getId(), authInfo);
 
-        Assertions.assertThat(response.getLikeCount()).isEqualTo(comment.getLikeCount() - 1);
-        Assertions.assertThat(response.isLiked()).isEqualTo(false);
+        assertAll(
+                () -> assertThat(response.getLikeCount()).isEqualTo(comment.getLikeCount() - 1),
+                () -> assertThat(response.isLiked()).isEqualTo(false)
+        );
     }
 
 }

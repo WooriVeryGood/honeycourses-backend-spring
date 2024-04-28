@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.comment.exception.ReplyDepthException;
 import org.wooriverygood.api.comment.dto.*;
+import org.wooriverygood.api.member.domain.Member;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.global.auth.AuthInfo;
@@ -21,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
-
 class CommentApiTest extends ApiTest {
 
     private List<CommentResponse> responses = new ArrayList<>();
@@ -31,7 +31,7 @@ class CommentApiTest extends ApiTest {
             .category(PostCategory.OFFER)
             .title("title6")
             .content("content6")
-            .author("user-3333")
+            .member(new Member(1L, "username"))
             .comments(new ArrayList<>())
             .postLikes(new ArrayList<>())
             .build();
@@ -42,7 +42,6 @@ class CommentApiTest extends ApiTest {
             responses.add(CommentResponse.builder()
                     .commentId(i)
                     .commentContent("content" + i)
-                    .commentAuthor("user-"+(i % 5))
                     .postId(post.getId())
                     .commentLikeCount((int) i + 8)
                     .commentTime(LocalDateTime.now())
@@ -50,6 +49,8 @@ class CommentApiTest extends ApiTest {
                     .replies(new ArrayList<>())
                     .updated(i % 2 == 0)
                     .reported(false)
+                    .memberId(1L)
+                    .isMine(true)
                     .build());
         }
         for (int i = 12; i <= 15; i++) {
@@ -57,7 +58,8 @@ class CommentApiTest extends ApiTest {
                     .add(ReplyResponse.builder()
                             .replyId((long) i)
                             .replyContent("reply content " + i)
-                            .replyAuthor("user-" + (i % 2))
+                            .memberId(1L)
+                            .isMine(true)
                             .replyLikeCount(i - 6)
                             .replyTime(LocalDateTime.now())
                             .liked(false)

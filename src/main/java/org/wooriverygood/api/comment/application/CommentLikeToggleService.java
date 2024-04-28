@@ -10,6 +10,9 @@ import org.wooriverygood.api.comment.repository.CommentLikeRepository;
 import org.wooriverygood.api.comment.repository.CommentRepository;
 import org.wooriverygood.api.comment.exception.CommentNotFoundException;
 import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.exception.MemberNotFoundException;
+import org.wooriverygood.api.member.repository.MemberRepository;
 
 import java.util.Optional;
 
@@ -22,15 +25,19 @@ public class CommentLikeToggleService {
 
     private final CommentLikeRepository commentLikeRepository;
 
+    private final MemberRepository memberRepository;
+
 
     public CommentLikeResponse likeComment(Long commentId, AuthInfo authInfo) {
+        Member member = memberRepository.findById(authInfo.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        Optional<CommentLike> commentLike = commentLikeRepository.findByCommentAndUsername(comment, authInfo.getUsername());
+        Optional<CommentLike> commentLike = commentLikeRepository.findByCommentAndMember(comment, member);
 
         if (commentLike.isEmpty()) {
-            addCommentLike(comment, authInfo.getUsername());
+            addCommentLike(comment, member);
             return createCommentLikeResponse(comment, true);
         }
 
@@ -38,10 +45,10 @@ public class CommentLikeToggleService {
         return createCommentLikeResponse(comment, false);
     }
 
-    private void addCommentLike(Comment comment, String username) {
+    private void addCommentLike(Comment comment, Member member) {
         CommentLike commentLike = CommentLike.builder()
                 .comment(comment)
-                .username(username)
+                .member(member)
                 .build();
 
         comment.addCommentLike(commentLike);

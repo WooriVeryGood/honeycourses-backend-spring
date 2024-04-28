@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.wooriverygood.api.course.domain.Course;
-import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.dto.ReviewsResponse;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
@@ -15,10 +16,10 @@ import org.wooriverygood.api.util.MockTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 class ReviewFindServiceTest extends MockTest {
@@ -32,12 +33,10 @@ class ReviewFindServiceTest extends MockTest {
     @Mock
     private ReviewLikeRepository reviewLikeRepository;
 
-    private List<Review> reviews = new ArrayList<>();
+    @Mock
+    private MemberRepository memberRepository;
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
-            .build();
+    private List<Review> reviews = new ArrayList<>();
 
     private Course course = Course.builder()
             .id(1L)
@@ -57,12 +56,12 @@ class ReviewFindServiceTest extends MockTest {
             Review review = Review.builder()
                     .id(i)
                     .course(course)
+                    .member(member)
                     .reviewContent("review" + i)
                     .reviewTitle("review" + i)
                     .instructorName("jiaoshou")
                     .takenSemyr("22-23")
                     .grade("60")
-                    .authorEmail("author" + i)
                     .reviewLikes(new ArrayList<>())
                     .updated(false)
                     .build();
@@ -75,7 +74,9 @@ class ReviewFindServiceTest extends MockTest {
     void findAllReviewsByCourseId() {
         when(reviewRepository.findAllByCourseId(any()))
                 .thenReturn(reviews);
-        when(reviewLikeRepository.existsByReviewAndUsername(any(Review.class), anyString()))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(reviewLikeRepository.existsByReviewAndMember(any(Review.class), any(Member.class)))
                 .thenReturn(true);
 
         ReviewsResponse response = reviewFindService.findAllReviewsByCourseId(1L, authInfo);
@@ -87,8 +88,11 @@ class ReviewFindServiceTest extends MockTest {
     @Test
     @DisplayName("사용자 본인이 작성한 리뷰들을 불러온다.")
     void findMyReviews() {
-        when(reviewRepository.findByAuthorEmail(any(String.class)))
-                .thenReturn(reviews);
+        for (Review review : reviews) {
+            member.addReview(review);
+        }
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         ReviewsResponse response = reviewFindService.findMyReviews(authInfo);
 

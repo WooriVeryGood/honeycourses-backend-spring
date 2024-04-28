@@ -2,27 +2,27 @@ package org.wooriverygood.api.review.application;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.review.domain.Review;
 import org.wooriverygood.api.review.domain.ReviewLike;
 import org.wooriverygood.api.review.dto.*;
 import org.wooriverygood.api.review.repository.ReviewLikeRepository;
 import org.wooriverygood.api.review.repository.ReviewRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
+import org.wooriverygood.api.util.MockTest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class ReviewLikeToggleServiceTest {
+public class ReviewLikeToggleServiceTest extends MockTest {
 
     @InjectMocks
     private ReviewLikeToggleService reviewLikeToggleService;
@@ -33,10 +33,8 @@ public class ReviewLikeToggleServiceTest {
     @Mock
     private ReviewLikeRepository reviewLikeRepository;
 
-    private final AuthInfo authInfo = AuthInfo.builder()
-            .sub("22222-34534-123")
-            .username("22222-34534-123")
-            .build();
+    @Mock
+    private MemberRepository memberRepository;
 
     private final Review review = Review.builder()
             .id(1L)
@@ -45,7 +43,7 @@ public class ReviewLikeToggleServiceTest {
             .instructorName("jiaoshou")
             .takenSemyr("22-23")
             .grade("100")
-            .authorEmail(authInfo.getUsername())
+            .member(member)
             .reviewLikes(new ArrayList<>())
             .updated(false)
             .createdAt(LocalDateTime.of(2022, 6, 13, 12, 00))
@@ -57,11 +55,15 @@ public class ReviewLikeToggleServiceTest {
     void likeReview_up() {
         when(reviewRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(review));
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
 
         ReviewLikeResponse response = reviewLikeToggleService.toggleReviewLike(review.getId(), authInfo);
 
-        assertThat(response.getLikeCount()).isEqualTo(review.getLikeCount() + 1);
-        assertThat(response.isLiked()).isEqualTo(true);
+        assertAll(
+                () -> assertThat(response.getLikeCount()).isEqualTo(review.getLikeCount() + 1),
+                () -> assertThat(response.isLiked()).isEqualTo(true)
+        );
     }
 
     @Test
@@ -70,12 +72,14 @@ public class ReviewLikeToggleServiceTest {
         ReviewLike reviewLike = ReviewLike.builder()
                 .id(3L)
                 .review(review)
-                .username(authInfo.getUsername())
+                .member(member)
                 .build();
 
         when(reviewRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(review));
-        when(reviewLikeRepository.findByReviewAndUsername(any(Review.class), anyString()))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(reviewLikeRepository.findByReviewAndMember(any(Review.class), any(Member.class)))
                 .thenReturn(Optional.ofNullable(reviewLike));
 
         ReviewLikeResponse response = reviewLikeToggleService.toggleReviewLike(review.getId(), authInfo);

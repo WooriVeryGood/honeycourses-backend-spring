@@ -1,25 +1,27 @@
 package org.wooriverygood.api.post.application;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.wooriverygood.api.global.error.exception.AuthorizationException;
+import org.wooriverygood.api.member.domain.Member;
+import org.wooriverygood.api.member.repository.MemberRepository;
 import org.wooriverygood.api.post.domain.Post;
 import org.wooriverygood.api.post.domain.PostCategory;
 import org.wooriverygood.api.post.dto.PostUpdateRequest;
 import org.wooriverygood.api.post.repository.PostRepository;
-import org.wooriverygood.api.global.auth.AuthInfo;
-import org.wooriverygood.api.util.MockTest;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-class PostUpdateServiceTest extends MockTest {
+class PostUpdateServiceTest extends PostServiceTest {
 
     @InjectMocks
     private PostUpdateService postUpdateService;
@@ -27,31 +29,19 @@ class PostUpdateServiceTest extends MockTest {
     @Mock
     private PostRepository postRepository;
 
-    private AuthInfo authInfo = AuthInfo.builder()
-            .sub("")
-            .username("22222-34534-123")
-            .build();
-
     @Mock
-    private Post post = Post.builder()
-            .id(6L)
-            .category(PostCategory.OFFER)
-            .title("title6")
-            .content("content6")
-            .author(authInfo.getUsername())
-            .comments(new ArrayList<>())
-            .postLikes(new ArrayList<>())
-            .build();
+    private MemberRepository memberRepository;
 
     private Post noAuthPost = Post.builder()
             .id(99L)
             .category(PostCategory.OFFER)
             .title("title99")
             .content("content99")
-            .author("43434-45654-234")
+            .member(new Member(5L, "username"))
             .comments(new ArrayList<>())
             .postLikes(new ArrayList<>())
             .build();
+
 
     @Test
     @DisplayName("권한이 있는 게시글을 수정한다.")
@@ -60,12 +50,17 @@ class PostUpdateServiceTest extends MockTest {
                 .postTitle("new title")
                 .postContent("new content")
                 .build();
-
-        when(postRepository.findById(any(Long.class)))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(post));
 
         postUpdateService.updatePost(post.getId(), request, authInfo);
 
+        assertAll(
+                () -> assertThat(post.getTitle()).isEqualTo(request.getPostTitle()),
+                () -> assertThat(post.getContent()).isEqualTo(request.getPostContent())
+        );
     }
 
     @Test
@@ -75,11 +70,12 @@ class PostUpdateServiceTest extends MockTest {
                 .postTitle("new title")
                 .postContent("new content")
                 .build();
-
-        when(postRepository.findById(any(Long.class)))
+        when(memberRepository.findById(anyLong()))
+                .thenReturn(Optional.ofNullable(member));
+        when(postRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(noAuthPost));
 
-        Assertions.assertThatThrownBy(() -> postUpdateService.updatePost(noAuthPost.getId(), request, authInfo))
+        assertThatThrownBy(() -> postUpdateService.updatePost(noAuthPost.getId(), request, authInfo))
                 .isInstanceOf(AuthorizationException.class);
     }
 
