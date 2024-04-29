@@ -55,7 +55,7 @@ public class PostFindService {
         boolean liked = postLikeRepository.existsByPostAndMember(post, member);
         boolean isMine = post.sameAuthor(member);
         postRepository.increaseViewCount(postId);
-        return PostDetailResponse.of(post, member.getId(), liked, isMine);
+        return PostDetailResponse.of(post, liked, isMine);
     }
 
     public PostsResponse findMyPosts(AuthInfo authInfo, Pageable pageable) {
