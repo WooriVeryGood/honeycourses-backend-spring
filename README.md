@@ -40,7 +40,7 @@
 
 ### Backend
 
-- Spring Boot (Java)
+- Spring Boot (Java), JPA
 - MySQL
 - AWS EC2
 - Docker
@@ -50,3 +50,6 @@
 ## Requirements
 
 - JDK 17
+- Courage
+- Love(?)
+

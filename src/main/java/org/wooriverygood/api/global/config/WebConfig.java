@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final MemberRepository memberRepository;
 
+
     @Bean
     public AuthenticationPrincipalArgumentResolver authenticationPrincipalArgumentResolver() {
         return new AuthenticationPrincipalArgumentResolver(memberRepository);

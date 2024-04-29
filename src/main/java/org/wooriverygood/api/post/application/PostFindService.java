@@ -53,7 +53,7 @@ public class PostFindService {
         Member member = memberRepository.findById(authInfo.getMemberId())
                 .orElseThrow(MemberNotFoundException::new);
         boolean liked = postLikeRepository.existsByPostAndMember(post, member);
-        boolean isMine = post.getMember().equals(member);
+        boolean isMine = post.sameAuthor(member);
         postRepository.increaseViewCount(postId);
         return PostDetailResponse.of(post, member.getId(), liked, isMine);
     }
@@ -69,7 +69,8 @@ public class PostFindService {
         List<PostResponse> posts = page.getContent().stream()
                 .map(post -> {
                     boolean liked = postLikeRepository.existsByPostAndMember(post, member);
-                    return PostResponse.of(post, liked, post.getMember().equals(member));
+                    boolean isMine = post.sameAuthor(member);
+                    return PostResponse.of(post, liked, isMine);
                 })
                 .toList();
 
