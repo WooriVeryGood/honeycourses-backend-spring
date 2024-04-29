@@ -59,14 +59,14 @@ public class PostDetailResponse {
         this.viewCount = viewCount;
     }
 
-    public static PostDetailResponse of(Post post, long memberId, boolean liked, boolean isMine) {
+    public static PostDetailResponse of(Post post, boolean liked, boolean isMine) {
         return PostDetailResponse.builder()
                 .postId(post.getId())
                 .postTitle(post.getTitle())
                 .postContent(post.getContent())
                 .postCategory(post.getCategory().getValue())
                 .isMine(isMine)
-                .memberId(memberId)
+                .memberId(post.getMember().getId())
                 .postComments(post.getCommentCount())
                 .postLikes(post.getLikeCount())
                 .postTime(post.getCreatedAt())
