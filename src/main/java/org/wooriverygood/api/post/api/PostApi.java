@@ -12,10 +12,9 @@ import org.wooriverygood.api.post.dto.*;
 import org.wooriverygood.api.global.auth.AuthInfo;
 import org.wooriverygood.api.global.auth.Login;
 
-
 @RestController
-@RequestMapping("/posts")
 @RequiredArgsConstructor
+@RequestMapping("/posts")
 public class PostApi {
 
     private final PostLikeToggleService postLikeToggleService;

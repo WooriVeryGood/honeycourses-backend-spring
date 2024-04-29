@@ -87,6 +87,10 @@ public class Post {
         this.member.verify(member);
     }
 
+    public boolean sameAuthor(Member member) {
+        return this.member.isSame(member);
+    }
+
     public void addPostLike(PostLike postLike) {
         postLikes.add(postLike);
     }

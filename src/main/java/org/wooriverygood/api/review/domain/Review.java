@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.wooriverygood.api.global.error.exception.AuthorizationException;
 import org.wooriverygood.api.course.domain.Course;
 import org.wooriverygood.api.member.domain.Member;
 
@@ -79,7 +78,7 @@ public class Review {
         this.member = member;
     }
 
-    public boolean isSameAuthor(Member member) {
+    public boolean sameAuthor(Member member) {
         return this.member.isSame(member);
     }
 

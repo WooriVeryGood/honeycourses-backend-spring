@@ -105,7 +105,7 @@ public class Comment {
     }
 
     public boolean sameAuthor(Member member) {
-        return this.member.equals(member);
+        return this.member.isSame(member);
     }
 
     public void validateAuthor(Member member) {

@@ -35,9 +35,8 @@ public class ReviewFindService {
         return new ReviewsResponse(reviews.stream()
                 .map(review -> {
                     boolean liked = reviewLikeRepository.existsByReviewAndMember(review, member);
-                    return ReviewResponse.of(review,
-                            review.isSameAuthor(member),
-                            liked);
+                    boolean isMine = review.sameAuthor(member);
+                    return ReviewResponse.of(review, isMine, liked);
                 })
                 .toList());
     }
