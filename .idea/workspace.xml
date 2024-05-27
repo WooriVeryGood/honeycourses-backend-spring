@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[docs] 댓글 관련 예외 클래스 패키지 이동">
+    <list default="true" id="5b42d689-d7d0-4ba2-a267-4384bfcc2fe3" name="Changes" comment="[fix] 게시글 작성자 반환 에러 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/CommentLike.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wooriverygood/api/comment/domain/CommentLike.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +103,7 @@
     &quot;Gradle.CommentDeleteServiceTest.deleteComment_keepChildren.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.CommentDeleteServiceTest.deleteReply_exception_noAuth.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.CommentDeleteServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.CommentFindServiceTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;Gradle.CommentFindServiceTest.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.CommentFindServiceTest.findAllCommentsByPostId_softRemoved.executor&quot;: &quot;Run&quot;,
     &quot;Gradle.CommentLikeToggleServiceTest.executor&quot;: &quot;Run&quot;,
@@ -194,7 +194,7 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;HC-204-refactoring&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/pagh/Desktop/honeycourses-backend-spring/build.gradle&quot;,
@@ -234,7 +234,7 @@
       <recent name="org.wooriverygood.api.post.application" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.CommentFindServiceTest">
+  <component name="RunManager" selected="Spring Boot.HoneycoursesBackend">
     <configuration name="CommentApiTest.addComment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -372,19 +372,19 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.CommentFindServiceTest" />
-        <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply" />
-        <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_softRemoved" />
-        <item itemvalue="Gradle.CommentApiTest.addComment" />
         <item itemvalue="Gradle.CommentLikeToggleServiceTest" />
+        <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_softRemoved" />
+        <item itemvalue="Gradle.CommentFindServiceTest.findAllCommentsByPostId_cannot_only_reply" />
+        <item itemvalue="Gradle.CommentFindServiceTest" />
+        <item itemvalue="Gradle.CommentApiTest.addComment" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
       </set>
     </attachedChunks>
   </component>
@@ -420,14 +420,14 @@
       <workItem from="1713861088426" duration="694000" />
       <workItem from="1714056832462" duration="1256000" />
       <workItem from="1714237006022" duration="1954000" />
-    </task>
-    <task id="LOCAL-00004" summary="[HC-68] 커뮤니티 패키지 구성&#10;&#10;- 게시글 도메인 객체(Post)를 부분적으로 구성&#10;- 작성자, 댓글, 좋아요 관련은 추후 구현 예정">
-      <option name="closed" value="true" />
-      <created>1705321767102</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1705321767102</updated>
+      <workItem from="1714410499218" duration="17000" />
+      <workItem from="1714492590248" duration="1993000" />
+      <workItem from="1714577120927" duration="26000" />
+      <workItem from="1714844138852" duration="98000" />
+      <workItem from="1715493520713" duration="627000" />
+      <workItem from="1715505338079" duration="60000" />
+      <workItem from="1716819873348" duration="53000" />
+      <workItem from="1716819945766" duration="908000" />
     </task>
     <task id="LOCAL-00005" summary="[HC-68] 모든 게시글 불러오기 기능 구현">
       <option name="closed" value="true" />
@@ -813,7 +813,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712069384199</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="[fix] 게시글 작성자 반환 에러 수정">
+      <option name="closed" value="true" />
+      <created>1714374764492</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1714374764492</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -831,7 +839,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="[HC-129] 지연 로딩 적용" />
     <MESSAGE value="[HC-129] 대댓글 작성 기능 구현&#10;&#10;댓글과 대댓글 모두 Comment 객체로 처리했어요.&#10;&#10;- Comment 클래스에 parent, children 필드 추가&#10;&#10;일반 댓글은 parent 필드 값이 null 이며, childrent 필드에는 대댓글 객체들이 들어가요.&#10;&#10;따라서 대댓글은 모두 같은 부모 댓글을 바라보며, 대댓글의 대댓글은 불가능해요." />
     <MESSAGE value="[HC-129] 대댓글 삭제 기능 구현&#10;&#10;부모 댓글이 삭제되지 않은 상태에서 대댓글을 삭제하면 대댓글만 삭제돼요.&#10;&#10;만약 대댓글이 달린 부모 댓글을 삭제하면, 부모 댓글의 softRemoved 필드값이 true가 되며, 달려있는 대댓글이 모두 삭제되기 전까지 부모 댓글은 삭제되지 않아요. 하지만 댓글 내용을 알 수 없어요.&#10;&#10;#### 게시글 조회&#10;&#10;게시글 조회 시, 대댓글 개수도 총 댓글 개수에 포함돼요." />
     <MESSAGE value="[HC-137] 게시글 수정 여부 반환 &#10;&#10;게시글 조회 응답 객체에 수정 여부(updated)도 같이 반환해요.&#10;&#10;만약 수정한 적이 있다면 updated의 값은 true에요." />
@@ -856,7 +863,8 @@
     <MESSAGE value="[refactor] 신고 관련 리팩토링" />
     <MESSAGE value="[refactor] 댓글 관련 리팩토링" />
     <MESSAGE value="[docs] 댓글 관련 예외 클래스 패키지 이동" />
-    <option name="LAST_COMMIT_MESSAGE" value="[docs] 댓글 관련 예외 클래스 패키지 이동" />
+    <MESSAGE value="[fix] 게시글 작성자 반환 에러 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="[fix] 게시글 작성자 반환 에러 수정" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
